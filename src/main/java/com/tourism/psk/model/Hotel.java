@@ -18,10 +18,4 @@ public final class Hotel extends Accomodation {
         this.address = address;
     }
 
-    @Override
-    public final String accomodationInformation() {
-        return "Hotel information:";
-    }
-
-
 }

@@ -17,9 +17,4 @@ public class HotelWithPeople extends Accomodation {
         this.accomodation = hotel;
         this.peopleInHotel = peopleInHotel;
     }
-
-    @Override
-    public String accomodationInformation() {
-        return accomodation.accomodationInformation() + " people who will be staying there:" + peopleInHotel.toString();
-    }
 }
