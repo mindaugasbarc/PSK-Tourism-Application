@@ -18,6 +18,10 @@ public class Duration {
     private LocalDate start;
     private LocalDate end;
 
+    public Duration() {
+
+    }
+
     public Duration(LocalDate start, LocalDate end) {
         if (start.isAfter(end)) {
             this.start = start;

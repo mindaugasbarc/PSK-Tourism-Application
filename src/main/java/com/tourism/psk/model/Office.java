@@ -1,23 +1,28 @@
 package com.tourism.psk.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
 public class Office {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
     private String address;
-    @JoinTable
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Accomodation> houseRooms;
+    @JsonManagedReference
+    private List<OfficeRoom> houseRooms = Collections.emptyList();
 
     public Office() {
     }
 
-    public Office(String name, String address, List<Accomodation> houseRooms) {
+    public Office(String name, String address, List<OfficeRoom> houseRooms) {
         this.name = name;
         this.address = address;
         this.houseRooms = houseRooms;
@@ -47,11 +52,21 @@ public class Office {
         this.address = address;
     }
 
-    public List<Accomodation> getHouseRooms() {
+    public List<OfficeRoom> getHouseRooms() {
         return houseRooms;
     }
 
-    public void setHouseRooms(List<Accomodation> houseRooms) {
+    public void setHouseRooms(List<OfficeRoom> houseRooms) {
         this.houseRooms = houseRooms;
+    }
+
+    public void addHouseRoom(OfficeRoom officeRoom) {
+        getHouseRooms().add(officeRoom);
+        officeRoom.setOffice(this);
+    }
+
+    public void removeHouseRoom(OfficeRoom officeRoom) {
+        getHouseRooms().remove(officeRoom);
+        officeRoom.setOffice(null);
     }
 }
