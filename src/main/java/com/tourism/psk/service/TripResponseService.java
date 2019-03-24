@@ -9,4 +9,6 @@ public interface TripResponseService {
     List<TripResponse> findAll();
 
     TripResponse find(long id);
+
+    void save(TripResponse tripResponse);
 }

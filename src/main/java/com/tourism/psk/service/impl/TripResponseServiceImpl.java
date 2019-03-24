@@ -28,4 +28,9 @@ public class TripResponseServiceImpl implements TripResponseService {
     public TripResponse find(final long id) {
         return tripResponseRepository.findById(id).orElseThrow(TripNotFoundException::new);
     }
+
+    @Override
+    public void save(TripResponse tripResponse) {
+        tripResponseRepository.save(tripResponse);
+    }
 }
