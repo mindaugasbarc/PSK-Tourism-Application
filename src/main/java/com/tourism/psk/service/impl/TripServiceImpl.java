@@ -1,7 +1,7 @@
 package com.tourism.psk.service.impl;
 
 import com.tourism.psk.exception.TripNotFoundException;
-import com.tourism.psk.model.Trip;
+import com.tourism.psk.model.response.Trip;
 import com.tourism.psk.repository.TripRepository;
 import com.tourism.psk.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;

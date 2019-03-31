@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class TripResponse {
+public class Trip {
 
     @Id
     @GeneratedValue
@@ -29,10 +29,10 @@ public class TripResponse {
         return id;
     }
 
-    public TripResponse() {
+    public Trip() {
     }
 
-    public TripResponse(List<Document> documents, List<Accomodation> houseRooms, TripInfo tripInfo) {
+    public Trip(List<Document> documents, List<Accomodation> houseRooms, TripInfo tripInfo) {
         this.documents = documents;
         this.houseRooms = houseRooms;
         this.tripInfo = tripInfo;

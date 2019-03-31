@@ -2,7 +2,6 @@ package com.tourism.psk.model;
 
 import com.tourism.psk.constants.DocumentStatus;
 import com.tourism.psk.constants.DocumentType;
-import com.tourism.psk.model.response.TripResponse;
 
 import javax.persistence.*;
 
