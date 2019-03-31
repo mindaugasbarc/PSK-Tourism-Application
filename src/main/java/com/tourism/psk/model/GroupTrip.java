@@ -1,7 +1,5 @@
 package com.tourism.psk.model;
 
-import com.tourism.psk.model.response.Trip;
-
 import javax.persistence.Entity;
 import java.util.Objects;
 import java.util.Set;

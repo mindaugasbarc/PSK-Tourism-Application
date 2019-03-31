@@ -1,4 +1,4 @@
-package com.tourism.psk.model.response;
+package com.tourism.psk.model;
 
 import com.tourism.psk.model.Accomodation;
 import com.tourism.psk.model.Document;

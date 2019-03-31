@@ -3,7 +3,7 @@ package com.tourism.psk;
 import com.tourism.psk.constants.DocumentStatus;
 import com.tourism.psk.constants.DocumentType;
 import com.tourism.psk.model.*;
-import com.tourism.psk.model.response.Trip;
+import com.tourism.psk.model.Trip;
 import com.tourism.psk.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

@@ -1,7 +1,7 @@
 package com.tourism.psk.service;
 
 import com.tourism.psk.model.GroupTrip;
-import com.tourism.psk.model.response.Trip;
+import com.tourism.psk.model.Trip;
 
 import java.util.List;
 

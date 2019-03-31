@@ -1,7 +1,7 @@
 package com.tourism.psk.controller;
 
 import com.tourism.psk.model.GroupTrip;
-import com.tourism.psk.model.response.Trip;
+import com.tourism.psk.model.Trip;
 import com.tourism.psk.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
