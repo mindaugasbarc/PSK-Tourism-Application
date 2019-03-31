@@ -1,7 +1,7 @@
 package com.tourism.psk.controller;
 
-import com.tourism.psk.model.response.TripResponse;
-import com.tourism.psk.service.TripResponseService;
+import com.tourism.psk.model.Trip;
+import com.tourism.psk.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,26 +10,26 @@ import java.util.List;
 @RestController
 public class TripResponseController {
 
-    private final TripResponseService tripResponseService;
+    private final TripService tripResponseService;
 
     @Autowired
-    public TripResponseController(TripResponseService tripResponseService) {
+    public TripResponseController(TripService tripResponseService) {
         this.tripResponseService = tripResponseService;
     }
 
 
     @RequestMapping(value = "/trips", method = RequestMethod.GET)
-    public List<TripResponse> findTrips() {
+    public List<Trip> findTrips() {
         return tripResponseService.findAll();
     }
 
     @RequestMapping(value = "/trips/{id}", method = RequestMethod.GET)
-    public TripResponse findTrip(@PathVariable("id") long id) {
+    public Trip findTrip(@PathVariable("id") long id) {
         return tripResponseService.find(id);
     }
 
     @RequestMapping(value = "/trips", method = RequestMethod.POST)
-    public void saveTrip(@RequestBody TripResponse tripResponse) {
+    public void saveTrip(@RequestBody Trip tripResponse) {
         tripResponseService.save(tripResponse);
     }
  }
