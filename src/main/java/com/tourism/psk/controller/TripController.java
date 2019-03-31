@@ -1,5 +1,6 @@
 package com.tourism.psk.controller;
 
+import com.tourism.psk.model.GroupTrip;
 import com.tourism.psk.model.response.Trip;
 import com.tourism.psk.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ public class TripController {
         this.tripService = tripService;
     }
 
+
+    @RequestMapping(value = "groupTrip", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void addGroupTrip(@RequestBody final GroupTrip groupTrip) {
+
+    }
 
     @RequestMapping(value = "find/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Trip> findAllTrips() {
