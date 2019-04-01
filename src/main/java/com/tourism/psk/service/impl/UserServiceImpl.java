@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
         if (!userExists(user.getUsername(), user.getEmail())) {
             user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
-            user.setRole((user.getRole() == null) ? UserRole.DEFAULT : user.getRole());
+            user.setRole((user.getRole() == null) ? UserRole.USER : user.getRole());
             return userRepository.save(user);
         }
         throw new UserAlreadyExistsException();

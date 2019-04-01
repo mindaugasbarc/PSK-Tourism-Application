@@ -18,13 +18,13 @@ public class PskApplication implements CommandLineRunner {
 
 	private final WorkerRepository workerRepository;
 	private final TripRepository tripRepository;
-	private final TripResponseRepository tripResponseRepository;
+	private final TripRepository tripResponseRepository;
 	private final OfficeRepository officeRepository;
 	private final OfficeRoomRepository officeRoomRepository;
 
 	public PskApplication(WorkerRepository workerRepository,
 						  TripRepository tripRepository,
-						  TripResponseRepository tripResponseRepository,
+						  TripRepository tripResponseRepository,
 						  OfficeRepository officeRepository,
 						  OfficeRoomRepository officeRoomRepository) {
 		this.workerRepository = workerRepository;
