@@ -1,14 +1,14 @@
 package com.tourism.psk.model;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 public class GroupTrip {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     private String name;
     private String description;
@@ -16,10 +16,10 @@ public class GroupTrip {
     @ManyToMany
     private Set<Trip> trips;
     @ManyToOne
-    @JoinTable
+    @JoinTable(name = "groupTrip_officeFrom")
     private Office from;
     @ManyToOne
-    @JoinTable
+    @JoinTable(name = "groupTrip_officeTo")
     private Office to;
 
     public String getName() {
