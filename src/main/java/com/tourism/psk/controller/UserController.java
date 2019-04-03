@@ -45,6 +45,6 @@ public class UserController {
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public User getUserByAccessToken(@RequestHeader("Authorization") String header) {
-        return sessionService.authenticate(header.replace("Bearer ", "")).getUser();
+        return sessionService.authenticate(header).getUser();
     }
 }

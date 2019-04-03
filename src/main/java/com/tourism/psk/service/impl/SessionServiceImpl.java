@@ -4,20 +4,14 @@ import com.tourism.psk.constants.SessionStatus;
 import com.tourism.psk.exception.InvalidTokenException;
 import com.tourism.psk.exception.SessionExpiredException;
 import com.tourism.psk.model.Session;
-import com.tourism.psk.model.User;
 import com.tourism.psk.repository.SessionRepository;
 import com.tourism.psk.repository.UserRepository;
 import com.tourism.psk.service.SessionService;
-import org.h2.util.DateTimeUtils;
-import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.naming.AuthenticationException;
 import java.security.SecureRandom;
-import java.time.LocalDateTime;
 import java.util.Base64;
-import java.util.Calendar;
 import java.util.Date;
 
 @Service
@@ -33,7 +27,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public Session authenticate(String token) {
-        Session session = sessionRepository.findByToken(token);
+        Session session = sessionRepository.findByToken(token.replace("Bearer ", ""));
         Date now = new Date(System.currentTimeMillis());
         if (session == null) {
             throw new InvalidTokenException();
@@ -52,7 +46,7 @@ public class SessionServiceImpl implements SessionService {
     @Override
     public Session create(long userId) {
         SecureRandom random = new SecureRandom();
-        byte bytes[] = new byte[32];
+        byte[] bytes = new byte[32];
         random.nextBytes(bytes);
         Base64.Encoder encoder = Base64.getEncoder().withoutPadding();
         String token = encoder.encodeToString(bytes);

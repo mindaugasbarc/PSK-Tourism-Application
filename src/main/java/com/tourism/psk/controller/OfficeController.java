@@ -1,31 +1,34 @@
 package com.tourism.psk.controller;
 
 import com.tourism.psk.model.Office;
+import com.tourism.psk.model.Session;
 import com.tourism.psk.service.OfficeService;
+import com.tourism.psk.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 public class OfficeController {
     private OfficeService officeService;
+    private SessionService sessionService;
 
     @Autowired
-    public OfficeController(OfficeService officeService) {
+    public OfficeController(OfficeService officeService, SessionService sessionService) {
         this.officeService = officeService;
+        this.sessionService = sessionService;
     }
 
     @RequestMapping(value = "/office", method = RequestMethod.GET)
-    public List<Office> getAll() {
+    public List<Office> getAll(@RequestHeader("Authorization") String header) {
+        sessionService.authenticate(header);
         return officeService.findAll();
     }
 
     @RequestMapping(value = "/office/{id}", method = RequestMethod.GET)
-    public Office getById(@PathVariable("id") long id) {
+    public Office getById(@PathVariable("id") long id, @RequestHeader("Authorization") String header) {
+        sessionService.authenticate(header);
         return officeService.find(id);
     }
 }
