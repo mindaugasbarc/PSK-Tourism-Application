@@ -1,5 +1,6 @@
 package com.tourism.psk.service.impl;
 
+import com.tourism.psk.exception.LoginException;
 import com.tourism.psk.exception.UserAlreadyExistsException;
 import com.tourism.psk.model.User;
 import com.tourism.psk.model.UserLogin;
@@ -32,8 +33,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isValidCredential(String username, String password) {
-        long userId = userLoginRepository.findUserIdByUsernameAndPassword(username, password);
-        return userId != 0;
+        Long userId = userLoginRepository.findUserIdByUsernameAndPassword(username, password);
+        if (userId == null) {
+            throw new LoginException();
+        }
+        return true;
     }
 
     @Override
