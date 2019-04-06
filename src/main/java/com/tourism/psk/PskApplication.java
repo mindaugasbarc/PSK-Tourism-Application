@@ -57,9 +57,4 @@ public class PskApplication implements CommandLineRunner {
 		office.addHouseRoom(new OfficeRoom("Office room 2"));
 		officeRepository.save(office);
 	}
-
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
 }

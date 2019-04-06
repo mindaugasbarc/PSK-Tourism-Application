@@ -7,6 +7,7 @@ import com.tourism.psk.model.UserLogin;
 import com.tourism.psk.service.SessionService;
 import com.tourism.psk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,9 @@ import java.util.Map;
 public class UserController {
     private UserService userService;
     private SessionService sessionService;
+
+    @Value("${auth-header-prefix}")
+    private String headerPrefix;
 
     @Autowired
     public UserController(UserService userService, SessionService sessionService) {
@@ -37,7 +41,7 @@ public class UserController {
     public User login(@RequestBody Map<String, String> credentials, HttpServletResponse response) {
         if (userService.isValidCredential(credentials.get("username"), credentials.get("password"))) {
             User user = userService.getUser(credentials.get("username"));
-            response.addHeader("Authorization", "Bearer " + sessionService.create(user.getId()).getToken());
+            response.addHeader("Authorization", headerPrefix + " " + sessionService.create(user.getId()).getToken());
             return user;
         }
         else throw new LoginException();
