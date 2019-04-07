@@ -60,7 +60,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.POST)
-    public boolean getUserAvailabilityStatus(@RequestBody Map<String, String> range, @PathVariable long id) throws ParseException {
+    public boolean getUserAvailabilityStatus(@RequestBody Map<String, String> range,
+                                             @PathVariable long id,
+                                             @RequestHeader("Authorization") String header) throws ParseException {
+        sessionService.authenticate(header);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date start = dateFormat.parse(range.get("from"));
         Date end = dateFormat.parse(range.get("to"));

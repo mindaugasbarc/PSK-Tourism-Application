@@ -34,8 +34,8 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public Session authenticate(String token) {
-        Session session = sessionRepository.findByToken(token.replace(headerPrefix + " ", ""));
+    public Session authenticate(String authHeader) {
+        Session session = sessionRepository.findByToken(authHeader.replace(headerPrefix + " ", ""));
         Date now = new Date(System.currentTimeMillis());
         if (session == null) {
             throw new InvalidTokenException();
