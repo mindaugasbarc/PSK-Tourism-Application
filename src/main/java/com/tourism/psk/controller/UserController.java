@@ -1,7 +1,6 @@
 package com.tourism.psk.controller;
 
 import com.tourism.psk.constants.UserRole;
-import com.tourism.psk.exception.LoginException;
 import com.tourism.psk.model.User;
 import com.tourism.psk.model.UserLogin;
 import com.tourism.psk.service.SessionService;
@@ -12,6 +11,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -38,17 +42,28 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
-    public User login(@RequestBody Map<String, String> credentials, HttpServletResponse response) {
-        if (userService.isValidCredential(credentials.get("username"), credentials.get("password"))) {
-            User user = userService.getUser(credentials.get("username"));
-            response.addHeader("Authorization", headerPrefix + " " + sessionService.create(user.getId()).getToken());
-            return user;
-        }
-        else throw new LoginException();
+    public Map<String, String> login(@RequestBody Map<String, String> credentials, HttpServletResponse response) {
+        long userId = userService.login(credentials.get("username"), credentials.get("password"));
+        User user = userService.getUser(userId);
+        response.addHeader("Authorization", headerPrefix + " " + sessionService.create(userId).getToken());
+        Map<String, String> responseBody = new HashMap<>();
+        responseBody.put("id", Long.toString(user.getId()));
+        responseBody.put("fullname", user.getFullname());
+        responseBody.put("email", user.getEmail());
+        responseBody.put("role", user.getRole().toString());
+        return responseBody;
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public User getUserByAccessToken(@RequestHeader("Authorization") String header) {
         return sessionService.authenticate(header).getUser();
+    }
+
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.POST)
+    public boolean getUserAvailabilityStatus(@RequestBody Map<String, String> range, @PathVariable long id) throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date start = dateFormat.parse(range.get("from"));
+        Date end = dateFormat.parse(range.get("to"));
+        return userService.isAvailable(id, start, end);
     }
 }
