@@ -2,13 +2,16 @@ package com.tourism.psk;
 
 import com.tourism.psk.constants.DocumentStatus;
 import com.tourism.psk.constants.DocumentType;
+import com.tourism.psk.constants.UserRole;
 import com.tourism.psk.model.*;
-import com.tourism.psk.model.Trip;
 import com.tourism.psk.repository.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,17 +24,26 @@ public class PskApplication implements CommandLineRunner {
 	private final TripRepository tripResponseRepository;
 	private final OfficeRepository officeRepository;
 	private final OfficeRoomRepository officeRoomRepository;
+	private final UserRepository userRepository;
+	private final OccupationRepository occupationRepository;
+
+	@Value("${date-format}")
+	private String dateFormat;
 
 	public PskApplication(WorkerRepository workerRepository,
 						  TripRepository tripRepository,
 						  TripRepository tripResponseRepository,
 						  OfficeRepository officeRepository,
-						  OfficeRoomRepository officeRoomRepository) {
+						  OfficeRoomRepository officeRoomRepository,
+						  UserRepository userRepository,
+						  OccupationRepository occupationRepository) {
 		this.workerRepository = workerRepository;
 		this.tripRepository = tripRepository;
 		this.tripResponseRepository = tripResponseRepository;
 		this.officeRepository = officeRepository;
 		this.officeRoomRepository = officeRoomRepository;
+		this.userRepository = userRepository;
+		this.occupationRepository = occupationRepository;
 	}
 
 	public static void main(String[] args) {
@@ -53,5 +65,16 @@ public class PskApplication implements CommandLineRunner {
 		office.addHouseRoom(room1);
 		office.addHouseRoom(new OfficeRoom("Office room 2"));
 		officeRepository.save(office);
+
+		User user = new User("Testas Testas", "testmail@test.com", UserRole.USER);
+		UserLogin userLogin = new UserLogin("testusername", "testpassword");
+		user.setUserLogin(userLogin);
+		userLogin.setUser(user);
+		userRepository.save(user);
+
+		DateFormat format = new SimpleDateFormat(dateFormat);
+		Occupation occupation = new Occupation(format.parse("2019-01-01"), format.parse("2019-01-07"));
+		occupation.setUser(user);
+		occupationRepository.save(occupation);
 	}
 }
