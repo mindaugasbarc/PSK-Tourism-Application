@@ -1,6 +1,7 @@
 package com.tourism.psk.model;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -17,10 +18,13 @@ public class GroupTrip {
     private Set<Trip> trips;
     @ManyToOne
     @JoinTable(name = "groupTrip_officeFrom")
-    private Office from;
+    private Office officeFrom;
     @ManyToOne
     @JoinTable(name = "groupTrip_officeTo")
-    private Office to;
+    private Office officeTo;
+
+    @OneToMany(mappedBy = "commentOfTrip")
+    List<Comment> comments;
 
     public String getName() {
         return name;
@@ -46,20 +50,28 @@ public class GroupTrip {
         this.trips = trips;
     }
 
-    public Office getFrom() {
-        return from;
+    public Office getOfficeFrom() {
+        return officeFrom;
     }
 
-    public void setFrom(Office from) {
-        this.from = from;
+    public void setOfficeFrom(Office officeFrom) {
+        this.officeFrom = officeFrom;
     }
 
-    public Office getTo() {
-        return to;
+    public Office getOfficeTo() {
+        return officeTo;
     }
 
-    public void setTo(Office to) {
-        this.to = to;
+    public void setOfficeTo(Office officeTo) {
+        this.officeTo = officeTo;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override
