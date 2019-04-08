@@ -15,6 +15,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootApplication
 public class PskApplication implements CommandLineRunner {
@@ -26,6 +28,7 @@ public class PskApplication implements CommandLineRunner {
 	private final OfficeRoomRepository officeRoomRepository;
 	private final UserRepository userRepository;
 	private final OccupationRepository occupationRepository;
+	private final GroupTripRepository groupTripRepository;
 
 	@Value("${date-format}")
 	private String dateFormat;
@@ -36,7 +39,7 @@ public class PskApplication implements CommandLineRunner {
 						  OfficeRepository officeRepository,
 						  OfficeRoomRepository officeRoomRepository,
 						  UserRepository userRepository,
-						  OccupationRepository occupationRepository) {
+						  OccupationRepository occupationRepository, GroupTripRepository groupTripRepository) {
 		this.workerRepository = workerRepository;
 		this.tripRepository = tripRepository;
 		this.tripResponseRepository = tripResponseRepository;
@@ -44,6 +47,7 @@ public class PskApplication implements CommandLineRunner {
 		this.officeRoomRepository = officeRoomRepository;
 		this.userRepository = userRepository;
 		this.occupationRepository = occupationRepository;
+		this.groupTripRepository = groupTripRepository;
 	}
 
 	public static void main(String[] args) {
@@ -54,10 +58,13 @@ public class PskApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Worker jonas = new Worker("Jonas", "Jonaitis");
 		workerRepository.save(jonas);
-		tripResponseRepository.save(new Trip(Arrays.asList(new Document(DocumentStatus.PENDING, DocumentType.TICKET, "plane tickets from Vilnius to Copenhagen")),
+		Trip trip = new Trip(Arrays.asList(new Document(DocumentStatus.PENDING, DocumentType.TICKET, "plane tickets from Vilnius to Copenhagen")),
 				Arrays.asList(new Accomodation("51st street, Copenhagen", "DevBridge assignment")),
 				new TripInfo(new Office("Vilnius Office", "Kalvariju st. 21", new ArrayList<>()),
-						new Office("Vilnius Office", "Copenhagen st. 52", new ArrayList<>()), LocalDate.now(), LocalDate.now())));
+						new Office("Vilnius Office", "Copenhagen st. 52", new ArrayList<>()), LocalDate.now(), LocalDate.now()));
+		tripResponseRepository.save(trip);
+
+
 
 
 		OfficeRoom room1 = officeRoomRepository.save(new OfficeRoom("Office room 1"));
@@ -76,5 +83,9 @@ public class PskApplication implements CommandLineRunner {
 		Occupation occupation = new Occupation(format.parse("2019-01-01"), format.parse("2019-01-07"));
 		occupation.setUser(user);
 		occupationRepository.save(occupation);
+
+		Set<Trip> trips = new HashSet<>();
+		trips.add(trip);
+		groupTripRepository.save(new GroupTrip("test trip", "the best trip", trips, office, office, Arrays.asList(new Comment(user, "test", "test", null))));
 	}
 }

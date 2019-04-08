@@ -22,6 +22,12 @@ public class Comment {
     @JoinColumn
     private GroupTrip commentOfTrip;
 
+    public Comment(User commentedBy, String text, String date, GroupTrip commentOfTrip) {
+        this.commentedBy = commentedBy;
+        this.text = text;
+        this.date = date;
+        this.commentOfTrip = commentOfTrip;
+    }
 
     public User getCommentedBy() {
         return commentedBy;
