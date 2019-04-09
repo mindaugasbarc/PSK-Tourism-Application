@@ -42,12 +42,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
-    public Map<String, String> login(@RequestBody Map<String, String> credentials, HttpServletResponse response) {
+    public Map<String, Object> login(@RequestBody Map<String, String> credentials, HttpServletResponse response) {
         long userId = userService.login(credentials.get("username"), credentials.get("password"));
         User user = userService.getUser(userId);
         response.addHeader("Authorization", headerPrefix + " " + sessionService.create(userId).getToken());
-        Map<String, String> responseBody = new HashMap<>();
-        responseBody.put("id", Long.toString(user.getId()));
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("id", user.getId());
         responseBody.put("fullname", user.getFullname());
         responseBody.put("email", user.getEmail());
         responseBody.put("role", user.getRole().toString());
