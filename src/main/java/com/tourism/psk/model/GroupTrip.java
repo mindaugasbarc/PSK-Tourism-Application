@@ -1,6 +1,7 @@
 package com.tourism.psk.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -8,7 +9,7 @@ import java.util.Set;
 @Entity
 public class GroupTrip {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     private String name;
@@ -23,16 +24,23 @@ public class GroupTrip {
     @JoinTable(name = "groupTrip_officeTo")
     private Office officeTo;
 
+    private LocalDate dateFrom;
+
+    private LocalDate dateTo;
+
     @OneToMany(mappedBy = "commentOfTrip")
     List<Comment> comments;
 
-    public GroupTrip(String name, String description, Set<Trip> trips, Office officeFrom, Office officeTo, List<Comment> comments) {
+    public GroupTrip(String name, String description, Set<Trip> trips, Office officeFrom,
+                     Office officeTo, List<Comment> comments, LocalDate dateFrom, LocalDate dateTo) {
         this.name = name;
         this.description = description;
         this.trips = trips;
         this.officeFrom = officeFrom;
         this.officeTo = officeTo;
         this.comments = comments;
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
     }
 
     public GroupTrip() {
@@ -84,6 +92,22 @@ public class GroupTrip {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public LocalDate getDateFrom() {
+        return dateFrom;
+    }
+
+    public void setDateFrom(LocalDate dateFrom) {
+        this.dateFrom = dateFrom;
+    }
+
+    public LocalDate getDateTo() {
+        return dateTo;
+    }
+
+    public void setDateTo(LocalDate dateTo) {
+        this.dateTo = dateTo;
     }
 
     @Override
