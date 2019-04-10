@@ -1,5 +1,7 @@
 package com.tourism.psk.model;
 
+import com.tourism.psk.constants.TripStatus;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -7,10 +9,12 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-public class    GroupTrip {
+public class GroupTrip {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    private TripStatus status;
 
     private String name;
     private String description;
@@ -26,13 +30,14 @@ public class    GroupTrip {
 
     private LocalDate dateFrom;
 
+
     private LocalDate dateTo;
 
     @OneToMany(mappedBy = "commentOfTrip")
     List<Comment> comments;
 
     public GroupTrip(String name, String description, Set<Trip> trips, Office officeFrom,
-                     Office officeTo, List<Comment> comments, LocalDate dateFrom, LocalDate dateTo) {
+                     Office officeTo, List<Comment> comments, LocalDate dateFrom, LocalDate dateTo, TripStatus status) {
         this.name = name;
         this.description = description;
         this.trips = trips;
@@ -41,9 +46,26 @@ public class    GroupTrip {
         this.comments = comments;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
+        this.status = status;
     }
 
     public GroupTrip() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public TripStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TripStatus status) {
+        this.status = status;
     }
 
     public String getName() {

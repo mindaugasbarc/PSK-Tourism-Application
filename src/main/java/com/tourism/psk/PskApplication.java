@@ -2,6 +2,7 @@ package com.tourism.psk;
 
 import com.tourism.psk.constants.DocumentStatus;
 import com.tourism.psk.constants.DocumentType;
+import com.tourism.psk.constants.TripStatus;
 import com.tourism.psk.constants.UserRole;
 import com.tourism.psk.model.*;
 import com.tourism.psk.repository.*;
@@ -87,6 +88,6 @@ public class PskApplication implements CommandLineRunner {
 		Set<Trip> trips = new HashSet<>();
 		trips.add(trip);
 		groupTripRepository.save(new GroupTrip("test trip", "the best trip", trips, office, office,
-				Arrays.asList(new Comment(user, "test", "test", null)), LocalDate.now(), LocalDate.now()));
+				Arrays.asList(new Comment(user, "test", "test", null)), LocalDate.now(), LocalDate.now(), TripStatus.PENDING));
 	}
 }
