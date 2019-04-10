@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-public class GroupTrip {
+public class    GroupTrip {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

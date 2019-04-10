@@ -22,39 +22,40 @@ public class TripController {
     }
 
 
-    @RequestMapping(value = "groupTrip", method = RequestMethod.POST,
+    @RequestMapping(value = "/groupTrip", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addGroupTrip(@RequestBody final GroupTrip groupTrip) {
         tripService.addGroupTrip(groupTrip);
     }
 
-    @RequestMapping(value = "addGroupTrip", method = RequestMethod.POST,
+    @RequestMapping(value = "/addGroupTrip", method = RequestMethod.POST,
                 consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addGroupTripRequest(@RequestBody final GroupTripRequest groupTripRequest) {
         tripService.addGroupTripThroughRequest(groupTripRequest);
     }
 
-    @RequestMapping(value = "groupTrips", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/groupTrips", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<GroupTrip> findGroupTrips() {
         return tripService.findGroupTrips();
     }
 
-    @RequestMapping(value = "groupTrip", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/groupTrip", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public GroupTrip findGroupTrip(@RequestParam("id") long groupTripId) {
         return tripService.findGroupTrip(groupTripId);
     }
-    @RequestMapping(value = "find/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/find/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Trip> findAllTrips() {
         return tripService.findAll();
     }
 
-    @RequestMapping(value = "find/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/find/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Trip findTrip(@PathVariable("id") long id) {
         return tripService.find(id);
     }
 
-    @RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void save(@RequestBody Trip trip) {
         tripService.save(trip);
     }
