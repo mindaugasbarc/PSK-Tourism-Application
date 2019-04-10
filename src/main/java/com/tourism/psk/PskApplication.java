@@ -86,6 +86,7 @@ public class PskApplication implements CommandLineRunner {
 
 		Set<Trip> trips = new HashSet<>();
 		trips.add(trip);
-		groupTripRepository.save(new GroupTrip("test trip", "the best trip", trips, office, office, Arrays.asList(new Comment(user, "test", "test", null))));
+		groupTripRepository.save(new GroupTrip("test trip", "the best trip", trips, office, office,
+				Arrays.asList(new Comment(user, "test", "test", null)), LocalDate.now(), LocalDate.now()));
 	}
 }

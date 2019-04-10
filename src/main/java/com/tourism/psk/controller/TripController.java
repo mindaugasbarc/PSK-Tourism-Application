@@ -32,7 +32,7 @@ public class TripController {
     @RequestMapping(value = "addGroupTrip", method = RequestMethod.POST,
                 consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addGroupTripRequest(@RequestBody final GroupTripRequest groupTripRequest) {
-
+        tripService.addGroupTripThroughRequest(groupTripRequest);
     }
 
     @RequestMapping(value = "groupTrips", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
