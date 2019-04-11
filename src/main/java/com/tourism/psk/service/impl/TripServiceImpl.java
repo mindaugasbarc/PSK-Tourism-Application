@@ -1,5 +1,6 @@
 package com.tourism.psk.service.impl;
 
+import com.tourism.psk.constants.TripStatus;
 import com.tourism.psk.exception.OfficeNotFoundException;
 import com.tourism.psk.exception.TripNotFoundException;
 import com.tourism.psk.model.GroupTrip;
@@ -59,7 +60,7 @@ public class TripServiceImpl implements TripService {
                 .orElseThrow(OfficeNotFoundException::new);
         GroupTrip groupTrip = new GroupTrip(groupTripRequest.getName(), groupTripRequest.getDescription(),
                 new HashSet<>(), officeFrom, officeTo, new ArrayList<>(), groupTripRequest.getDateFrom(),
-                groupTripRequest.getDateTo());
+                groupTripRequest.getDateTo(), TripStatus.PENDING);
         groupTripRepository.save(groupTrip);
     }
 
