@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/groupTrip")
 public class GroupTripController {
 
     private final TripService tripService;
