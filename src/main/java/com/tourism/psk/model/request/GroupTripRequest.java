@@ -8,10 +8,10 @@ public class GroupTripRequest {
     private String description;
     private String officeFromName;
     private String officeToName;
-    private LocalDate dateFrom;
-    private LocalDate dateTo;
+    private String dateFrom;
+    private String dateTo;
 
-    public GroupTripRequest(String name, String description, String officeFromName, String officeToName, LocalDate dateFrom, LocalDate dateTo) {
+    public GroupTripRequest(String name, String description, String officeFromName, String officeToName, String dateFrom, String dateTo) {
         this.name = name;
         this.description = description;
         this.officeFromName = officeFromName;
@@ -55,19 +55,19 @@ public class GroupTripRequest {
         this.officeToName = officeToName;
     }
 
-    public LocalDate getDateFrom() {
+    public String getDateFrom() {
         return dateFrom;
     }
 
-    public void setDateFrom(LocalDate dateFrom) {
+    public void setDateFrom(String dateFrom) {
         this.dateFrom = dateFrom;
     }
 
-    public LocalDate getDateTo() {
+    public String getDateTo() {
         return dateTo;
     }
 
-    public void setDateTo(LocalDate dateTo) {
+    public void setDateTo(String dateTo) {
         this.dateTo = dateTo;
     }
 }

@@ -28,16 +28,16 @@ public class GroupTrip {
     @JoinTable(name = "groupTrip_officeTo")
     private Office officeTo;
 
-    private LocalDate dateFrom;
+    private String dateFrom;
 
 
-    private LocalDate dateTo;
+    private String dateTo;
 
     @OneToMany(mappedBy = "commentOfTrip")
     List<Comment> comments;
 
     public GroupTrip(String name, String description, Set<Trip> trips, Office officeFrom,
-                     Office officeTo, List<Comment> comments, LocalDate dateFrom, LocalDate dateTo, TripStatus status) {
+                     Office officeTo, List<Comment> comments, String dateFrom, String dateTo, TripStatus status) {
         this.name = name;
         this.description = description;
         this.trips = trips;
@@ -116,19 +116,19 @@ public class GroupTrip {
         this.comments = comments;
     }
 
-    public LocalDate getDateFrom() {
+    public String getDateFrom() {
         return dateFrom;
     }
 
-    public void setDateFrom(LocalDate dateFrom) {
+    public void setDateFrom(String dateFrom) {
         this.dateFrom = dateFrom;
     }
 
-    public LocalDate getDateTo() {
+    public String getDateTo() {
         return dateTo;
     }
 
-    public void setDateTo(LocalDate dateTo) {
+    public void setDateTo(String dateTo) {
         this.dateTo = dateTo;
     }
 
