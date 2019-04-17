@@ -48,6 +48,7 @@ public class UserController {
         long userId = userService.login(credentials.get("username"), credentials.get("password"));
         User user = userService.getUser(userId);
         response.addHeader("Authorization", headerPrefix + " " + sessionService.create(userId).getToken());
+        response.addHeader("Access-Control-Expose-Headers", "Authorization");
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("id", user.getId());
         responseBody.put("fullname", user.getFullname());
