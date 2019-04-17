@@ -18,16 +18,19 @@ public class WorkerController {
     }
 
     @RequestMapping(value = "/find/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
     public List<Worker> findAll() {
         return workerService.findAll();
     }
 
     @RequestMapping(value = "/find/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
     public Worker find(@PathVariable("id") long id) {
         return workerService.findById(id);
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
     public void save(@RequestBody Worker worker) {
         workerService.saveWorker(worker);
     }

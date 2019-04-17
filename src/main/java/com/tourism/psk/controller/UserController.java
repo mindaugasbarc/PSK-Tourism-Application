@@ -34,6 +34,7 @@ public class UserController {
 
     @RequestMapping(value = "/user", method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.CREATED)
+    @CrossOrigin
     public User registerUser(@RequestBody Map<String, String> userDetails) {
         UserLogin userLogin = new UserLogin(userDetails.get("username"), userDetails.get("password"));
         User user = new User(userDetails.get("fullname"), userDetails.get("email"), UserRole.USER);
@@ -42,6 +43,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
+    @CrossOrigin
     public Map<String, Object> login(@RequestBody Map<String, String> credentials, HttpServletResponse response) {
         long userId = userService.login(credentials.get("username"), credentials.get("password"));
         User user = userService.getUser(userId);
@@ -55,11 +57,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
+    @CrossOrigin
     public User getUserByAccessToken(@RequestHeader("Authorization") String header) {
         return sessionService.authenticate(header).getUser();
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.POST)
+    @CrossOrigin
     public boolean getUserAvailabilityStatus(@RequestBody Map<String, String> range,
                                              @PathVariable long id,
                                              @RequestHeader("Authorization") String header) throws ParseException {

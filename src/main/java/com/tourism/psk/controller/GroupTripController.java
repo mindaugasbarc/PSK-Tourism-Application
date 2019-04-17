@@ -26,6 +26,7 @@ public class GroupTripController {
     @RequestMapping(value = "/groupTrip", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
     public void addGroupTrip(@RequestHeader("Authorization") String authToken, @RequestBody final GroupTrip groupTrip) {
         sessionService.authenticate(authToken);
         tripService.addGroupTrip(groupTrip);
@@ -33,6 +34,7 @@ public class GroupTripController {
 
     @RequestMapping(value = "/addGroupTrip", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
     public void addGroupTripRequest(@RequestHeader("Authorization") String authToken,
                                     @RequestBody final GroupTripRequest groupTripRequest) {
         sessionService.authenticate(authToken);
@@ -41,12 +43,14 @@ public class GroupTripController {
 
     @RequestMapping(value = "/groupTrips", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @CrossOrigin
     public List<GroupTrip> findGroupTrips(@RequestHeader("Authorization") String authToken) {
         sessionService.authenticate(authToken);
         return tripService.findGroupTrips();
     }
 
     @RequestMapping(value = "/groupTrip", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @CrossOrigin
     public GroupTrip findGroupTrip(@RequestHeader("Authorization") String authToken,@RequestParam("id") long groupTripId) {
         sessionService.authenticate(authToken);
         return tripService.findGroupTrip(groupTripId);
