@@ -1,13 +1,14 @@
 package com.tourism.psk.service;
 
 import com.tourism.psk.model.User;
-
-import java.util.Date;
+import com.tourism.psk.model.UserLogin;
+import com.tourism.psk.model.request.TimePeriodRequest;
+import com.tourism.psk.model.request.UserRegistrationRequest;
 
 public interface UserService {
-    User save(User user);
     User getUser(long id);
     boolean userExists(String username, String email);
-    boolean isAvailable(long userId, Date from, Date to);
-    long login(String username, String password);
+    boolean isAvailable(long userId, TimePeriodRequest timePeriod);
+    User login(UserLogin userLogin);
+    User register(UserRegistrationRequest userDetails);
 }
