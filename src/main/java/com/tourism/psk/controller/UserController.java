@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -56,5 +57,12 @@ public class UserController {
                                              HttpServletRequest request) {
         sessionService.authenticate(request.getHeader(authHeaderName));
         return userService.isAvailable(id,timePeriod);
+    }
+
+    @RequestMapping(value = "/user/all", method = RequestMethod.GET)
+    @CrossOrigin
+    public List<User> getAllUsers(HttpServletRequest request) {
+        sessionService.authenticate(request.getHeader(authHeaderName));
+        return userService.getAllUsers();
     }
 }
