@@ -41,6 +41,7 @@ public class UserController {
     public User login(@RequestBody UserLogin userLogin, HttpServletResponse response) {
         User user = userService.login(userLogin);
         response.addHeader(authHeaderName, sessionService.create(user.getId()).getToken());
+        response.addHeader("Access-Control-Expose-Headers", authHeaderName);
         return user;
     }
 
