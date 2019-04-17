@@ -24,8 +24,6 @@ public class SessionServiceImpl implements SessionService {
     private int tokenLength;
     @Value("${session-duration}")
     private int sessionDuration;
-    @Value("${auth-header-prefix}")
-    private String headerPrefix;
 
     @Autowired
     public SessionServiceImpl(SessionRepository sessionRepository, UserRepository userRepository) {
@@ -35,7 +33,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public Session authenticate(String authHeader) {
-        Session session = sessionRepository.findByToken(authHeader.replace(headerPrefix + " ", ""));
+        Session session = sessionRepository.findByToken(authHeader);
         Date now = new Date(System.currentTimeMillis());
         if (session == null) {
             throw new InvalidTokenException();

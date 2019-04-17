@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -18,8 +19,8 @@ public class UserController {
     private UserService userService;
     private SessionService sessionService;
 
-    @Value("${auth-header-prefix}")
-    private String headerPrefix;
+    @Value("${auth-header-name}")
+    private String authHeaderName;
 
     @Autowired
     public UserController(UserService userService, SessionService sessionService) {
@@ -38,22 +39,22 @@ public class UserController {
     @CrossOrigin
     public User login(@RequestBody UserLogin userLogin, HttpServletResponse response) {
         User user = userService.login(userLogin);
-        response.addHeader("Authorization", headerPrefix + " " + sessionService.create(user.getId()).getToken());
+        response.addHeader(authHeaderName, sessionService.create(user.getId()).getToken());
         return user;
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     @CrossOrigin
-    public User getUserByAccessToken(@RequestHeader("Authorization") String header) {
-        return sessionService.authenticate(header).getUser();
+    public User getUserByAccessToken(HttpServletRequest request) {
+        return sessionService.authenticate(request.getHeader(authHeaderName)).getUser();
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.POST)
     @CrossOrigin
     public boolean getUserAvailabilityStatus(@RequestBody TimePeriodRequest timePeriod,
                                              @PathVariable long id,
-                                             @RequestHeader("Authorization") String header) {
-        sessionService.authenticate(header);
+                                             HttpServletRequest request) {
+        sessionService.authenticate(request.getHeader(authHeaderName));
         return userService.isAvailable(id,timePeriod);
     }
 }
