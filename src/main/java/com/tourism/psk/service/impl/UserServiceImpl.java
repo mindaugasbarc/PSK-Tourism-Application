@@ -28,6 +28,10 @@ public class UserServiceImpl implements UserService {
 
     @Value("${date-format}")
     private String dateFormat;
+    @Value("${min-username-length}")
+    private int minUsernameLength;
+    @Value("${min-password-length}")
+    private int minPasswordLength;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
@@ -75,6 +79,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User register(UserRegistrationRequest userDetails) {
+        validateUserRegistrationData(userDetails);
         UserLogin userLogin = new UserLogin(userDetails.getUsername(), userDetails.getPassword());
         User user = new User(userDetails.getFullname(), userDetails.getEmail(), UserRole.DEFAULT);
         user.setUserLogin(userLogin);
@@ -83,5 +88,17 @@ public class UserServiceImpl implements UserService {
             return userRepository.save(user);
         }
         throw new UserAlreadyExistsException();
+    }
+
+    private void validateUserRegistrationData(UserRegistrationRequest userDetails) {
+        if (userDetails.getUsername().length() < minUsernameLength) {
+            throw new IllegalArgumentException("Username must be at least " + minUsernameLength + " characters");
+        }
+        if (userDetails.getPassword().length() < minPasswordLength) {
+            throw new IllegalArgumentException("Password must be at least " + minPasswordLength + " characters");
+        }
+        if (userDetails.getEmail().length() == 0) {
+            throw new IllegalArgumentException("Email field must not be empty");
+        }
     }
 }
