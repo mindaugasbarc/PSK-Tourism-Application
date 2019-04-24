@@ -1,5 +1,6 @@
 package com.tourism.psk.controller;
 
+import com.tourism.psk.constants.Globals;
 import com.tourism.psk.constants.UserRole;
 import com.tourism.psk.model.User;
 import com.tourism.psk.model.UserLogin;
@@ -47,8 +48,8 @@ public class UserController {
     public Map<String, Object> login(@RequestBody Map<String, String> credentials, HttpServletResponse response) {
         long userId = userService.login(credentials.get("username"), credentials.get("password"));
         User user = userService.getUser(userId);
-        response.addHeader("Authorization", headerPrefix + " " + sessionService.create(userId).getToken());
-        response.addHeader("Access-Control-Expose-Headers", "Authorization");
+        response.addHeader(Globals.ACCESS_TOKEN_HEADER_NAME, headerPrefix + " " + sessionService.create(userId).getToken());
+        //response.addHeader("Access-Control-Expose-Headers", "Authorization");
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("id", user.getId());
         responseBody.put("fullname", user.getFullname());
@@ -58,8 +59,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    @CrossOrigin
-    public User getUserByAccessToken(@RequestHeader("Authorization") String header) {
+    public User getUserByAccessToken(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String header) {
         return sessionService.authenticate(header).getUser();
     }
 
@@ -67,7 +67,7 @@ public class UserController {
     @CrossOrigin
     public boolean getUserAvailabilityStatus(@RequestBody Map<String, String> range,
                                              @PathVariable long id,
-                                             @RequestHeader("Authorization") String header) throws ParseException {
+                                             @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String header) throws ParseException {
         sessionService.authenticate(header);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date start = dateFormat.parse(range.get("from"));

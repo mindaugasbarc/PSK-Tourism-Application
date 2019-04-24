@@ -1,5 +1,6 @@
 package com.tourism.psk.controller;
 
+import com.tourism.psk.constants.Globals;
 import com.tourism.psk.model.GroupTrip;
 import com.tourism.psk.model.Trip;
 import com.tourism.psk.model.request.GroupTripRequest;
@@ -33,14 +34,14 @@ public class TripController {
 
     @RequestMapping(value = "/find/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public Trip findTrip(@RequestHeader("Authorization") String authToken, @PathVariable("id") long id) {
+    public Trip findTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken, @PathVariable("id") long id) {
         sessionService.authenticate(authToken);
         return tripService.find(id);
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @CrossOrigin
-    public void save(@RequestHeader("Authorization") String authToken, @RequestBody Trip trip) {
+    public void save(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken, @RequestBody Trip trip) {
         sessionService.authenticate(authToken);
         tripService.save(trip);
     }
