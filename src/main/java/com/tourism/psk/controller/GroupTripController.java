@@ -1,6 +1,5 @@
 package com.tourism.psk.controller;
 
-import com.tourism.psk.constants.Globals;
 import com.tourism.psk.model.GroupTrip;
 import com.tourism.psk.model.request.GroupTripRequest;
 import com.tourism.psk.service.SessionService;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping("/groupTrip")
 public class GroupTripController {
 
     private final TripService tripService;
@@ -54,7 +52,7 @@ public class GroupTripController {
 
     @RequestMapping(value = "/groupTrip", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public GroupTrip findGroupTrip(HttpServletRequest request,@RequestParam("id") long groupTripId) {
-        sessionService.authenticate(request.getHeader(authHeaderName)); {
+        sessionService.authenticate(request.getHeader(authHeaderName));
         return tripService.findGroupTrip(groupTripId);
     }
 }
