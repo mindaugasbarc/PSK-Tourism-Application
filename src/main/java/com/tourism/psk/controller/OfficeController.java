@@ -1,5 +1,6 @@
 package com.tourism.psk.controller;
 
+import com.tourism.psk.constants.Globals;
 import com.tourism.psk.model.Office;
 import com.tourism.psk.model.Session;
 import com.tourism.psk.service.OfficeService;
@@ -26,14 +27,12 @@ public class OfficeController {
     }
 
     @RequestMapping(value = "/office", method = RequestMethod.GET)
-    @CrossOrigin
     public List<Office> getAll(HttpServletRequest request) {
         sessionService.authenticate(request.getHeader(authHeaderName));
         return officeService.findAll();
     }
 
     @RequestMapping(value = "/office/{id}", method = RequestMethod.GET)
-    @CrossOrigin
     public Office getById(@PathVariable("id") long id, HttpServletRequest request) {
         sessionService.authenticate(request.getHeader(authHeaderName));
         return officeService.find(id);

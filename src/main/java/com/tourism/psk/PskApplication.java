@@ -1,15 +1,16 @@
 package com.tourism.psk;
 
-import com.tourism.psk.constants.DocumentStatus;
-import com.tourism.psk.constants.DocumentType;
-import com.tourism.psk.constants.TripStatus;
-import com.tourism.psk.constants.UserRole;
+import com.tourism.psk.constants.*;
 import com.tourism.psk.model.*;
 import com.tourism.psk.repository.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

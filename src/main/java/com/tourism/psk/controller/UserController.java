@@ -31,28 +31,23 @@ public class UserController {
 
     @RequestMapping(value = "/user", method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.CREATED)
-    @CrossOrigin
     public User registerUser(@RequestBody UserRegistrationRequest userDetails) {
         return userService.register(userDetails);
     }
 
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
-    @CrossOrigin
     public User login(@RequestBody UserLogin userLogin, HttpServletResponse response) {
         User user = userService.login(userLogin);
         response.addHeader(authHeaderName, sessionService.create(user.getId()).getToken());
-        response.addHeader("Access-Control-Expose-Headers", authHeaderName);
         return user;
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    @CrossOrigin
     public User getUserByAccessToken(HttpServletRequest request) {
         return sessionService.authenticate(request.getHeader(authHeaderName)).getUser();
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.POST)
-    @CrossOrigin
     public boolean getUserAvailabilityStatus(@RequestBody TimePeriodRequest timePeriod,
                                              @PathVariable long id,
                                              HttpServletRequest request) {
@@ -61,7 +56,6 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/all", method = RequestMethod.GET)
-    @CrossOrigin
     public List<User> getAllUsers(HttpServletRequest request) {
         sessionService.authenticate(request.getHeader(authHeaderName));
         return userService.getAllUsers();

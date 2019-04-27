@@ -29,21 +29,18 @@ public class TripController {
 
 
     @RequestMapping(value = "/find/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @CrossOrigin
     public List<Trip> findAllTrips(HttpServletRequest request) {
         sessionService.authenticate(request.getHeader(authHeaderName));
         return tripService.findAll();
     }
 
     @RequestMapping(value = "/find/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @CrossOrigin
     public Trip findTrip(HttpServletRequest request, @PathVariable("id") long id) {
         sessionService.authenticate(request.getHeader(authHeaderName));
         return tripService.find(id);
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @CrossOrigin
     public void save(HttpServletRequest request, @RequestBody Trip trip) {
         sessionService.authenticate(request.getHeader(authHeaderName));
         tripService.save(trip);

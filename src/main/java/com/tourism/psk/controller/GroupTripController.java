@@ -1,5 +1,6 @@
 package com.tourism.psk.controller;
 
+import com.tourism.psk.constants.Globals;
 import com.tourism.psk.model.GroupTrip;
 import com.tourism.psk.model.request.GroupTripRequest;
 import com.tourism.psk.service.SessionService;
@@ -31,7 +32,6 @@ public class GroupTripController {
     @RequestMapping(value = "/groupTrip", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    @CrossOrigin
     public void addGroupTrip(HttpServletRequest request, @RequestBody final GroupTrip groupTrip) {
         sessionService.authenticate(request.getHeader(authHeaderName));
         tripService.addGroupTrip(groupTrip);
@@ -39,7 +39,6 @@ public class GroupTripController {
 
     @RequestMapping(value = "/addGroupTrip", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    @CrossOrigin
     public void addGroupTripRequest(HttpServletRequest request,
                                     @RequestBody final GroupTripRequest groupTripRequest) {
         sessionService.authenticate(request.getHeader(authHeaderName));
@@ -48,16 +47,14 @@ public class GroupTripController {
 
     @RequestMapping(value = "/groupTrips", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @CrossOrigin
     public List<GroupTrip> findGroupTrips(HttpServletRequest request) {
         sessionService.authenticate(request.getHeader(authHeaderName));
         return tripService.findGroupTrips();
     }
 
     @RequestMapping(value = "/groupTrip", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @CrossOrigin
     public GroupTrip findGroupTrip(HttpServletRequest request,@RequestParam("id") long groupTripId) {
-        sessionService.authenticate(request.getHeader(authHeaderName));
+        sessionService.authenticate(request.getHeader(authHeaderName)); {
         return tripService.findGroupTrip(groupTripId);
     }
 }
