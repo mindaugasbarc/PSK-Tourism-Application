@@ -22,7 +22,7 @@ public class CorsConfiguration {
                         .allowedMethods("POST", "PUT", "GET", "DELETE", "PATCH")
                         .allowedHeaders(Globals.ACCESS_TOKEN_HEADER_NAME, "Content-Type")
                         .exposedHeaders(Globals.ACCESS_TOKEN_HEADER_NAME)
-                        .allowCredentials(false)
+                        .allowCredentials(true)
                         .maxAge(3600);
             }
         };
