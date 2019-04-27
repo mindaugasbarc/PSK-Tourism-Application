@@ -17,6 +17,8 @@ public class Globals {
     }};
 
     public static List<String> CORS_ALLOWED_HEADERS = new ArrayList<String>() {{
+        add("Access-Control-Allow-Origin");
+        add("Origin");
         add(Globals.ACCESS_TOKEN_HEADER_NAME);
         add("Content-Type");
     }};
