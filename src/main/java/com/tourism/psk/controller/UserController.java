@@ -1,5 +1,6 @@
 package com.tourism.psk.controller;
 
+import com.tourism.psk.constants.Globals;
 import com.tourism.psk.model.User;
 import com.tourism.psk.model.UserLogin;
 import com.tourism.psk.model.request.TimePeriodRequest;
@@ -20,9 +21,6 @@ public class UserController {
     private UserService userService;
     private SessionService sessionService;
 
-    @Value("${auth-header-name}")
-    private String authHeaderName;
-
     @Autowired
     public UserController(UserService userService, SessionService sessionService) {
         this.userService = userService;
@@ -38,26 +36,26 @@ public class UserController {
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
     public User login(@RequestBody UserLogin userLogin, HttpServletResponse response) {
         User user = userService.login(userLogin);
-        response.addHeader(authHeaderName, sessionService.create(user.getId()).getToken());
+        response.addHeader(Globals.ACCESS_TOKEN_HEADER_NAME, sessionService.create(user.getId()).getToken());
         return user;
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public User getUserByAccessToken(HttpServletRequest request) {
-        return sessionService.authenticate(request.getHeader(authHeaderName)).getUser();
+    public User getUserByAccessToken(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        return sessionService.authenticate(authToken).getUser();
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.POST)
     public boolean getUserAvailabilityStatus(@RequestBody TimePeriodRequest timePeriod,
                                              @PathVariable long id,
-                                             HttpServletRequest request) {
-        sessionService.authenticate(request.getHeader(authHeaderName));
+                                             @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        sessionService.authenticate(authToken);
         return userService.isAvailable(id,timePeriod);
     }
 
     @RequestMapping(value = "/user/all", method = RequestMethod.GET)
-    public List<User> getAllUsers(HttpServletRequest request) {
-        sessionService.authenticate(request.getHeader(authHeaderName));
+    public List<User> getAllUsers(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        sessionService.authenticate(authToken);
         return userService.getAllUsers();
     }
 }

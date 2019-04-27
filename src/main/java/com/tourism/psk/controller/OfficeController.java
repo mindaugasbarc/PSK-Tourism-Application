@@ -17,9 +17,6 @@ public class OfficeController {
     private OfficeService officeService;
     private SessionService sessionService;
 
-    @Value("${auth-header-name}")
-    private String authHeaderName;
-
     @Autowired
     public OfficeController(OfficeService officeService, SessionService sessionService) {
         this.officeService = officeService;
@@ -27,14 +24,14 @@ public class OfficeController {
     }
 
     @RequestMapping(value = "/office", method = RequestMethod.GET)
-    public List<Office> getAll(HttpServletRequest request) {
-        sessionService.authenticate(request.getHeader(authHeaderName));
+    public List<Office> getAll(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        sessionService.authenticate(authToken);
         return officeService.findAll();
     }
 
     @RequestMapping(value = "/office/{id}", method = RequestMethod.GET)
-    public Office getById(@PathVariable("id") long id, HttpServletRequest request) {
-        sessionService.authenticate(request.getHeader(authHeaderName));
+    public Office getById(@PathVariable("id") long id, @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        sessionService.authenticate(authToken);
         return officeService.find(id);
     }
 }

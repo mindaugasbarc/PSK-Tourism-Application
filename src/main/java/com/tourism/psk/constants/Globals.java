@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Globals {
 
-    public static final String ACCESS_TOKEN_HEADER_NAME = "Authorization";
+    public static final String ACCESS_TOKEN_HEADER_NAME = "Gecko-Access-Token";
 
     public static List<String> CORS_ALLOWED_METHODS = new ArrayList<String>() {{
         add("HEAD");
