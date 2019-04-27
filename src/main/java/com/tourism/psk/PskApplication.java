@@ -76,7 +76,7 @@ public class PskApplication implements CommandLineRunner {
 		office.addHouseRoom(new OfficeRoom("Office room 2"));
 		officeRepository.save(office);
 
-		User user = new User("Testas Testas", "testmail@test.com", UserRole.USER);
+		User user = new User("Testas Testas", "testmail@test.com", UserRole.DEFAULT);
 		UserLogin userLogin = new UserLogin("testusername", "testpassword");
 		user.setUserLogin(userLogin);
 		userLogin.setUser(user);

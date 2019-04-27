@@ -1,9 +1,9 @@
 package com.tourism.psk.controller;
 
-import com.tourism.psk.constants.Globals;
-import com.tourism.psk.constants.UserRole;
 import com.tourism.psk.model.User;
 import com.tourism.psk.model.UserLogin;
+import com.tourism.psk.model.request.TimePeriodRequest;
+import com.tourism.psk.model.request.UserRegistrationRequest;
 import com.tourism.psk.service.SessionService;
 import com.tourism.psk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,21 +11,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 public class UserController {
     private UserService userService;
     private SessionService sessionService;
 
-    @Value("${auth-header-prefix}")
-    private String headerPrefix;
+    @Value("${auth-header-name}")
+    private String authHeaderName;
 
     @Autowired
     public UserController(UserService userService, SessionService sessionService) {
@@ -35,40 +31,33 @@ public class UserController {
 
     @RequestMapping(value = "/user", method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.CREATED)
-    public User registerUser(@RequestBody Map<String, String> userDetails) {
-        UserLogin userLogin = new UserLogin(userDetails.get("username"), userDetails.get("password"));
-        User user = new User(userDetails.get("fullname"), userDetails.get("email"), UserRole.USER);
-        user.setUserLogin(userLogin);
-        return userService.save(user);
+    public User registerUser(@RequestBody UserRegistrationRequest userDetails) {
+        return userService.register(userDetails);
     }
 
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
-    public Map<String, Object> login(@RequestBody Map<String, String> credentials, HttpServletResponse response) {
-        long userId = userService.login(credentials.get("username"), credentials.get("password"));
-        User user = userService.getUser(userId);
-        response.addHeader(Globals.ACCESS_TOKEN_HEADER_NAME, headerPrefix + " " + sessionService.create(userId).getToken());
-        //response.addHeader("Access-Control-Expose-Headers", "Authorization");
-        Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("id", user.getId());
-        responseBody.put("fullname", user.getFullname());
-        responseBody.put("email", user.getEmail());
-        responseBody.put("role", user.getRole().toString());
-        return responseBody;
+    public User login(@RequestBody UserLogin userLogin, HttpServletResponse response) {
+        User user = userService.login(userLogin);
+        response.addHeader(authHeaderName, sessionService.create(user.getId()).getToken());
+        return user;
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public User getUserByAccessToken(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String header) {
-        return sessionService.authenticate(header).getUser();
+    public User getUserByAccessToken(HttpServletRequest request) {
+        return sessionService.authenticate(request.getHeader(authHeaderName)).getUser();
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.POST)
-    public boolean getUserAvailabilityStatus(@RequestBody Map<String, String> range,
+    public boolean getUserAvailabilityStatus(@RequestBody TimePeriodRequest timePeriod,
                                              @PathVariable long id,
-                                             @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String header) throws ParseException {
-        sessionService.authenticate(header);
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date start = dateFormat.parse(range.get("from"));
-        Date end = dateFormat.parse(range.get("to"));
-        return userService.isAvailable(id, start, end);
+                                             HttpServletRequest request) {
+        sessionService.authenticate(request.getHeader(authHeaderName));
+        return userService.isAvailable(id,timePeriod);
+    }
+
+    @RequestMapping(value = "/user/all", method = RequestMethod.GET)
+    public List<User> getAllUsers(HttpServletRequest request) {
+        sessionService.authenticate(request.getHeader(authHeaderName));
+        return userService.getAllUsers();
     }
 }

@@ -12,14 +12,14 @@ import java.util.List;
 @Getter @Setter
 @NoArgsConstructor
 @RequiredArgsConstructor
-@JsonInclude(value = JsonInclude.Include.NON_NULL)
+@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private @NonNull String fullname;
     private @NonNull String email;
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn
     private List<Trip> trips;
     private @NonNull UserRole role;

@@ -1,15 +1,14 @@
 package com.tourism.psk.controller;
 
-import com.tourism.psk.constants.Globals;
-import com.tourism.psk.model.GroupTrip;
 import com.tourism.psk.model.Trip;
-import com.tourism.psk.model.request.GroupTripRequest;
 import com.tourism.psk.service.SessionService;
 import com.tourism.psk.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -19,6 +18,9 @@ public class TripController {
     private final TripService tripService;
     private final SessionService sessionService;
 
+    @Value("${auth-header-name}")
+    private String authHeaderName;
+
     @Autowired
     public TripController(TripService tripService, SessionService sessionService) {
         this.tripService = tripService;
@@ -27,19 +29,20 @@ public class TripController {
 
 
     @RequestMapping(value = "/find/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Trip> findAllTrips() {
+    public List<Trip> findAllTrips(HttpServletRequest request) {
+        sessionService.authenticate(request.getHeader(authHeaderName));
         return tripService.findAll();
     }
 
     @RequestMapping(value = "/find/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Trip findTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken, @PathVariable("id") long id) {
-        sessionService.authenticate(authToken);
+    public Trip findTrip(HttpServletRequest request, @PathVariable("id") long id) {
+        sessionService.authenticate(request.getHeader(authHeaderName));
         return tripService.find(id);
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void save(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken, @RequestBody Trip trip) {
-        sessionService.authenticate(authToken);
+    public void save(HttpServletRequest request, @RequestBody Trip trip) {
+        sessionService.authenticate(request.getHeader(authHeaderName));
         tripService.save(trip);
     }
 
