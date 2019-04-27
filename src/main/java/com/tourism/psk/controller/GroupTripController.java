@@ -27,7 +27,6 @@ public class GroupTripController {
     @RequestMapping(value = "/groupTrip", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    @CrossOrigin
     public void addGroupTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken, @RequestBody final GroupTrip groupTrip) {
         sessionService.authenticate(authToken);
         tripService.addGroupTrip(groupTrip);
@@ -35,7 +34,6 @@ public class GroupTripController {
 
     @RequestMapping(value = "/addGroupTrip", method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    @CrossOrigin
     public void addGroupTripRequest(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken,
                                     @RequestBody final GroupTripRequest groupTripRequest) {
         sessionService.authenticate(authToken);
