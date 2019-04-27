@@ -17,13 +17,16 @@ public class CorsConfiguration {
         return new WebMvcConfigurerAdapter() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
+                registry.addMapping("/**");
+                /*
                         .allowedOrigins("*")
                         .allowedMethods("POST", "PUT", "GET", "DELETE", "PATCH")
                         .allowedHeaders(Globals.ACCESS_TOKEN_HEADER_NAME, "Content-Type")
                         .exposedHeaders(Globals.ACCESS_TOKEN_HEADER_NAME)
                         .allowCredentials(true)
                         .maxAge(3600);
+
+                 */
             }
         };
     }
