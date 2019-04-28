@@ -10,14 +10,16 @@ public class GroupTripRequest {
     private String officeToName;
     private String dateFrom;
     private String dateTo;
+    private long userId;
 
-    public GroupTripRequest(String name, String description, String officeFromName, String officeToName, String dateFrom, String dateTo) {
+    public GroupTripRequest(String name, String description, String officeFromName, String officeToName, String dateFrom, String dateTo, long userId) {
         this.name = name;
         this.description = description;
         this.officeFromName = officeFromName;
         this.officeToName = officeToName;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
+        this.userId = userId;
     }
 
     public GroupTripRequest() {
@@ -69,5 +71,13 @@ public class GroupTripRequest {
 
     public void setDateTo(String dateTo) {
         this.dateTo = dateTo;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 }

@@ -33,11 +33,14 @@ public class GroupTrip {
 
     private String dateTo;
 
+    @OneToOne
+    private User advisor;
+
     @OneToMany(mappedBy = "commentOfTrip")
     List<Comment> comments;
 
     public GroupTrip(String name, String description, Set<Trip> trips, Office officeFrom,
-                     Office officeTo, List<Comment> comments, String dateFrom, String dateTo, TripStatus status) {
+                     Office officeTo, List<Comment> comments, String dateFrom, String dateTo, TripStatus status, User advisor) {
         this.name = name;
         this.description = description;
         this.trips = trips;
@@ -47,6 +50,7 @@ public class GroupTrip {
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
         this.status = status;
+        this.advisor = advisor;
     }
 
     public GroupTrip() {
@@ -132,12 +136,21 @@ public class GroupTrip {
         this.dateTo = dateTo;
     }
 
+    public User getAdvisor() {
+        return advisor;
+    }
+
+    public void setAdvisor(User advisor) {
+        this.advisor = advisor;
+    }
+
     @Override
     public String toString() {
         return "GroupTrip{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", trips=" + trips +
+                ", advisor=" + advisor +
                 '}';
     }
 
@@ -148,11 +161,12 @@ public class GroupTrip {
         GroupTrip groupTrip = (GroupTrip) o;
         return Objects.equals(name, groupTrip.name) &&
                 Objects.equals(description, groupTrip.description) &&
-                Objects.equals(trips, groupTrip.trips);
+                Objects.equals(trips, groupTrip.trips) &&
+                Objects.equals(advisor, groupTrip.advisor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, trips);
+        return Objects.hash(name, description, trips, advisor);
     }
 }
