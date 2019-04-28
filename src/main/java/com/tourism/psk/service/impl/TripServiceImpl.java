@@ -10,6 +10,7 @@ import com.tourism.psk.model.request.GroupTripRequest;
 import com.tourism.psk.repository.GroupTripRepository;
 import com.tourism.psk.repository.OfficeRepository;
 import com.tourism.psk.repository.TripRepository;
+import com.tourism.psk.repository.UserRepository;
 import com.tourism.psk.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,12 +25,14 @@ public class TripServiceImpl implements TripService {
     private final TripRepository tripResponseRepository;
     private final GroupTripRepository groupTripRepository;
     private final OfficeRepository officeRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public TripServiceImpl(TripRepository tripResponseRepository, GroupTripRepository groupTripRepository, OfficeRepository officeRepository) {
+    public TripServiceImpl(TripRepository tripResponseRepository, GroupTripRepository groupTripRepository, OfficeRepository officeRepository, UserRepository userRepository) {
         this.tripResponseRepository = tripResponseRepository;
         this.groupTripRepository = groupTripRepository;
         this.officeRepository = officeRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -60,7 +63,7 @@ public class TripServiceImpl implements TripService {
                 .orElseThrow(OfficeNotFoundException::new);
         GroupTrip groupTrip = new GroupTrip(groupTripRequest.getName(), groupTripRequest.getDescription(),
                 new HashSet<>(), officeFrom, officeTo, new ArrayList<>(), groupTripRequest.getDateFrom(),
-                groupTripRequest.getDateTo(), TripStatus.PENDING);
+                groupTripRequest.getDateTo(), TripStatus.PENDING, userRepository.findById(groupTripRequest.getUserId()));
         groupTripRepository.save(groupTrip);
     }
 
