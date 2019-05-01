@@ -23,7 +23,6 @@ import java.util.Set;
 @SpringBootApplication
 public class PskApplication implements CommandLineRunner {
 
-	private final WorkerRepository workerRepository;
 	private final TripRepository tripRepository;
 	private final TripRepository tripResponseRepository;
 	private final OfficeRepository officeRepository;
@@ -35,14 +34,12 @@ public class PskApplication implements CommandLineRunner {
 	@Value("${date-format}")
 	private String dateFormat;
 
-	public PskApplication(WorkerRepository workerRepository,
-						  TripRepository tripRepository,
+	public PskApplication(TripRepository tripRepository,
 						  TripRepository tripResponseRepository,
 						  OfficeRepository officeRepository,
 						  OfficeRoomRepository officeRoomRepository,
 						  UserRepository userRepository,
 						  OccupationRepository occupationRepository, GroupTripRepository groupTripRepository) {
-		this.workerRepository = workerRepository;
 		this.tripRepository = tripRepository;
 		this.tripResponseRepository = tripResponseRepository;
 		this.officeRepository = officeRepository;
@@ -58,16 +55,12 @@ public class PskApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Worker jonas = new Worker("Jonas", "Jonaitis");
-		workerRepository.save(jonas);
+
 		Trip trip = new Trip(Arrays.asList(new Document(DocumentStatus.PENDING, DocumentType.TICKET, "plane tickets from Vilnius to Copenhagen")),
 				Arrays.asList(new Accomodation("51st street, Copenhagen", "DevBridge assignment")),
 				new TripInfo(new Office("Vilnius Office", "Kalvariju st. 21", new ArrayList<>()),
 						new Office("Vilnius Office", "Copenhagen st. 52", new ArrayList<>()), LocalDate.now(), LocalDate.now()));
 		tripResponseRepository.save(trip);
-
-
-
 
 		OfficeRoom room1 = officeRoomRepository.save(new OfficeRoom("Office room 1"));
 		Office office = officeRepository.save(new Office("Kaunas office", "Savanoriu pr. 20", new ArrayList<>()));
