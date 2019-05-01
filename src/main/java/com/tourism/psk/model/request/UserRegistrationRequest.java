@@ -1,5 +1,6 @@
 package com.tourism.psk.model.request;
 
+import com.tourism.psk.constants.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,4 +14,5 @@ public class UserRegistrationRequest {
     private String fullname;
     private String username;
     private String password;
+    private UserRole role;
 }

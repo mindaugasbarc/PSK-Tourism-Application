@@ -87,7 +87,11 @@ public class UserServiceImpl implements UserService {
     public User register(UserRegistrationRequest userDetails) {
         validateUserRegistrationData(userDetails);
         UserLogin userLogin = new UserLogin(userDetails.getUsername(), userDetails.getPassword());
-        User user = new User(userDetails.getFullname(), userDetails.getEmail(), UserRole.DEFAULT);
+        User user = new User(
+                userDetails.getFullname(),
+                userDetails.getEmail(),
+                userDetails.getRole() != null ? userDetails.getRole() : UserRole.DEFAULT
+        );
         user.setUserLogin(userLogin);
         if (!userExists(userLogin.getUsername(), user.getEmail())) {
             userLogin.setUser(user);

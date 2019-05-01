@@ -8,11 +8,9 @@ import com.tourism.psk.model.request.UserRegistrationRequest;
 import com.tourism.psk.service.SessionService;
 import com.tourism.psk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -27,7 +25,7 @@ public class UserController {
         this.sessionService = sessionService;
     }
 
-    @RequestMapping(value = "/user", method = RequestMethod.PUT)
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
     @ResponseStatus(code = HttpStatus.CREATED)
     public User registerUser(@RequestBody UserRegistrationRequest userDetails) {
         return userService.register(userDetails);
