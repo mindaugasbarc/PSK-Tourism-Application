@@ -19,7 +19,7 @@ public class Comment {
     private String date;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "groupTrip_id")
     private GroupTrip commentOfTrip;
 
     public Comment(User commentedBy, String text, String date, GroupTrip commentOfTrip) {
