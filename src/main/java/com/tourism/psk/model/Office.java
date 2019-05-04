@@ -13,7 +13,7 @@ public class Office {
     private long id;
     private String name;
     private String address;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "office")
     @JsonManagedReference
     private List<OfficeRoom> houseRooms = Collections.emptyList();
 

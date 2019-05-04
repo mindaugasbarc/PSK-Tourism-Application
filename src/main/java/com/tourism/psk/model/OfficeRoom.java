@@ -11,7 +11,7 @@ public class OfficeRoom {
     private long id;
     private String name;
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name = "office_id")
     @JsonBackReference
     private Office office;
 

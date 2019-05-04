@@ -20,7 +20,7 @@ public class User {
     private List<Trip> trips;
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     @JsonIgnore
     private UserLogin userLogin;
 
