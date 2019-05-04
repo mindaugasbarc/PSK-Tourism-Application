@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class Occupation {
+public class UserOccupation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -18,10 +18,10 @@ public class Occupation {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Occupation() {
+    public UserOccupation() {
     }
 
-    public Occupation(Date start, Date end) {
+    public UserOccupation(Date start, Date end) {
         this.start = start;
         this.end = end;
     }

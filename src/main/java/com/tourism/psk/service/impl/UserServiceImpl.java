@@ -7,7 +7,7 @@ import com.tourism.psk.model.User;
 import com.tourism.psk.model.UserLogin;
 import com.tourism.psk.model.request.TimePeriodRequest;
 import com.tourism.psk.model.request.UserRegistrationRequest;
-import com.tourism.psk.repository.OccupationRepository;
+import com.tourism.psk.repository.UserOccupationRepository;
 import com.tourism.psk.repository.UserLoginRepository;
 import com.tourism.psk.repository.UserRepository;
 import com.tourism.psk.service.UserService;
@@ -25,7 +25,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private UserLoginRepository userLoginRepository;
-    private OccupationRepository occupationRepository;
+    private UserOccupationRepository userOccupationRepository;
 
     @Value("${date-format}")
     private String dateFormat;
@@ -37,10 +37,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            UserLoginRepository userLoginRepository,
-                           OccupationRepository occupationRepository) {
+                           UserOccupationRepository userOccupationRepository) {
         this.userRepository = userRepository;
         this.userLoginRepository = userLoginRepository;
-        this.occupationRepository = occupationRepository;
+        this.userOccupationRepository = userOccupationRepository;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
             DateFormat format = new SimpleDateFormat(dateFormat);
             Date from = format.parse(timePeriod.getFrom());
             Date to = format.parse(timePeriod.getTo());
-            return !occupationRepository.hasOccupations(userId, from, to);
+            return !userOccupationRepository.hasOccupations(userId, from, to);
         }
         catch (ParseException exc) {
             throw new IllegalArgumentException("Incorrect date format. Use: YYYY-MM-DD");

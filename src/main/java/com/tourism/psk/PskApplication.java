@@ -24,7 +24,7 @@ public class PskApplication implements CommandLineRunner {
 	private final OfficeRepository officeRepository;
 	private final OfficeRoomRepository officeRoomRepository;
 	private final UserRepository userRepository;
-	private final OccupationRepository occupationRepository;
+	private final UserOccupationRepository userOccupationRepository;
 	private final GroupTripRepository groupTripRepository;
 
 	@Value("${date-format}")
@@ -35,13 +35,13 @@ public class PskApplication implements CommandLineRunner {
 						  OfficeRepository officeRepository,
 						  OfficeRoomRepository officeRoomRepository,
 						  UserRepository userRepository,
-						  OccupationRepository occupationRepository, GroupTripRepository groupTripRepository) {
+						  UserOccupationRepository userOccupationRepository, GroupTripRepository groupTripRepository) {
 		this.tripRepository = tripRepository;
 		this.tripResponseRepository = tripResponseRepository;
 		this.officeRepository = officeRepository;
 		this.officeRoomRepository = officeRoomRepository;
 		this.userRepository = userRepository;
-		this.occupationRepository = occupationRepository;
+		this.userOccupationRepository = userOccupationRepository;
 		this.groupTripRepository = groupTripRepository;
 	}
 
@@ -72,9 +72,9 @@ public class PskApplication implements CommandLineRunner {
 		userRepository.save(user);
 
 		DateFormat format = new SimpleDateFormat(dateFormat);
-		Occupation occupation = new Occupation(format.parse("2019-01-01"), format.parse("2019-01-07"));
+		UserOccupation occupation = new UserOccupation(format.parse("2019-01-01"), format.parse("2019-01-07"));
 		occupation.setUser(user);
-		occupationRepository.save(occupation);
+		userOccupationRepository.save(occupation);
 
 		Set<Trip> trips = new HashSet<>();
 		trips.add(trip);
