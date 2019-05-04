@@ -4,26 +4,29 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class Occupation {
+public class OfficeRoomOccupation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     @Temporal(TemporalType.DATE)
     private Date start;
     @Temporal(TemporalType.DATE)
     private Date end;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @ManyToOne
+    @JoinColumn(name = "officeRoom_id")
+    private OfficeRoom officeRoom;
 
-    public Occupation() {
+    public OfficeRoomOccupation() {
     }
 
-    public Occupation(Date start, Date end) {
+    public OfficeRoomOccupation(Date start, Date end, User user, OfficeRoom officeRoom) {
         this.start = start;
         this.end = end;
+        this.user = user;
+        this.officeRoom = officeRoom;
     }
 
     public long getId() {
@@ -56,5 +59,13 @@ public class Occupation {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public OfficeRoom getOfficeRoom() {
+        return officeRoom;
+    }
+
+    public void setOfficeRoom(OfficeRoom officeRoom) {
+        this.officeRoom = officeRoom;
     }
 }

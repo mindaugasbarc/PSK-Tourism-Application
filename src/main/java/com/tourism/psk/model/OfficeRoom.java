@@ -3,6 +3,7 @@ package com.tourism.psk.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class OfficeRoom {
@@ -14,6 +15,9 @@ public class OfficeRoom {
     @JoinColumn(name = "office_id")
     @JsonBackReference
     private Office office;
+
+    @OneToMany(mappedBy = "officeRoom", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<OfficeRoomOccupation> occupations;
 
     public OfficeRoom() {
 

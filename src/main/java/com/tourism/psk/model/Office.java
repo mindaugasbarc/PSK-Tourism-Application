@@ -3,7 +3,6 @@ package com.tourism.psk.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -15,7 +14,7 @@ public class Office {
     private String address;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "office")
     @JsonManagedReference
-    private List<OfficeRoom> houseRooms = Collections.emptyList();
+    private List<OfficeRoom> houseRooms;
 
     public Office() {
     }
