@@ -14,6 +14,7 @@ public class GroupTrip {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Enumerated(EnumType.STRING)
     private TripStatus status;
 
     private String name;
@@ -37,7 +38,7 @@ public class GroupTrip {
     private User advisor;
 
     @OneToMany(mappedBy = "commentOfTrip")
-    List<Comment> comments;
+    private List<Comment> comments;
 
     public GroupTrip(String name, String description, Set<Trip> trips, Office officeFrom,
                      Office officeTo, List<Comment> comments, String dateFrom, String dateTo, TripStatus status, User advisor) {
