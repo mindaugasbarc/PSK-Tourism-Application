@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "/v1")
 public class UserController {
     private UserService userService;
     private SessionService sessionService;

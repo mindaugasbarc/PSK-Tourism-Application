@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "/v1")
 public class OfficeController {
     private OfficeService officeService;
     private SessionService sessionService;
