@@ -6,7 +6,7 @@ import com.tourism.psk.exception.UserAlreadyExistsException;
 import com.tourism.psk.exception.ValueNotProvidedException;
 import com.tourism.psk.model.User;
 import com.tourism.psk.model.UserLogin;
-import com.tourism.psk.model.request.TimePeriodRequest;
+import com.tourism.psk.model.UserOccupation;
 import com.tourism.psk.model.request.UserRegistrationRequest;
 import com.tourism.psk.repository.UserOccupationRepository;
 import com.tourism.psk.repository.UserLoginRepository;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -45,11 +44,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(long id) {
-        return userRepository.findById(id);
-    }
-
-    @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -57,19 +51,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean userExists(String username, String email) {
         return userRepository.exists(username, email);
-    }
-
-    @Override
-    public boolean isAvailable(long userId, TimePeriodRequest timePeriod) {
-        try {
-            DateFormat format = new SimpleDateFormat(dateFormat);
-            Date from = format.parse(timePeriod.getFrom());
-            Date to = format.parse(timePeriod.getTo());
-            return !userOccupationRepository.hasOccupations(userId, from, to);
-        }
-        catch (ParseException exc) {
-            throw new IllegalArgumentException("Incorrect date format. Use: YYYY-MM-DD");
-        }
     }
 
     @Override
@@ -110,6 +91,17 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.updateById(id, user.getFullname(), user.getEmail(), user.getRole());
         return userRepository.findById(id);
+    }
+
+    @Override
+    public List<UserOccupation> getOccupationsInPeriod(long id, String from, String to) {
+        DateFormat format = new SimpleDateFormat(dateFormat);
+        try {
+            return userOccupationRepository.getOccupationsInPeriod(id, format.parse(from), format.parse(to));
+        }
+        catch (ParseException exc) {
+            throw new IllegalArgumentException("Incorrect date format. Use: YYYY-MM-DD");
+        }
     }
 
     private void validateUserRegistrationData(UserRegistrationRequest userDetails) {

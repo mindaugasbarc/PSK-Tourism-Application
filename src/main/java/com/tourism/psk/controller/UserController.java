@@ -3,7 +3,7 @@ package com.tourism.psk.controller;
 import com.tourism.psk.constants.Globals;
 import com.tourism.psk.model.User;
 import com.tourism.psk.model.UserLogin;
-import com.tourism.psk.model.request.TimePeriodRequest;
+import com.tourism.psk.model.UserOccupation;
 import com.tourism.psk.model.request.UserRegistrationRequest;
 import com.tourism.psk.service.SessionService;
 import com.tourism.psk.service.UserService;
@@ -44,12 +44,13 @@ public class UserController {
         return sessionService.authenticate(authToken).getUser();
     }
 
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.POST)
-    public boolean getUserAvailabilityStatus(@RequestBody TimePeriodRequest timePeriod,
-                                             @PathVariable long id,
-                                             @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
-        sessionService.authenticate(authToken);
-        return userService.isAvailable(id,timePeriod);
+    @RequestMapping(value = "/user/{id}/availability", method = RequestMethod.GET)
+    public List<UserOccupation> getUserAvailabilityStatus(@RequestParam String from,
+                                                          @RequestParam String to,
+                                                          @PathVariable long id,
+                                                          @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        //sessionService.authenticate(authToken);
+        return userService.getOccupationsInPeriod(id, from, to);
     }
 
     @RequestMapping(value = "/user/all", method = RequestMethod.GET)
