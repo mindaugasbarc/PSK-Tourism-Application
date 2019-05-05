@@ -100,6 +100,12 @@ public class UserServiceImpl implements UserService {
         throw new UserAlreadyExistsException();
     }
 
+    @Override
+    public User update(User user, long id) {
+        userRepository.updateById(id, user.getFullname(), user.getEmail(), user.getRole());
+        return userRepository.findById(id);
+    }
+
     private void validateUserRegistrationData(UserRegistrationRequest userDetails) {
         if (userDetails.getUsername().length() < minUsernameLength) {
             throw new IllegalArgumentException("Username must be at least " + minUsernameLength + " characters");

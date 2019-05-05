@@ -14,4 +14,5 @@ public interface UserService {
     boolean isAvailable(long userId, TimePeriodRequest timePeriod);
     User login(UserLogin userLogin);
     User register(UserRegistrationRequest userDetails);
+    User update(User user, long id);
 }

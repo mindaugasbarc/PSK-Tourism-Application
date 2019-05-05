@@ -57,4 +57,10 @@ public class UserController {
         sessionService.authenticate(authToken);
         return userService.getAllUsers();
     }
+
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public User updateUser(@PathVariable long id, @RequestBody User user) {
+        return userService.update(user, id);
+    }
 }
