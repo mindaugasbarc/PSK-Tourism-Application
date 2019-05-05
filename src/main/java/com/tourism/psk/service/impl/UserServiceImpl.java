@@ -3,6 +3,7 @@ package com.tourism.psk.service.impl;
 import com.tourism.psk.constants.UserRole;
 import com.tourism.psk.exception.LoginException;
 import com.tourism.psk.exception.UserAlreadyExistsException;
+import com.tourism.psk.exception.ValueNotProvidedException;
 import com.tourism.psk.model.User;
 import com.tourism.psk.model.UserLogin;
 import com.tourism.psk.model.request.TimePeriodRequest;
@@ -102,6 +103,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(User user, long id) {
+        if (user.getFullname() == null || user.getFullname().isEmpty() ||
+            user.getEmail() == null || user.getEmail().isEmpty() ||
+            user.getRole() == null) {
+            throw new ValueNotProvidedException();
+        }
         userRepository.updateById(id, user.getFullname(), user.getEmail(), user.getRole());
         return userRepository.findById(id);
     }
