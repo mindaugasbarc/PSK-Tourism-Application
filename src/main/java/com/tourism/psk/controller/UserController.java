@@ -50,26 +50,31 @@ public class UserController {
                                                           @RequestParam String to,
                                                           @PathVariable long id,
                                                           @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
-        //sessionService.authenticate(authToken);
+        sessionService.authenticate(authToken);
         return userService.getOccupationsInPeriod(id, from, to);
     }
 
     @RequestMapping(value = "/user/all", method = RequestMethod.GET)
     public List<User> getAllUsers(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
-        //sessionService.authenticate(authToken);
+        sessionService.authenticate(authToken);
         return userService.getAllUsers();
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
     @ResponseStatus(code = HttpStatus.CREATED)
-    public User updateUser(@PathVariable long id, @RequestBody User user) {
+    public User updateUser(@PathVariable long id,
+                           @RequestBody User user,
+                           @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        sessionService.authenticate(authToken);
         return userService.update(user, id);
     }
 
     @RequestMapping(value = "/user/{id}/availability", method = RequestMethod.POST)
     public void updateUserAvailability(@PathVariable long id,
                                        @RequestParam(defaultValue = "false") boolean status,
-                                       @RequestBody TimePeriodRequest timePeriod) {
+                                       @RequestBody TimePeriodRequest timePeriod,
+                                       @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        sessionService.authenticate(authToken);
         userService.markAvailability(id, timePeriod, status);
     }
 }
