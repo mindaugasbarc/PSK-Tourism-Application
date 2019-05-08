@@ -7,4 +7,5 @@ import java.util.List;
 public interface OfficeService {
     List<Office> findAll();
     Office find(long id);
+    Office save(Office office);
 }

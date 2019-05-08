@@ -32,4 +32,10 @@ public class OfficeController {
         sessionService.authenticate(authToken);
         return officeService.find(id);
     }
+
+    @RequestMapping(value = "/office", method = RequestMethod.POST)
+    public Office createOffice(@RequestBody Office office, @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        sessionService.authenticate(authToken);
+        return officeService.save(office);
+    }
 }
