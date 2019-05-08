@@ -9,7 +9,9 @@ import java.util.Date;
 import java.util.List;
 
 public interface UserOccupationRepository extends JpaRepository<UserOccupation, Long> {
-    @Query(value = "select uo from UserOccupation uo where uo.user.id = :userId and uo.from <= :finish and uo.to >= :start")
+    @Query(value = "select uo from UserOccupation uo " +
+            "where uo.user.id = :userId and uo.from <= :finish and uo.to >= :start " +
+            "order by uo.from asc")
     List<UserOccupation> getOccupationsInPeriod(@Param("userId") long userId,
                                                 @Param("start") Date start,
                                                 @Param("finish") Date end);

@@ -4,6 +4,7 @@ import com.tourism.psk.constants.Globals;
 import com.tourism.psk.model.User;
 import com.tourism.psk.model.UserLogin;
 import com.tourism.psk.model.UserOccupation;
+import com.tourism.psk.model.request.TimePeriodRequest;
 import com.tourism.psk.model.request.UserRegistrationRequest;
 import com.tourism.psk.service.SessionService;
 import com.tourism.psk.service.UserService;
@@ -55,7 +56,7 @@ public class UserController {
 
     @RequestMapping(value = "/user/all", method = RequestMethod.GET)
     public List<User> getAllUsers(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
-        sessionService.authenticate(authToken);
+        //sessionService.authenticate(authToken);
         return userService.getAllUsers();
     }
 
@@ -63,5 +64,12 @@ public class UserController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public User updateUser(@PathVariable long id, @RequestBody User user) {
         return userService.update(user, id);
+    }
+
+    @RequestMapping(value = "/user/{id}/availability", method = RequestMethod.POST)
+    public void updateUserAvailability(@PathVariable long id,
+                                       @RequestParam(defaultValue = "false") boolean status,
+                                       @RequestBody TimePeriodRequest timePeriod) {
+        userService.markAvailability(id, timePeriod, status);
     }
 }
