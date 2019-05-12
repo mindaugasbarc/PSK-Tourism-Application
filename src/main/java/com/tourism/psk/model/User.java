@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "users")
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 public class User {
     @Id
