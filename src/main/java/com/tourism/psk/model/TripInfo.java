@@ -10,11 +10,11 @@ public class TripInfo {
     @GeneratedValue
     private long id;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "officeFrom_id")
     private Office officeFrom;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "officeTo_id")
     private Office officeTo;
     private LocalDate fromDate;
     private LocalDate toDate;
