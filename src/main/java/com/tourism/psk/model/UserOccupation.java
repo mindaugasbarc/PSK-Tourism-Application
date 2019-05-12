@@ -13,10 +13,10 @@ public class UserOccupation {
     private long id;
 
     @Temporal(TemporalType.DATE)
-    @Column(name = "start")
+    @Column(name = "date_from")
     private Date from;
     @Temporal(TemporalType.DATE)
-    @Column(name = "end")
+    @Column(name = "date_to")
     private Date to;
 
     @ManyToOne

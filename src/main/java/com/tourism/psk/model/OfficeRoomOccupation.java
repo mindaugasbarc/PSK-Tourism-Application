@@ -9,8 +9,10 @@ public class OfficeRoomOccupation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Temporal(TemporalType.DATE)
+    @Column(name = "date_from")
     private Date start;
     @Temporal(TemporalType.DATE)
+    @Column(name = "date_to")
     private Date end;
     @ManyToOne
     @JoinColumn(name = "user_id")
