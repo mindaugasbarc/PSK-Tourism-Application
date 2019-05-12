@@ -52,11 +52,11 @@ public class PskApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-//		Trip trip = new Trip(Arrays.asList(new Document(DocumentStatus.PENDING, DocumentType.TICKET, "plane tickets from Vilnius to Copenhagen")),
-//				Arrays.asList(new Accomodation("51st street, Copenhagen", "DevBridge assignment")),
-//				new TripInfo(new Office("Vilnius Office", "Kalvariju st. 21", new ArrayList<>()),
-//						new Office("Vilnius Office", "Copenhagen st. 52", new ArrayList<>()), LocalDate.now(), LocalDate.now()));
-//		tripResponseRepository.save(trip);
+		Trip trip = new Trip(Arrays.asList(new Document(DocumentStatus.PENDING, DocumentType.TICKET, "plane tickets from Vilnius to Copenhagen")),
+				Arrays.asList(new Accomodation("51st street, Copenhagen", "DevBridge assignment")),
+				new TripInfo(new Office("Vilnius Office", "Kalvariju st. 21", new ArrayList<>()),
+						new Office("Vilnius Office", "Copenhagen st. 52", new ArrayList<>()), LocalDate.now(), LocalDate.now()));
+		tripResponseRepository.save(trip);
 
 		/*OfficeRoom room1 = officeRoomRepository.save(new OfficeRoom("Office room 1"));
 		Office office = officeRepository.save(new Office("Kaunas office", "Savanoriu pr. 20", new ArrayList<>()));
