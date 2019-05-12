@@ -18,8 +18,9 @@ public class Trip {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn()
     private TripInfo tripInfo;
-
-
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public long getId() {
         return id;
@@ -60,5 +61,13 @@ public class Trip {
 
     public void setTripInfo(TripInfo tripInfo) {
         this.tripInfo = tripInfo;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
