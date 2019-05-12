@@ -7,6 +7,7 @@ import com.tourism.psk.model.UserOccupation;
 import com.tourism.psk.model.request.TimePeriodRequest;
 import com.tourism.psk.model.request.UserRegistrationRequest;
 import com.tourism.psk.service.SessionService;
+import com.tourism.psk.service.UserOccupationService;
 import com.tourism.psk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,11 +21,13 @@ import java.util.List;
 public class UserController {
     private UserService userService;
     private SessionService sessionService;
+    private UserOccupationService userOccupationService;
 
     @Autowired
-    public UserController(UserService userService, SessionService sessionService) {
+    public UserController(UserService userService, SessionService sessionService, UserOccupationService userOccupationService) {
         this.userService = userService;
         this.sessionService = sessionService;
+        this.userOccupationService = userOccupationService;
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
@@ -51,7 +54,7 @@ public class UserController {
                                                           @PathVariable long id,
                                                           @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
         sessionService.authenticate(authToken);
-        return userService.getOccupationsInPeriod(id, from, to);
+        return userOccupationService.getOccupationsInPeriod(id, from, to);
     }
 
     @RequestMapping(value = "/user/all", method = RequestMethod.GET)
@@ -75,6 +78,6 @@ public class UserController {
                                        @RequestBody TimePeriodRequest timePeriod,
                                        @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
         sessionService.authenticate(authToken);
-        userService.markAvailability(id, timePeriod, status);
+        userOccupationService.markAvailability(id, timePeriod, status);
     }
 }

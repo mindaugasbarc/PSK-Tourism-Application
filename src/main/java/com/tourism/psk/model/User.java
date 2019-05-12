@@ -15,8 +15,7 @@ public class User {
     private long id;
     private String fullname;
     private String email;
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Trip> trips;
     @Enumerated(EnumType.STRING)
     private UserRole role;

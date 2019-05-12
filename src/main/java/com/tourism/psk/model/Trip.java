@@ -1,9 +1,5 @@
 package com.tourism.psk.model;
 
-import com.tourism.psk.model.Accomodation;
-import com.tourism.psk.model.Document;
-import com.tourism.psk.model.TripInfo;
-
 import javax.persistence.*;
 import java.util.List;
 

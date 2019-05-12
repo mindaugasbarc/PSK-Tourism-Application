@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class SessionServiceImpl implements SessionService {
@@ -33,18 +34,18 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public Session authenticate(String authHeader) {
-        Session session = sessionRepository.findByToken(authHeader);
+        Optional<Session> session = sessionRepository.findByToken(authHeader);
         Date now = new Date(System.currentTimeMillis());
-        if (session == null) {
+        if (!session.isPresent()) {
             throw new InvalidTokenException();
         }
-        if (session.getStatus() == SessionStatus.ACTIVE && session.getExpires().after(now)) {
-            session.setExpires(new Date(System.currentTimeMillis() + sessionDuration));
-            return sessionRepository.save(session);
+        if (session.get().getStatus() == SessionStatus.ACTIVE && session.get().getExpires().after(now)) {
+            session.get().setExpires(new Date(System.currentTimeMillis() + sessionDuration));
+            return sessionRepository.save(session.get());
         }
         else {
-            session.setStatus(SessionStatus.INACTIVE);
-            sessionRepository.save(session);
+            session.get().setStatus(SessionStatus.INACTIVE);
+            sessionRepository.save(session.get());
             throw new SessionExpiredException();
         }
     }
