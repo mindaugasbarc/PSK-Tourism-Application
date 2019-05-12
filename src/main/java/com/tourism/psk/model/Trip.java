@@ -9,14 +9,12 @@ public class Trip {
     @Id
     @GeneratedValue
     private long id;
-    @JoinTable
     @OneToMany(cascade = CascadeType.ALL)
     private List<Document> documents;
-    @JoinTable
     @OneToMany(cascade = CascadeType.ALL)
     private List<Accomodation> houseRooms;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn()
+    @JoinColumn(name = "tripInfo_id")
     private TripInfo tripInfo;
     @ManyToOne
     @JoinColumn(name = "user_id")
