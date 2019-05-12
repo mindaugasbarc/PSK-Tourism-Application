@@ -1,11 +1,13 @@
 package com.tourism.psk.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 public class Office {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

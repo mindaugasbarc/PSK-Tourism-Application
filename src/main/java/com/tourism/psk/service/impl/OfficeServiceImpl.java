@@ -3,12 +3,16 @@ package com.tourism.psk.service.impl;
 import com.tourism.psk.exception.OfficeNotFoundException;
 import com.tourism.psk.exception.ValueNotProvidedException;
 import com.tourism.psk.model.Office;
+import com.tourism.psk.model.OfficeRoom;
+import com.tourism.psk.model.OfficeRoomOccupation;
 import com.tourism.psk.repository.OfficeRepository;
+import com.tourism.psk.repository.OfficeRoomRepository;
 import com.tourism.psk.service.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -42,5 +46,10 @@ public class OfficeServiceImpl implements OfficeService {
             throw new ValueNotProvidedException("Value for field 'address' must be provided");
         }
         return officeRepository.save(office);
+    }
+
+    @Override
+    public OfficeRoom getAvailableRooms(long officeId, Date start, Date end) {
+        return null;
     }
 }
