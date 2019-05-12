@@ -58,12 +58,12 @@ public class PskApplication implements CommandLineRunner {
 						new Office("Vilnius Office", "Copenhagen st. 52", new ArrayList<>()), LocalDate.now(), LocalDate.now()));
 		tripResponseRepository.save(trip);
 
-		OfficeRoom room1 = officeRoomRepository.save(new OfficeRoom("Office room 1"));
+		/*OfficeRoom room1 = officeRoomRepository.save(new OfficeRoom("Office room 1"));
 		Office office = officeRepository.save(new Office("Kaunas office", "Savanoriu pr. 20", new ArrayList<>()));
 		Office office1 = officeRepository.save(new Office("Vilnius office", "smh st. 21", new ArrayList<>()));
 		office.addHouseRoom(room1);
 		office.addHouseRoom(new OfficeRoom("Office room 2"));
-		officeRepository.save(office);
+		officeRepository.save(office);*/
 
 		User user = new User("Testas Testas", "testmail@test.com", UserRole.DEFAULT);
 		UserLogin userLogin = new UserLogin("testusername", "testpassword");
@@ -71,17 +71,17 @@ public class PskApplication implements CommandLineRunner {
 		userLogin.setUser(user);
 		userRepository.save(user);
 
-		DateFormat format = new SimpleDateFormat(dateFormat);
+		/*DateFormat format = new SimpleDateFormat(dateFormat);
 		UserOccupation occupation = new UserOccupation(format.parse("2019-01-01"), format.parse("2019-01-30"));
 		occupation.setUser(user);
-		userOccupationRepository.save(occupation);
+		userOccupationRepository.save(occupation);*/
 //		UserOccupation occupation1 = new UserOccupation(format.parse("2019-01-11"), format.parse("2019-01-16"));
 //		occupation1.setUser(user);
 //		userOccupationRepository.save(occupation1);
 
 		Set<Trip> trips = new HashSet<>();
 		trips.add(trip);
-		groupTripRepository.save(new GroupTrip("test trip", "the best trip", trips, office, office,
-				Arrays.asList(new Comment(user, "test", "test", null)), "2018-09-20", "2018-09-22", TripStatus.PENDING, user));
+		//groupTripRepository.save(new GroupTrip("test trip", "the best trip", trips, office, office,
+		//		Arrays.asList(new Comment(user, "test", "test", null)), "2018-09-20", "2018-09-22", TripStatus.PENDING, user));
 	}
 }
