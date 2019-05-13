@@ -1,5 +1,7 @@
 package com.tourism.psk.model;
 
+import org.hibernate.annotations.ColumnTransformer;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,6 +11,7 @@ public class UserLogin {
     private long id;
 
     private String username;
+    @ColumnTransformer(read = "pgp_sym_decrypt(password, 'geckoKey')", write = "pgp_sym_encrypt(?, 'geckoKey')")
     private String password;
     @OneToOne
     @JoinColumn(name = "user_id")
