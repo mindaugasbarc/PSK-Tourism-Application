@@ -3,6 +3,7 @@ package com.tourism.psk.controller;
 import com.tourism.psk.constants.Globals;
 import com.tourism.psk.model.Office;
 import com.tourism.psk.model.OfficeRoom;
+import com.tourism.psk.model.OfficeRoomOccupation;
 import com.tourism.psk.service.OfficeService;
 import com.tourism.psk.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,16 @@ public class OfficeController {
         return officeService.save(office);
     }
 
-    @RequestMapping(value = "/office/{id}/availability", method = RequestMethod.GET)
+    @RequestMapping(value = "/office/{id}/houseRoom/availability", method = RequestMethod.GET)
     public List<OfficeRoom> getAvailableOfficeRooms(@PathVariable long id, @RequestParam String from, @RequestParam String to) {
         return officeService.getAvailableRooms(id, from, to);
+    }
+
+    @RequestMapping(value = "/office/{officeId}/houseRoom/{roomId}/availability", method = RequestMethod.GET)
+    public List<OfficeRoomOccupation> getOfficeRoomOccupations(@PathVariable long officeId,
+                                                               @PathVariable long roomId,
+                                                               @RequestParam String from,
+                                                               @RequestParam String to) {
+        return officeService.getOfficeRoomOccupations(officeId, roomId, from, to);
     }
 }

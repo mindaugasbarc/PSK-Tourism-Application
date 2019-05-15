@@ -3,6 +3,7 @@ package com.tourism.psk.service.impl;
 import com.sun.javaws.exceptions.InvalidArgumentException;
 import com.tourism.psk.exception.InvalidTimePeriodException;
 import com.tourism.psk.exception.OfficeNotFoundException;
+import com.tourism.psk.exception.OfficeRoomNotFoundException;
 import com.tourism.psk.exception.ValueNotProvidedException;
 import com.tourism.psk.model.Office;
 import com.tourism.psk.model.OfficeRoom;
@@ -27,6 +28,7 @@ import java.util.Optional;
 @Service
 public class OfficeServiceImpl implements OfficeService {
     private OfficeRepository officeRepository;
+    private OfficeRoomRepository officeRoomRepository;
     private OfficeRoomOccupationRepository officeRoomOccupationRepository;
 
     @Value("${date-format}")
@@ -36,9 +38,12 @@ public class OfficeServiceImpl implements OfficeService {
     private int minOfficeNameLength;
 
     @Autowired
-    public OfficeServiceImpl(OfficeRepository officeRepository, OfficeRoomOccupationRepository officeRoomOccupationRepository) {
+    public OfficeServiceImpl(OfficeRepository officeRepository,
+                             OfficeRoomOccupationRepository officeRoomOccupationRepository,
+                             OfficeRoomRepository officeRoomRepository) {
         this.officeRepository = officeRepository;
         this.officeRoomOccupationRepository = officeRoomOccupationRepository;
+        this.officeRoomRepository = officeRoomRepository;
     }
 
     @Override
@@ -83,6 +88,29 @@ public class OfficeServiceImpl implements OfficeService {
         }
     }
 
+    @Override
+    public List<OfficeRoomOccupation> getOfficeRoomOccupations(long officeId, long roomId, String from, String to) {
+        Optional<Office> office = officeRepository.findById(officeId);
+        if (!office.isPresent()) {
+            throw new OfficeNotFoundException();
+        }
+        if (!officeHasRoom(office.get(), roomId)) {
+            throw new OfficeRoomNotFoundException();
+        }
+        try {
+            DateFormat format = new SimpleDateFormat(dateFormat);
+            Date start = format.parse(from);
+            Date end = format.parse(to);
+            if (end.before(start)) {
+                throw new InvalidTimePeriodException();
+            }
+            return officeRoomOccupationRepository.getOfficeRoomOccupationsInPeriod(roomId, start, end);
+        }
+        catch (ParseException exc) {
+            throw new IllegalArgumentException("Wrong date format. Use YYYY-MM-DD");
+        }
+    }
+
     private List<Long> getRoomIds(Office office) {
         List<Long> result = new ArrayList<>();
         List<OfficeRoom> rooms = office.getHouseRooms();
@@ -100,5 +128,14 @@ public class OfficeServiceImpl implements OfficeService {
             }
         }
         return unoccupiedRooms;
+    }
+
+    private boolean officeHasRoom(Office office, long roomId) {
+        for (OfficeRoom room : office.getHouseRooms()) {
+            if (room.getId() == roomId) {
+                return true;
+            }
+        }
+        return false;
     }
 }
