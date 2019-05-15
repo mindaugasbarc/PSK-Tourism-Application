@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
         if (user.getFullname() == null || user.getFullname().isEmpty() ||
             user.getEmail() == null || user.getEmail().isEmpty() ||
             user.getRole() == null) {
-            throw new ValueNotProvidedException();
+            throw new ValueNotProvidedException("Fullname, email and role fields cannot be set to null or empty values");
         }
         userRepository.updateById(id, user.getFullname(), user.getEmail(), user.getRole());
         return userRepository.findById(id);
