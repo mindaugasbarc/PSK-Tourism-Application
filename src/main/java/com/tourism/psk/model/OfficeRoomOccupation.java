@@ -25,8 +25,8 @@ public class OfficeRoomOccupation {
     }
 
     public OfficeRoomOccupation(Date start, Date end, User user, OfficeRoom officeRoom) {
-        this.start = start;
-        this.end = end;
+        this.from = start;
+        this.to = end;
         this.user = user;
         this.officeRoom = officeRoom;
     }
@@ -39,20 +39,20 @@ public class OfficeRoomOccupation {
         this.id = id;
     }
 
-    public Date getStart() {
-        return start;
+    public Date getFrom() {
+        return from;
     }
 
-    public void setStart(Date start) {
-        this.start = start;
+    public void setFrom(Date from) {
+        this.from = from;
     }
 
-    public Date getEnd() {
-        return end;
+    public Date getTo() {
+        return to;
     }
 
-    public void setEnd(Date end) {
-        this.end = end;
+    public void setTo(Date to) {
+        this.to = to;
     }
 
     public User getUser() {
