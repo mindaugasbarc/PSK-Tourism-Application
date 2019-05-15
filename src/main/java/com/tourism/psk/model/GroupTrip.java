@@ -23,10 +23,10 @@ public class GroupTrip {
     @ManyToMany
     private Set<Trip> trips;
     @ManyToOne
-    @JoinTable(name = "groupTrip_officeFrom")
+    @JoinColumn(name = "officeFrom_id")
     private Office officeFrom;
     @ManyToOne
-    @JoinTable(name = "groupTrip_officeTo")
+    @JoinColumn(name = "officeTo_id")
     private Office officeTo;
 
     private String dateFrom;

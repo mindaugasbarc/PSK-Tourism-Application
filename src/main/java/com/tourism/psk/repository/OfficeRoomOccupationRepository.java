@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface OfficeRoomOccupationRepository extends JpaRepository<OfficeRoomOccupation, Long> {
     @Query(value = "select o from OfficeRoomOccupation o " +
-            "where roomId = :roomId and o.from <= :finish and o.to >= :start " +
-            "order by o.from asc")
+            "where o.officeRoom.id = :roomId and o.start <= :finish and o.end >= :start " +
+            "order by o.end asc")
     List<OfficeRoomOccupation> getOfficeRoomOccupationsInPeriod(@Param("roomId") long roomId,
                                                                 @Param("start") Date start,
                                                                 @Param("finish") Date end);

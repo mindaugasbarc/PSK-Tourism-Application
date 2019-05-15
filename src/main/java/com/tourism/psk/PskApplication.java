@@ -72,9 +72,12 @@ public class PskApplication implements CommandLineRunner {
 		userRepository.save(user);
 
 		DateFormat format = new SimpleDateFormat(dateFormat);
-		UserOccupation occupation = new UserOccupation(format.parse("2019-01-01"), format.parse("2019-01-07"));
+		UserOccupation occupation = new UserOccupation(format.parse("2019-01-01"), format.parse("2019-01-30"));
 		occupation.setUser(user);
 		userOccupationRepository.save(occupation);
+		UserOccupation occupation1 = new UserOccupation(format.parse("2019-01-11"), format.parse("2019-01-16"));
+		occupation1.setUser(user);
+		userOccupationRepository.save(occupation1);
 
 		Set<Trip> trips = new HashSet<>();
 		trips.add(trip);

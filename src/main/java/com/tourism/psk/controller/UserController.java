@@ -3,9 +3,11 @@ package com.tourism.psk.controller;
 import com.tourism.psk.constants.Globals;
 import com.tourism.psk.model.User;
 import com.tourism.psk.model.UserLogin;
+import com.tourism.psk.model.UserOccupation;
 import com.tourism.psk.model.request.TimePeriodRequest;
 import com.tourism.psk.model.request.UserRegistrationRequest;
 import com.tourism.psk.service.SessionService;
+import com.tourism.psk.service.UserOccupationService;
 import com.tourism.psk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +21,13 @@ import java.util.List;
 public class UserController {
     private UserService userService;
     private SessionService sessionService;
+    private UserOccupationService userOccupationService;
 
     @Autowired
-    public UserController(UserService userService, SessionService sessionService) {
+    public UserController(UserService userService, SessionService sessionService, UserOccupationService userOccupationService) {
         this.userService = userService;
         this.sessionService = sessionService;
+        this.userOccupationService = userOccupationService;
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
@@ -44,17 +48,36 @@ public class UserController {
         return sessionService.authenticate(authToken).getUser();
     }
 
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.POST)
-    public boolean getUserAvailabilityStatus(@RequestBody TimePeriodRequest timePeriod,
-                                             @PathVariable long id,
-                                             @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+    @RequestMapping(value = "/user/{id}/availability", method = RequestMethod.GET)
+    public List<UserOccupation> getUserAvailabilityStatus(@RequestParam String from,
+                                                          @RequestParam String to,
+                                                          @PathVariable long id,
+                                                          @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
         sessionService.authenticate(authToken);
-        return userService.isAvailable(id,timePeriod);
+        return userOccupationService.getOccupationsInPeriod(id, from, to);
     }
 
     @RequestMapping(value = "/user/all", method = RequestMethod.GET)
     public List<User> getAllUsers(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
         sessionService.authenticate(authToken);
         return userService.getAllUsers();
+    }
+
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public User updateUser(@PathVariable long id,
+                           @RequestBody User user,
+                           @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        sessionService.authenticate(authToken);
+        return userService.update(user, id);
+    }
+
+    @RequestMapping(value = "/user/{id}/availability", method = RequestMethod.POST)
+    public void updateUserAvailability(@PathVariable long id,
+                                       @RequestParam(defaultValue = "false") boolean status,
+                                       @RequestBody TimePeriodRequest timePeriod,
+                                       @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        sessionService.authenticate(authToken);
+        userOccupationService.markAvailability(id, timePeriod, status);
     }
 }

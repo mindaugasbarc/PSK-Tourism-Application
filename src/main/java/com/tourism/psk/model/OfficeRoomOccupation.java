@@ -9,9 +9,11 @@ public class OfficeRoomOccupation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Temporal(TemporalType.DATE)
-    private Date from;
+    @Column(name = "date_from")
+    private Date start;
     @Temporal(TemporalType.DATE)
-    private Date to;
+    @Column(name = "date_to")
+    private Date end;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -23,8 +25,8 @@ public class OfficeRoomOccupation {
     }
 
     public OfficeRoomOccupation(Date start, Date end, User user, OfficeRoom officeRoom) {
-        this.from = start;
-        this.to = end;
+        this.start = start;
+        this.end = end;
         this.user = user;
         this.officeRoom = officeRoom;
     }
@@ -38,19 +40,19 @@ public class OfficeRoomOccupation {
     }
 
     public Date getFrom() {
-        return from;
+        return start;
     }
 
     public void setFrom(Date from) {
-        this.from = from;
+        this.start = from;
     }
 
     public Date getTo() {
-        return to;
+        return end;
     }
 
     public void setTo(Date to) {
-        this.to = to;
+        this.end = to;
     }
 
     public User getUser() {

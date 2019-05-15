@@ -1,9 +1,5 @@
 package com.tourism.psk.model;
 
-import com.tourism.psk.model.Accomodation;
-import com.tourism.psk.model.Document;
-import com.tourism.psk.model.TripInfo;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,17 +9,16 @@ public class Trip {
     @Id
     @GeneratedValue
     private long id;
-    @JoinTable
     @OneToMany(cascade = CascadeType.ALL)
     private List<Document> documents;
-    @JoinTable
     @OneToMany(cascade = CascadeType.ALL)
     private List<Accomodation> houseRooms;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn()
+    @JoinColumn(name = "tripInfo_id")
     private TripInfo tripInfo;
-
-
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public long getId() {
         return id;
@@ -64,5 +59,13 @@ public class Trip {
 
     public void setTripInfo(TripInfo tripInfo) {
         this.tripInfo = tripInfo;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

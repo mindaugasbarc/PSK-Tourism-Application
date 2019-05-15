@@ -1,10 +1,10 @@
 package com.tourism.psk.service.impl;
 
 import com.tourism.psk.constants.UserRole;
-import com.tourism.psk.exception.LoginException;
-import com.tourism.psk.exception.UserAlreadyExistsException;
+import com.tourism.psk.exception.*;
 import com.tourism.psk.model.User;
 import com.tourism.psk.model.UserLogin;
+import com.tourism.psk.model.UserOccupation;
 import com.tourism.psk.model.request.TimePeriodRequest;
 import com.tourism.psk.model.request.UserRegistrationRequest;
 import com.tourism.psk.repository.UserOccupationRepository;
@@ -14,10 +14,13 @@ import com.tourism.psk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -44,11 +47,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(long id) {
-        return userRepository.findById(id);
-    }
-
-    @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -56,19 +54,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean userExists(String username, String email) {
         return userRepository.exists(username, email);
-    }
-
-    @Override
-    public boolean isAvailable(long userId, TimePeriodRequest timePeriod) {
-        try {
-            DateFormat format = new SimpleDateFormat(dateFormat);
-            Date from = format.parse(timePeriod.getFrom());
-            Date to = format.parse(timePeriod.getTo());
-            return !userOccupationRepository.hasOccupations(userId, from, to);
-        }
-        catch (ParseException exc) {
-            throw new IllegalArgumentException("Incorrect date format. Use: YYYY-MM-DD");
-        }
     }
 
     @Override
@@ -98,6 +83,18 @@ public class UserServiceImpl implements UserService {
             return userRepository.save(user);
         }
         throw new UserAlreadyExistsException();
+    }
+
+    @Override
+    @Transactional
+    public User update(User user, long id) {
+        if (user.getFullname() == null || user.getFullname().isEmpty() ||
+            user.getEmail() == null || user.getEmail().isEmpty() ||
+            user.getRole() == null) {
+            throw new ValueNotProvidedException("Fullname, email and role fields cannot be set to null or empty values");
+        }
+        userRepository.updateById(id, user.getFullname(), user.getEmail(), user.getRole());
+        return userRepository.findById(id);
     }
 
     private void validateUserRegistrationData(UserRegistrationRequest userDetails) {

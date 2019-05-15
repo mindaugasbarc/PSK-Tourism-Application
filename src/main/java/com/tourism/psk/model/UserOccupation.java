@@ -1,5 +1,7 @@
 package com.tourism.psk.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -7,23 +9,27 @@ import java.util.Date;
 public class UserOccupation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private long id;
 
     @Temporal(TemporalType.DATE)
-    private Date start;
+    @Column(name = "date_from")
+    private Date from;
     @Temporal(TemporalType.DATE)
-    private Date end;
+    @Column(name = "date_to")
+    private Date to;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public UserOccupation() {
     }
 
-    public UserOccupation(Date start, Date end) {
-        this.start = start;
-        this.end = end;
+    public UserOccupation(Date from, Date to) {
+        this.from = from;
+        this.to = to;
     }
 
     public long getId() {
@@ -34,20 +40,20 @@ public class UserOccupation {
         this.id = id;
     }
 
-    public Date getStart() {
-        return start;
+    public Date getFrom() {
+        return from;
     }
 
-    public void setStart(Date start) {
-        this.start = start;
+    public void setFrom(Date from) {
+        this.from = from;
     }
 
-    public Date getEnd() {
-        return end;
+    public Date getTo() {
+        return to;
     }
 
-    public void setEnd(Date end) {
-        this.end = end;
+    public void setTo(Date to) {
+        this.to = to;
     }
 
     public User getUser() {

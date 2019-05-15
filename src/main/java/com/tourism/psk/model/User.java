@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "users")
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 public class User {
     @Id
@@ -15,8 +16,7 @@ public class User {
     private long id;
     private String fullname;
     private String email;
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Trip> trips;
     @Enumerated(EnumType.STRING)
     private UserRole role;
