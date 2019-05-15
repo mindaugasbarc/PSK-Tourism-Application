@@ -10,5 +10,5 @@ public interface OfficeService {
     List<Office> findAll();
     Office find(long id);
     Office save(Office office);
-    OfficeRoom getAvailableRooms(long officeId, Date start, Date end);
+    List<OfficeRoom> getAvailableRooms(long officeId, String from, String to);
 }

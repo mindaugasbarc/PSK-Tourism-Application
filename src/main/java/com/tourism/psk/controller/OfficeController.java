@@ -2,6 +2,7 @@ package com.tourism.psk.controller;
 
 import com.tourism.psk.constants.Globals;
 import com.tourism.psk.model.Office;
+import com.tourism.psk.model.OfficeRoom;
 import com.tourism.psk.service.OfficeService;
 import com.tourism.psk.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,10 @@ public class OfficeController {
     public Office createOffice(@RequestBody Office office, @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
         sessionService.authenticate(authToken);
         return officeService.save(office);
+    }
+
+    @RequestMapping(value = "/office/{id}/availability", method = RequestMethod.GET)
+    public List<OfficeRoom> getAvailableOfficeRooms(@PathVariable long id, @RequestParam String from, @RequestParam String to) {
+        return officeService.getAvailableRooms(id, from, to);
     }
 }
