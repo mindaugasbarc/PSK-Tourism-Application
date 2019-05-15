@@ -42,7 +42,11 @@ public class OfficeController {
     }
 
     @RequestMapping(value = "/office/{id}/houseRoom/availability", method = RequestMethod.GET)
-    public List<OfficeRoom> getAvailableOfficeRooms(@PathVariable long id, @RequestParam String from, @RequestParam String to) {
+    public List<OfficeRoom> getAvailableOfficeRooms(@PathVariable long id,
+                                                    @RequestParam String from,
+                                                    @RequestParam String to,
+                                                    @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        sessionService.authenticate(authToken);
         return officeService.getAvailableRooms(id, from, to);
     }
 
@@ -50,7 +54,9 @@ public class OfficeController {
     public List<OfficeRoomOccupation> getOfficeRoomOccupations(@PathVariable long officeId,
                                                                @PathVariable long roomId,
                                                                @RequestParam String from,
-                                                               @RequestParam String to) {
+                                                               @RequestParam String to,
+                                                               @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        sessionService.authenticate(authToken);
         return officeService.getOfficeRoomOccupations(officeId, roomId, from, to);
     }
 }
