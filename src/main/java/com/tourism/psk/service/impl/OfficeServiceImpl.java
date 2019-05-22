@@ -1,6 +1,5 @@
 package com.tourism.psk.service.impl;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import com.tourism.psk.exception.InvalidTimePeriodException;
 import com.tourism.psk.exception.OfficeNotFoundException;
 import com.tourism.psk.exception.OfficeRoomNotFoundException;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
