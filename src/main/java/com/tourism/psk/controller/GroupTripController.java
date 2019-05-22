@@ -24,7 +24,7 @@ public class GroupTripController {
         this.sessionService = sessionService;
     }
 
-    @RequestMapping(value = "/groupTrip", method = RequestMethod.POST,
+    @RequestMapping(value = "/group-trip", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addGroupTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken, @RequestBody final GroupTrip groupTrip) {
@@ -40,15 +40,15 @@ public class GroupTripController {
         tripService.addGroupTripThroughRequest(groupTripRequest);
     }
 
-    @RequestMapping(value = "/groupTrips", method = RequestMethod.GET,
+    @RequestMapping(value = "/group-trip", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<GroupTrip> findGroupTrips(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
         sessionService.authenticate(authToken);
         return tripService.findGroupTrips();
     }
 
-    @RequestMapping(value = "/groupTrip", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public GroupTrip findGroupTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken, @RequestParam("id") long groupTripId) {
+    @RequestMapping(value = "/group-trip/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public GroupTrip findGroupTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken, @PathVariable("id") long groupTripId) {
         sessionService.authenticate(authToken);
         return tripService.findGroupTrip(groupTripId);
     }
