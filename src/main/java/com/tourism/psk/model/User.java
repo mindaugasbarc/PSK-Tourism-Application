@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.tourism.psk.constants.UserRole;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.List;
 
 @Entity
@@ -15,6 +16,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String fullname;
+    @Email
     private String email;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Trip> trips;

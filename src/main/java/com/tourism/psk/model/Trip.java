@@ -12,7 +12,7 @@ public class Trip {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Document> documents;
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Accomodation> houseRooms;
+    private List<Accommodation> houseRooms;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tripInfo_id")
     private TripInfo tripInfo;
@@ -27,7 +27,7 @@ public class Trip {
     public Trip() {
     }
 
-    public Trip(List<Document> documents, List<Accomodation> houseRooms, TripInfo tripInfo) {
+    public Trip(List<Document> documents, List<Accommodation> houseRooms, TripInfo tripInfo) {
         this.documents = documents;
         this.houseRooms = houseRooms;
         this.tripInfo = tripInfo;
@@ -45,11 +45,11 @@ public class Trip {
         this.documents = documents;
     }
 
-    public List<Accomodation> getHouseRooms() {
+    public List<Accommodation> getHouseRooms() {
         return houseRooms;
     }
 
-    public void setHouseRooms(List<Accomodation> houseRooms) {
+    public void setHouseRooms(List<Accommodation> houseRooms) {
         this.houseRooms = houseRooms;
     }
 

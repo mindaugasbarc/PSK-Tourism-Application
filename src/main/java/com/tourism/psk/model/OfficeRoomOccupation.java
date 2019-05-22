@@ -1,5 +1,8 @@
 package com.tourism.psk.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -7,6 +10,7 @@ import java.util.Date;
 public class OfficeRoomOccupation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private long id;
     @Temporal(TemporalType.DATE)
     @Column(name = "date_from")
@@ -16,9 +20,11 @@ public class OfficeRoomOccupation {
     private Date end;
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
     @ManyToOne
     @JoinColumn(name = "officeRoom_id")
+    @JsonIgnore
     private OfficeRoom officeRoom;
 
     public OfficeRoomOccupation() {

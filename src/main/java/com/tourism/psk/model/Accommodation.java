@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Accomodation {
+public class Accommodation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -14,12 +14,12 @@ public class Accomodation {
     private String address;
     private String name;
 
-    public Accomodation(String address, String name) {
+    public Accommodation(String address, String name) {
         this.address = address;
         this.name = name;
     }
 
-    public Accomodation() {
+    public Accommodation() {
     }
 
     public long getId() {
