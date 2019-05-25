@@ -5,6 +5,7 @@ import com.tourism.psk.model.GroupTrip;
 import com.tourism.psk.model.request.GroupTripRequest;
 import com.tourism.psk.service.SessionService;
 import com.tourism.psk.service.TripService;
+import com.tourism.psk.validator.GroupTripValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +18,13 @@ public class GroupTripController {
 
     private final TripService tripService;
     private final SessionService sessionService;
+    private final GroupTripValidator groupTripValidator;
 
     @Autowired
-    public GroupTripController(TripService tripService, SessionService sessionService) {
+    public GroupTripController(TripService tripService, SessionService sessionService, GroupTripValidator groupTripValidator) {
         this.tripService = tripService;
         this.sessionService = sessionService;
+        this.groupTripValidator = groupTripValidator;
     }
 
     @RequestMapping(value = "/group-trip", method = RequestMethod.POST,
@@ -29,6 +32,7 @@ public class GroupTripController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addGroupTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken, @RequestBody final GroupTrip groupTrip) {
         sessionService.authenticate(authToken);
+        groupTripValidator.validateGroupTrip(groupTrip);
         tripService.addGroupTrip(groupTrip);
     }
 
