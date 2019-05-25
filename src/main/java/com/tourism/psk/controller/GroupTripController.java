@@ -56,4 +56,12 @@ public class GroupTripController {
         sessionService.authenticate(authToken);
         return tripService.findGroupTrip(groupTripId);
     }
+
+    @RequestMapping(value = "/group-trip", method = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void updateGroupTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken,
+                                @RequestBody GroupTrip groupTrip) {
+        sessionService.authenticate(authToken);
+        tripService.addGroupTrip(groupTrip);
+    }
 }
