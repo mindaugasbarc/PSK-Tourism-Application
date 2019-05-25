@@ -19,9 +19,9 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/v1")
 public class UserController {
-    private UserService userService;
-    private SessionService sessionService;
-    private UserOccupationService userOccupationService;
+    private final UserService userService;
+    private final SessionService sessionService;
+    private final UserOccupationService userOccupationService;
 
     @Autowired
     public UserController(UserService userService, SessionService sessionService, UserOccupationService userOccupationService) {
