@@ -14,8 +14,8 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/v1")
 public class OfficeController {
-    private OfficeService officeService;
-    private SessionService sessionService;
+    private final OfficeService officeService;
+    private final SessionService sessionService;
 
     @Autowired
     public OfficeController(OfficeService officeService, SessionService sessionService) {

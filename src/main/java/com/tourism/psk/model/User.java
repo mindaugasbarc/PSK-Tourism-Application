@@ -7,6 +7,7 @@ import com.tourism.psk.constants.UserRole;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -81,5 +82,36 @@ public class User {
 
     public void setUserLogin(UserLogin userLogin) {
         this.userLogin = userLogin;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                Objects.equals(fullname, user.fullname) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(trips, user.trips) &&
+                role == user.role &&
+                Objects.equals(userLogin, user.userLogin);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, fullname, email, trips, role, userLogin);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", fullname='" + fullname + '\'' +
+                ", email='" + email + '\'' +
+                ", trips=" + trips +
+                ", role=" + role +
+                ", userLogin=" + userLogin +
+                '}';
     }
 }

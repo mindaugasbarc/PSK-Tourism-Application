@@ -15,4 +15,6 @@ public interface UserOccupationRepository extends JpaRepository<UserOccupation, 
     List<UserOccupation> getOccupationsInPeriod(@Param("userId") long userId,
                                                 @Param("start") Date start,
                                                 @Param("finish") Date end);
+
+
 }
