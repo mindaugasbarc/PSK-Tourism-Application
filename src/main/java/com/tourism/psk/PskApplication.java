@@ -56,9 +56,7 @@ public class PskApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 		Trip trip = new Trip(Arrays.asList(new Document(DocumentStatus.PENDING, DocumentType.TICKET, "plane tickets from Vilnius to Copenhagen")),
-				Arrays.asList(new Accommodation("51st street, Copenhagen", "DevBridge assignment")),
-				new TripInfo(new Office("Vilnius Office", "Kalvariju st. 21", new ArrayList<>()),
-						new Office("Vilnius Office", "Copenhagen st. 52", new ArrayList<>()), LocalDate.now(), LocalDate.now()));
+				Arrays.asList(new Accommodation("51st street, Copenhagen", "DevBridge assignment")));
 		tripResponseRepository.save(trip);
 
 		OfficeRoom room1 = officeRoomRepository.save(new OfficeRoom("Office room 1"));

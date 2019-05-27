@@ -13,9 +13,7 @@ public class Trip {
     private List<Document> documents;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Accommodation> houseRooms;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "tripInfo_id")
-    private TripInfo tripInfo;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -27,10 +25,9 @@ public class Trip {
     public Trip() {
     }
 
-    public Trip(List<Document> documents, List<Accommodation> houseRooms, TripInfo tripInfo) {
+    public Trip(List<Document> documents, List<Accommodation> houseRooms) {
         this.documents = documents;
         this.houseRooms = houseRooms;
-        this.tripInfo = tripInfo;
     }
 
     public void setId(long id) {
@@ -51,14 +48,6 @@ public class Trip {
 
     public void setHouseRooms(List<Accommodation> houseRooms) {
         this.houseRooms = houseRooms;
-    }
-
-    public TripInfo getTripInfo() {
-        return tripInfo;
-    }
-
-    public void setTripInfo(TripInfo tripInfo) {
-        this.tripInfo = tripInfo;
     }
 
     public User getUser() {
