@@ -1,9 +1,6 @@
 package com.tourism.psk.service.impl;
 
-import com.tourism.psk.exception.InvalidTimePeriodException;
-import com.tourism.psk.exception.OfficeNotFoundException;
-import com.tourism.psk.exception.OfficeRoomNotFoundException;
-import com.tourism.psk.exception.ValueNotProvidedException;
+import com.tourism.psk.exception.*;
 import com.tourism.psk.model.Office;
 import com.tourism.psk.model.OfficeRoom;
 import com.tourism.psk.model.OfficeRoomOccupation;
@@ -77,6 +74,9 @@ public class OfficeServiceImpl implements OfficeService {
             Optional<Office> office = officeRepository.findById(officeId);
             if (!office.isPresent()) {
                 throw new OfficeNotFoundException();
+            }
+            if (office.get().getHouseRooms().isEmpty()) {
+                return new ArrayList<>();
             }
             List<Long> occupiedRoomIds = officeRoomOccupationRepository.getOccupiedRooms(getRoomIds(office.get()), start, end);
             return getUnoccupiedRooms(office.get().getHouseRooms(), occupiedRoomIds);
