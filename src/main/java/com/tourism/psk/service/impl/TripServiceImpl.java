@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 public class TripServiceImpl implements TripService {
 
@@ -74,6 +76,13 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
+    public List<GroupTrip> findGroupTripsForUser(User user) {
+        return groupTripRepository.findAll().stream().filter(groupTrip -> groupTrip.getTrips().stream().map(Trip::getUser)
+                .anyMatch(user1 -> user1.equals(user)) || groupTrip.getAdvisor().equals(user))
+                .collect(toList());
+    }
+
+    @Override
     public GroupTrip findGroupTrip(final long id) {
         return groupTripRepository.findById(id).orElseThrow(TripNotFoundException::new);
     }
@@ -109,7 +118,7 @@ public class TripServiceImpl implements TripService {
     private List<Document> getOtherDocuments(final long documentId, List<Document> documentsList) {
         return documentsList.stream()
                 .filter(document -> document.getId() != documentId)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     private Document updateDocument(final Document oldDocument, final Document newDocument) {

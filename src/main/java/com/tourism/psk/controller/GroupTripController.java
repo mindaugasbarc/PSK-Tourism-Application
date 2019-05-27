@@ -2,6 +2,7 @@ package com.tourism.psk.controller;
 
 import com.tourism.psk.constants.Globals;
 import com.tourism.psk.model.GroupTrip;
+import com.tourism.psk.model.Session;
 import com.tourism.psk.model.request.GroupTripRequest;
 import com.tourism.psk.service.SessionService;
 import com.tourism.psk.service.TripService;
@@ -47,8 +48,8 @@ public class GroupTripController {
     @RequestMapping(value = "/group-trip", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<GroupTrip> findGroupTrips(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
-        sessionService.authenticate(authToken);
-        return tripService.findGroupTrips();
+        Session session = sessionService.authenticate(authToken);
+        return tripService.findGroupTripsForUser(session.getUser());
     }
 
     @RequestMapping(value = "/group-trip/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
