@@ -55,8 +55,14 @@ public class PskApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
+		User user = new User("Testas Testas", "testmail@test.com", UserRole.DEFAULT);
+		UserLogin userLogin = new UserLogin("testusername", "testpassword");
+		user.setUserLogin(userLogin);
+		userLogin.setUser(user);
+		userRepository.save(user);
+
 		Trip trip = new Trip(Arrays.asList(new Document(DocumentStatus.PENDING, DocumentType.TICKET, "plane tickets from Vilnius to Copenhagen")),
-				Arrays.asList(new Accommodation("51st street, Copenhagen", "DevBridge assignment")));
+				Arrays.asList(new Accommodation("51st street, Copenhagen", "DevBridge assignment")), user);
 		tripResponseRepository.save(trip);
 
 		OfficeRoom room1 = officeRoomRepository.save(new OfficeRoom("Office room 1"));
@@ -65,12 +71,6 @@ public class PskApplication implements CommandLineRunner {
 		office.addHouseRoom(room1);
 		office.addHouseRoom(new OfficeRoom("Office room 2"));
 		officeRepository.save(office);
-
-		User user = new User("Testas Testas", "testmail@test.com", UserRole.DEFAULT);
-		UserLogin userLogin = new UserLogin("testusername", "testpassword");
-		user.setUserLogin(userLogin);
-		userLogin.setUser(user);
-		userRepository.save(user);
 
 		DateFormat format = new SimpleDateFormat(dateFormat);
 		UserOccupation occupation = new UserOccupation(format.parse("2019-01-01"), format.parse("2019-01-30"));

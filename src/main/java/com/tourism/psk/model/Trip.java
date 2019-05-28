@@ -30,6 +30,12 @@ public class Trip {
         this.houseRooms = houseRooms;
     }
 
+    public Trip(List<Document> documents, List<Accommodation> houseRooms, User user) {
+        this.documents = documents;
+        this.houseRooms = houseRooms;
+        this.user = user;
+    }
+
     public void setId(long id) {
         this.id = id;
     }
