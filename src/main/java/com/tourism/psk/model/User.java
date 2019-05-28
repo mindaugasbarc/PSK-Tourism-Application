@@ -20,6 +20,7 @@ public class User {
     @Email
     private String email;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @JsonIgnore
     private List<Trip> trips;
     @Enumerated(EnumType.STRING)
     private UserRole role;
