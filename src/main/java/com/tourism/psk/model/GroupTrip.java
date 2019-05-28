@@ -30,9 +30,9 @@ public class GroupTrip {
     private Office officeTo;
 
     private String dateFrom;
-
-
     private String dateTo;
+
+    private String title;
 
     @OneToOne
     private User advisor;
@@ -143,6 +143,14 @@ public class GroupTrip {
 
     public void setAdvisor(User advisor) {
         this.advisor = advisor;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
