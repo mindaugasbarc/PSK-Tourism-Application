@@ -6,19 +6,14 @@ import com.tourism.psk.exception.OfficeNotFoundException;
 import com.tourism.psk.exception.TripNotFoundException;
 import com.tourism.psk.model.*;
 import com.tourism.psk.model.request.GroupTripRequest;
-import com.tourism.psk.repository.GroupTripRepository;
-import com.tourism.psk.repository.OfficeRepository;
-import com.tourism.psk.repository.TripRepository;
-import com.tourism.psk.repository.UserRepository;
+import com.tourism.psk.repository.*;
 import com.tourism.psk.service.TripService;
 import com.tourism.psk.service.UserOccupationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -30,14 +25,21 @@ public class TripServiceImpl implements TripService {
     private final OfficeRepository officeRepository;
     private final UserRepository userRepository;
     private final UserOccupationService userOccupationService;
+    private final CommentRepository commentRepository;
 
     @Autowired
-    public TripServiceImpl(TripRepository tripResponseRepository, GroupTripRepository groupTripRepository, OfficeRepository officeRepository, UserRepository userRepository, UserOccupationService userOccupationService) {
+    public TripServiceImpl(TripRepository tripResponseRepository,
+                           GroupTripRepository groupTripRepository,
+                           OfficeRepository officeRepository,
+                           UserRepository userRepository,
+                           UserOccupationService userOccupationService,
+                           CommentRepository commentRepository) {
         this.tripResponseRepository = tripResponseRepository;
         this.groupTripRepository = groupTripRepository;
         this.officeRepository = officeRepository;
         this.userRepository = userRepository;
         this.userOccupationService = userOccupationService;
+        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -62,6 +64,9 @@ public class TripServiceImpl implements TripService {
         final String end = groupTrip.getDateTo();
         groupTrip.getUserTrips().stream().map(Trip::getUser).forEach(user -> {
             userOccupationService.markAvailability(user.getId(), start, end, false);
+        });
+        groupTrip.getUserTrips().forEach(trip -> {
+            trip.setUser(userRepository.findById(trip.getUser().getId()));
         });
         return result;
     }
@@ -121,6 +126,18 @@ public class TripServiceImpl implements TripService {
         } else {
             throw new TripNotFoundException();
         }
+    }
+
+    @Override
+    public Comment addComment(long groupTripId, Comment comment) {
+        Optional<GroupTrip> groupTrip = groupTripRepository.findById(groupTripId);
+        if (!groupTrip.isPresent()) {
+            throw new TripNotFoundException();
+        }
+        comment.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        comment.setUser(userRepository.findById(comment.getUser().getId()));
+        comment.setGroupTrip(groupTrip.get());
+        return commentRepository.save(comment);
     }
 
     private List<Document> getOtherDocuments(final long documentId, List<Document> documentsList) {

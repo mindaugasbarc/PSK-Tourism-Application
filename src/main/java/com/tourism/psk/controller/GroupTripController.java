@@ -1,6 +1,7 @@
 package com.tourism.psk.controller;
 
 import com.tourism.psk.constants.Globals;
+import com.tourism.psk.model.Comment;
 import com.tourism.psk.model.GroupTrip;
 import com.tourism.psk.model.Session;
 import com.tourism.psk.model.request.GroupTripRequest;
@@ -66,5 +67,13 @@ public class GroupTripController {
                                 @RequestBody GroupTrip groupTrip) {
         sessionService.authenticate(authToken);
         tripService.addGroupTrip(groupTrip);
+    }
+
+    @RequestMapping(value = "/group-trip/{id}/comment", method = RequestMethod.POST)
+    public Comment addGroupTripComment(@PathVariable("id") long id,
+                                    @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken,
+                                    @RequestBody Comment comment) {
+        sessionService.authenticate(authToken);
+        return tripService.addComment(id, comment);
     }
 }

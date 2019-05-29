@@ -48,7 +48,7 @@ public class GroupTrip {
     @NotNull
     private User advisor;
 
-    @OneToMany(mappedBy = "commentOfTrip")
+    @OneToMany(mappedBy = "groupTrip")
     private List<Comment> comments;
 
     public GroupTrip(String name, String description, Set<Trip> trips, Office officeFrom,
