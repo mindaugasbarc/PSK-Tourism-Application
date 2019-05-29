@@ -18,7 +18,7 @@ public class Comment {
 
     private String text;
 
-    private String date;
+    private String timestamp;
 
     @ManyToOne
     @JoinColumn(name = "groupTrip_id")
@@ -28,10 +28,10 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(User commentedBy, String text, String date, GroupTrip groupTrip) {
+    public Comment(User commentedBy, String text, String timestamp, GroupTrip groupTrip) {
         this.user = commentedBy;
         this.text = text;
-        this.date = date;
+        this.timestamp = timestamp;
         this.groupTrip = groupTrip;
     }
 
@@ -51,12 +51,12 @@ public class Comment {
         this.text = text;
     }
 
-    public String getDate() {
-        return date;
+    public String getTimestamp() {
+        return timestamp;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
     public long getId() {
@@ -83,12 +83,12 @@ public class Comment {
         return id == comment.id &&
                 Objects.equals(user, comment.user) &&
                 Objects.equals(text, comment.text) &&
-                Objects.equals(date, comment.date);
+                Objects.equals(timestamp, comment.timestamp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user, text, date);
+        return Objects.hash(id, user, text, timestamp);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class Comment {
                 "id=" + id +
                 ", user=" + user +
                 ", text='" + text + '\'' +
-                ", date='" + date + '\'' +
+                ", timestamp='" + timestamp + '\'' +
                 '}';
     }
 }

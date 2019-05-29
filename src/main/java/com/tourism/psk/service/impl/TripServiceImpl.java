@@ -134,7 +134,7 @@ public class TripServiceImpl implements TripService {
         if (!groupTrip.isPresent()) {
             throw new TripNotFoundException();
         }
-        comment.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        comment.setTimestamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         comment.setUser(userRepository.findById(comment.getUser().getId()));
         comment.setGroupTrip(groupTrip.get());
         return commentRepository.save(comment);
