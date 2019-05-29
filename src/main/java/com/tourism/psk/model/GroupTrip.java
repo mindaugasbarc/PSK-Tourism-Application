@@ -42,6 +42,8 @@ public class GroupTrip {
     @NotNull
     private String dateTo;
 
+    private String title;
+
     @OneToOne
     @NotNull
     private User advisor;
@@ -152,6 +154,14 @@ public class GroupTrip {
 
     public void setAdvisor(User advisor) {
         this.advisor = advisor;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
