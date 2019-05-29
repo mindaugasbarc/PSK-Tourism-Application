@@ -61,16 +61,16 @@ public class PskApplication implements CommandLineRunner {
 		userLogin.setUser(user);
 		userRepository.save(user);
 
-		Trip trip = new Trip(Arrays.asList(new Document(DocumentStatus.PENDING, DocumentType.TICKET, "plane tickets from Vilnius to Copenhagen")),
-				Arrays.asList(new Accommodation("51st street, Copenhagen", "DevBridge assignment")), user);
-		tripResponseRepository.save(trip);
+        OfficeRoom room1 = new OfficeRoom("Office room 1");
+        Office office = new Office("Kaunas office", "Savanoriu pr. 20", new ArrayList<>());
+        Office office1 = officeRepository.save(new Office("Vilnius office", "smh st. 21", new ArrayList<>()));
+        office.addHouseRoom(room1);
 
-		OfficeRoom room1 = officeRoomRepository.save(new OfficeRoom("Office room 1"));
-		Office office = officeRepository.save(new Office("Kaunas office", "Savanoriu pr. 20", new ArrayList<>()));
-		Office office1 = officeRepository.save(new Office("Vilnius office", "smh st. 21", new ArrayList<>()));
-		office.addHouseRoom(room1);
-		office.addHouseRoom(new OfficeRoom("Office room 2"));
-		officeRepository.save(office);
+        office.addHouseRoom(new OfficeRoom("Office room 2"));
+
+		Trip trip = new Trip(Arrays.asList(new Document(DocumentStatus.PENDING, DocumentType.TICKET, "plane tickets from Vilnius to Copenhagen")),
+				Arrays.asList(room1), user);
+		tripResponseRepository.save(trip);
 
 		DateFormat format = new SimpleDateFormat(dateFormat);
 		UserOccupation occupation = new UserOccupation(format.parse("2019-01-01"), format.parse("2019-01-30"));
@@ -88,18 +88,18 @@ public class PskApplication implements CommandLineRunner {
 		OfficeRoomOccupation officeRoomOccupation = new OfficeRoomOccupation(format.parse("2019-01-02"), format.parse("2019-01-05"), user, room1);
 		officeRoomOccupationRepository.save(officeRoomOccupation);
 
-//		User sustauskas = new User();
-//		sustauskas.setUserLogin(new UserLogin("sustauskas", "passwordas"));
-//		sustauskas.setRole(UserRole.DEFAULT);
-//		sustauskas.setEmail("vytautas@example.com");
-//		sustauskas.setFullname("Vytautas Šustauskas");
-//		userRepository.save(sustauskas);
-//
-//		User tautvydas = new User();
-//		tautvydas.setUserLogin(new UserLogin("tautvydas", "passwordas"));
-//		tautvydas.setFullname("Tautvydas Stukėnas");
-//		tautvydas.setEmail("tautvydas@example.com");
-//		tautvydas.setRole(UserRole.ADVISOR);
-//		userRepository.save(tautvydas);
+		User sustauskas = new User();
+		sustauskas.setUserLogin(new UserLogin("sustauskas", "passwordas"));
+		sustauskas.setRole(UserRole.DEFAULT);
+		sustauskas.setEmail("vytautas@example.com");
+		sustauskas.setFullname("Vytautas Šustauskas");
+		userRepository.save(sustauskas);
+
+		User tautvydas = new User();
+		tautvydas.setUserLogin(new UserLogin("tautvydas", "passwordas"));
+		tautvydas.setFullname("Tautvydas Stukėnas");
+		tautvydas.setEmail("tautvydas@example.com");
+		tautvydas.setRole(UserRole.ADVISOR);
+		userRepository.save(tautvydas);
 	}
 }

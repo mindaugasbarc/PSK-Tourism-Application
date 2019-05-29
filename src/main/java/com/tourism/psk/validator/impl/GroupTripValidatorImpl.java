@@ -2,6 +2,7 @@ package com.tourism.psk.validator.impl;
 
 import com.tourism.psk.model.GroupTrip;
 import com.tourism.psk.model.Trip;
+import com.tourism.psk.service.HouseRoomAvailabilityService;
 import com.tourism.psk.service.UserAvailabilityService;
 import com.tourism.psk.validator.GroupTripValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +14,18 @@ import java.util.Set;
 public class GroupTripValidatorImpl implements GroupTripValidator {
 
     private final UserAvailabilityService userAvailabilityService;
+    private final HouseRoomAvailabilityService houseRoomAvailabilityService;
 
     @Autowired
-    public GroupTripValidatorImpl(UserAvailabilityService userAvailabilityService) {
+    public GroupTripValidatorImpl(UserAvailabilityService userAvailabilityService, HouseRoomAvailabilityService houseRoomAvailabilityService) {
         this.userAvailabilityService = userAvailabilityService;
+        this.houseRoomAvailabilityService = houseRoomAvailabilityService;
     }
 
     @Override
-    public void validateGroupTrip(GroupTrip groupTrip) {
+    public void validateGroupTrip(final GroupTrip groupTrip) {
+
+
         userAvailabilityService.validateUserAvailability(groupTrip.getAdvisor(), groupTrip.getDateFrom(), groupTrip.getDateTo());
         Set<Trip> trips = groupTrip.getUserTrips();
         trips.stream()

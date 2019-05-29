@@ -13,7 +13,7 @@ public class OfficeRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "office_id")
     @JsonBackReference
     private Office office;
@@ -25,6 +25,23 @@ public class OfficeRoom {
 
     }
 
+    public OfficeRoom(String name) {
+        this.name = name;
+    }
+
+    public OfficeRoom(String name, Office office) {
+        this.name = name;
+        this.office = office;
+    }
+
+    public List<OfficeRoomOccupation> getOccupations() {
+        return occupations;
+    }
+
+    public void setOccupations(List<OfficeRoomOccupation> occupations) {
+        this.occupations = occupations;
+    }
+
     public long getId() {
         return id;
     }
@@ -33,9 +50,7 @@ public class OfficeRoom {
         this.id = id;
     }
 
-    public OfficeRoom(String name) {
-        this.name = name;
-    }
+
 
     public String getName() {
         return name;
