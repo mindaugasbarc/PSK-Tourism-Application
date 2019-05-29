@@ -3,6 +3,7 @@ package com.tourism.psk.model;
 import com.tourism.psk.constants.TripStatus;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -15,26 +16,34 @@ public class GroupTrip {
     private long id;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     private TripStatus status;
 
+    @NotNull
     private String name;
     private String description;
     @JoinTable
     @ManyToMany
+    @NotNull
     private Set<Trip> trips;
     @ManyToOne
     @JoinColumn(name = "officeFrom_id")
+    @NotNull
     private Office officeFrom;
     @ManyToOne
     @JoinColumn(name = "officeTo_id")
+    @NotNull
     private Office officeTo;
 
+    @NotNull
     private String dateFrom;
 
 
+    @NotNull
     private String dateTo;
 
     @OneToOne
+    @NotNull
     private User advisor;
 
     @OneToMany(mappedBy = "commentOfTrip")
