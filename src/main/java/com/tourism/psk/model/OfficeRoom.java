@@ -18,9 +18,6 @@ public class OfficeRoom {
     @JsonBackReference
     private Office office;
 
-    @OneToMany(mappedBy = "officeRoom", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<OfficeRoomOccupation> occupations;
-
     public OfficeRoom() {
 
     }
@@ -32,14 +29,6 @@ public class OfficeRoom {
     public OfficeRoom(String name, Office office) {
         this.name = name;
         this.office = office;
-    }
-
-    public List<OfficeRoomOccupation> getOccupations() {
-        return occupations;
-    }
-
-    public void setOccupations(List<OfficeRoomOccupation> occupations) {
-        this.occupations = occupations;
     }
 
     public long getId() {

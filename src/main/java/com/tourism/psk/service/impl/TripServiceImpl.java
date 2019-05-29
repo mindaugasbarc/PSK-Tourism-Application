@@ -7,6 +7,7 @@ import com.tourism.psk.exception.TripNotFoundException;
 import com.tourism.psk.model.*;
 import com.tourism.psk.model.request.GroupTripRequest;
 import com.tourism.psk.repository.*;
+import com.tourism.psk.service.HouseRoomAvailabilityService;
 import com.tourism.psk.service.TripService;
 import com.tourism.psk.service.UserOccupationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class TripServiceImpl implements TripService {
     private final OfficeRepository officeRepository;
     private final UserRepository userRepository;
     private final UserOccupationService userOccupationService;
+    private final HouseRoomAvailabilityService houseRoomAvailabilityService;
     private final CommentRepository commentRepository;
 
     @Autowired
@@ -33,12 +35,13 @@ public class TripServiceImpl implements TripService {
                            OfficeRepository officeRepository,
                            UserRepository userRepository,
                            UserOccupationService userOccupationService,
-                           CommentRepository commentRepository) {
+                           HouseRoomAvailabilityService houseRoomAvailabilityService, CommentRepository commentRepository) {
         this.tripResponseRepository = tripResponseRepository;
         this.groupTripRepository = groupTripRepository;
         this.officeRepository = officeRepository;
         this.userRepository = userRepository;
         this.userOccupationService = userOccupationService;
+        this.houseRoomAvailabilityService = houseRoomAvailabilityService;
         this.commentRepository = commentRepository;
     }
 
@@ -65,6 +68,12 @@ public class TripServiceImpl implements TripService {
         groupTrip.getUserTrips().stream().map(Trip::getUser).forEach(user -> {
             userOccupationService.markAvailability(user.getId(), start, end, false);
         });
+
+        groupTrip.getUserTrips()
+                .forEach(trip ->
+                        houseRoomAvailabilityService.addHouseRoomAvailabilitiesIfValid(trip.getHouseRooms(), trip.getUser(), groupTrip.getDateFrom(), groupTrip.getDateTo()));
+
+
         groupTrip.getUserTrips().forEach(trip -> {
             trip.setUser(userRepository.findById(trip.getUser().getId()));
         });

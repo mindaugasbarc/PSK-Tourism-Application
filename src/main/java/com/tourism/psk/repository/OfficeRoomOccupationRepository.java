@@ -21,4 +21,8 @@ public interface OfficeRoomOccupationRepository extends JpaRepository<OfficeRoom
     List<Long> getOccupiedRooms(@Param("ids") List<Long> ids,
                                              @Param("start") Date start,
                                              @Param("finish") Date end);
+
+    @Query(value = "select o from OfficeRoomOccupation  o where o.officeRoom.id = :roomId")
+    List<OfficeRoomOccupation> getOfficeRoomOccupationByOfficeRoom(@Param("roomId") final long id);
+
 }

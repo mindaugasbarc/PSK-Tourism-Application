@@ -73,20 +73,18 @@ public class PskApplication implements CommandLineRunner {
 		tripResponseRepository.save(trip);
 
 		DateFormat format = new SimpleDateFormat(dateFormat);
-		UserOccupation occupation = new UserOccupation(format.parse("2019-01-01"), format.parse("2019-01-30"));
-		occupation.setUser(user);
-		userOccupationRepository.save(occupation);
-		UserOccupation occupation1 = new UserOccupation(format.parse("2019-01-11"), format.parse("2019-01-16"));
-		occupation1.setUser(user);
-		userOccupationRepository.save(occupation1);
+
+//		UserOccupation occupation1 = new UserOccupation(format.parse("2019-01-11"), format.parse("2019-01-16"));
+//		occupation1.setUser(user);
+//		userOccupationRepository.save(occupation1);
 
 //		Set<Trip> trips = new HashSet<>();
 //		trips.add(trip);
 //		groupTripRepository.save(new GroupTrip("test trip", "the best trip", trips, office, office,
 //				Arrays.asList(new Comment(user, "test", "test", null)), "2018-09-20", "2018-09-22", TripStatus.PENDING, user));
 
-		OfficeRoomOccupation officeRoomOccupation = new OfficeRoomOccupation(format.parse("2019-01-02"), format.parse("2019-01-05"), user, room1);
-		officeRoomOccupationRepository.save(officeRoomOccupation);
+//		OfficeRoomOccupation officeRoomOccupation = new OfficeRoomOccupation(format.parse("2019-01-02"), format.parse("2019-01-05"), user, room1);
+//		officeRoomOccupationRepository.save(officeRoomOccupation);
 
 		User sustauskas = new User();
 		sustauskas.setUserLogin(new UserLogin("sustauskas", "3522b0e7ce705771a1c8a8d89d5f4011"));
