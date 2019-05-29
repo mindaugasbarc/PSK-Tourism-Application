@@ -79,6 +79,11 @@ public class UserOccupationServiceImpl implements UserOccupationService {
         }
     }
 
+    @Override
+    public void markAvailability(long id, String from, String to, boolean status) {
+        markAvailability(id, new TimePeriodRequest(from, to), status);
+    }
+
     private void fixSingleOccupation(UserOccupation occupation, Date start, Date end) {
         if ( !(start.after(occupation.getFrom())) && !(end.before(occupation.getTo())) ) {
             userOccupationRepository.delete(occupation);

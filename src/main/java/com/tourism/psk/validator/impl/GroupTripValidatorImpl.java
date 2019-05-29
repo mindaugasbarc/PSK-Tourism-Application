@@ -7,6 +7,8 @@ import com.tourism.psk.validator.GroupTripValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+
 @Component
 public class GroupTripValidatorImpl implements GroupTripValidator {
 
@@ -20,10 +22,10 @@ public class GroupTripValidatorImpl implements GroupTripValidator {
     @Override
     public void validateGroupTrip(GroupTrip groupTrip) {
         userAvailabilityService.validateUserAvailability(groupTrip.getAdvisor(), groupTrip.getDateFrom(), groupTrip.getDateTo());
-        groupTrip.getTrips().stream()
+        Set<Trip> trips = groupTrip.getUserTrips();
+        trips.stream()
                 .map(Trip::getUser)
                 .forEach(user -> userAvailabilityService
                         .validateUserAvailability(user, groupTrip.getDateFrom(), groupTrip.getDateTo()));
-
     }
 }

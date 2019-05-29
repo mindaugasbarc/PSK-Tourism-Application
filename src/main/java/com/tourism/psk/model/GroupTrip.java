@@ -3,7 +3,6 @@ package com.tourism.psk.model;
 import com.tourism.psk.constants.TripStatus;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -20,8 +19,8 @@ public class GroupTrip {
     private String name;
     private String description;
     @JoinTable
-    @ManyToMany
-    private Set<Trip> trips;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private Set<Trip> userTrips;
     @ManyToOne
     @JoinColumn(name = "officeFrom_id")
     private Office officeFrom;
@@ -44,7 +43,7 @@ public class GroupTrip {
                      Office officeTo, List<Comment> comments, String dateFrom, String dateTo, TripStatus status, User advisor) {
         this.name = name;
         this.description = description;
-        this.trips = trips;
+        this.userTrips = trips;
         this.officeFrom = officeFrom;
         this.officeTo = officeTo;
         this.comments = comments;
@@ -89,12 +88,12 @@ public class GroupTrip {
         this.description = description;
     }
 
-    public Set<Trip> getTrips() {
-        return trips;
+    public Set<Trip> getUserTrips() {
+        return userTrips;
     }
 
-    public void setTrips(Set<Trip> trips) {
-        this.trips = trips;
+    public void setUserTrips(Set<Trip> userTrips) {
+        this.userTrips = userTrips;
     }
 
     public Office getOfficeFrom() {
@@ -158,7 +157,7 @@ public class GroupTrip {
         return "GroupTrip{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", trips=" + trips +
+                ", userTrips=" + userTrips +
                 ", advisor=" + advisor +
                 '}';
     }
@@ -170,12 +169,12 @@ public class GroupTrip {
         GroupTrip groupTrip = (GroupTrip) o;
         return Objects.equals(name, groupTrip.name) &&
                 Objects.equals(description, groupTrip.description) &&
-                Objects.equals(trips, groupTrip.trips) &&
+                Objects.equals(userTrips, groupTrip.userTrips) &&
                 Objects.equals(advisor, groupTrip.advisor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, trips, advisor);
+        return Objects.hash(name, description, userTrips, advisor);
     }
 }

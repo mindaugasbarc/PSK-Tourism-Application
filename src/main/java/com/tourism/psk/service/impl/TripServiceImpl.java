@@ -11,6 +11,7 @@ import com.tourism.psk.repository.OfficeRepository;
 import com.tourism.psk.repository.TripRepository;
 import com.tourism.psk.repository.UserRepository;
 import com.tourism.psk.service.TripService;
+import com.tourism.psk.service.UserOccupationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -29,13 +29,15 @@ public class TripServiceImpl implements TripService {
     private final GroupTripRepository groupTripRepository;
     private final OfficeRepository officeRepository;
     private final UserRepository userRepository;
+    private final UserOccupationService userOccupationService;
 
     @Autowired
-    public TripServiceImpl(TripRepository tripResponseRepository, GroupTripRepository groupTripRepository, OfficeRepository officeRepository, UserRepository userRepository) {
+    public TripServiceImpl(TripRepository tripResponseRepository, GroupTripRepository groupTripRepository, OfficeRepository officeRepository, UserRepository userRepository, UserOccupationService userOccupationService) {
         this.tripResponseRepository = tripResponseRepository;
         this.groupTripRepository = groupTripRepository;
         this.officeRepository = officeRepository;
         this.userRepository = userRepository;
+        this.userOccupationService = userOccupationService;
     }
 
     @Override
@@ -54,8 +56,14 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public void addGroupTrip(GroupTrip groupTrip) {
-        groupTripRepository.save(groupTrip);
+    public GroupTrip addGroupTrip(GroupTrip groupTrip) {
+        GroupTrip result = groupTripRepository.save(groupTrip);
+        final String start = groupTrip.getDateFrom();
+        final String end = groupTrip.getDateTo();
+        groupTrip.getUserTrips().stream().map(Trip::getUser).forEach(user -> {
+            userOccupationService.markAvailability(user.getId(), start, end, false);
+        });
+        return result;
     }
 
     @Override
@@ -77,7 +85,7 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public List<GroupTrip> findGroupTripsForUser(User user) {
-        return groupTripRepository.findAll().stream().filter(groupTrip -> groupTrip.getTrips().stream().map(Trip::getUser)
+        return groupTripRepository.findAll().stream().filter(groupTrip -> groupTrip.getUserTrips().stream().map(Trip::getUser)
                 .anyMatch(user1 -> user1.equals(user)) || groupTrip.getAdvisor().equals(user))
                 .collect(toList());
     }

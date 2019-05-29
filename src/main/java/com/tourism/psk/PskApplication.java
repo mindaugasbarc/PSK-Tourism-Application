@@ -80,12 +80,26 @@ public class PskApplication implements CommandLineRunner {
 		occupation1.setUser(user);
 		userOccupationRepository.save(occupation1);
 
-		Set<Trip> trips = new HashSet<>();
-		trips.add(trip);
-		groupTripRepository.save(new GroupTrip("test trip", "the best trip", trips, office, office,
-				Arrays.asList(new Comment(user, "test", "test", null)), "2018-09-20", "2018-09-22", TripStatus.PENDING, user));
+//		Set<Trip> trips = new HashSet<>();
+//		trips.add(trip);
+//		groupTripRepository.save(new GroupTrip("test trip", "the best trip", trips, office, office,
+//				Arrays.asList(new Comment(user, "test", "test", null)), "2018-09-20", "2018-09-22", TripStatus.PENDING, user));
 
 		OfficeRoomOccupation officeRoomOccupation = new OfficeRoomOccupation(format.parse("2019-01-02"), format.parse("2019-01-05"), user, room1);
 		officeRoomOccupationRepository.save(officeRoomOccupation);
+
+//		User sustauskas = new User();
+//		sustauskas.setUserLogin(new UserLogin("sustauskas", "passwordas"));
+//		sustauskas.setRole(UserRole.DEFAULT);
+//		sustauskas.setEmail("vytautas@example.com");
+//		sustauskas.setFullname("Vytautas Šustauskas");
+//		userRepository.save(sustauskas);
+//
+//		User tautvydas = new User();
+//		tautvydas.setUserLogin(new UserLogin("tautvydas", "passwordas"));
+//		tautvydas.setFullname("Tautvydas Stukėnas");
+//		tautvydas.setEmail("tautvydas@example.com");
+//		tautvydas.setRole(UserRole.ADVISOR);
+//		userRepository.save(tautvydas);
 	}
 }

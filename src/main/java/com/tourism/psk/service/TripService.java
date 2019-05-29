@@ -16,7 +16,7 @@ public interface TripService {
 
     void save(Trip tripResponse);
 
-    void addGroupTrip(GroupTrip groupTrip);
+    GroupTrip addGroupTrip(GroupTrip groupTrip);
 
     void addGroupTripThroughRequest(GroupTripRequest groupTripRequest);
 
