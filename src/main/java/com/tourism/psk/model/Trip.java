@@ -13,7 +13,7 @@ public class Trip {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Document> documents;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(orphanRemoval = true)
     private List<OfficeRoom> houserooms;
 
     @ManyToOne
