@@ -32,4 +32,6 @@ public interface TripService {
     Trip confirmTrip(User user, Long tripId);
 
     Trip changeTripStatus(User user, Long tripId, boolean cancel);
+
+    GroupTrip forceUpdate(long id, GroupTrip groupTrip);
 }

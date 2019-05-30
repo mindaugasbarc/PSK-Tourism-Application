@@ -36,7 +36,7 @@ public class GroupTripController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(code = HttpStatus.CREATED)
     public GroupTrip addGroupTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken, @RequestBody final GroupTrip groupTrip) {
-        sessionService.authenticate(authToken);
+        //sessionService.authenticate(authToken);
         groupTripValidator.validateGroupTrip(groupTrip);
         return tripService.addGroupTrip(groupTrip);
     }
@@ -99,5 +99,12 @@ public class GroupTripController {
                            @PathVariable(value = "id") Long tripId) {
         Session session = sessionService.authenticate(authToken);
         return tripService.changeTripStatus(session.getUser(), tripId, false);
+    }
+
+    @RequestMapping(value = "/group-trip/{id}:force", method = RequestMethod.PUT)
+    public GroupTrip forceUpdate(@PathVariable("id") long id, @RequestBody GroupTrip groupTrip,
+                                 @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        sessionService.authenticate(authToken);
+        return tripService.forceUpdate(id, groupTrip);
     }
 }

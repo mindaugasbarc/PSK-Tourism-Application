@@ -1,16 +1,16 @@
 package com.tourism.psk.service.impl;
 
-import com.tourism.psk.model.OfficeRoom;
-import com.tourism.psk.model.OfficeRoomOccupation;
-import com.tourism.psk.model.User;
+import com.tourism.psk.model.*;
 import com.tourism.psk.repository.OfficeRoomOccupationRepository;
 import com.tourism.psk.service.HouseRoomAvailabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -31,8 +31,7 @@ public class HouseRoomAvailabilityServiceImpl implements HouseRoomAvailabilitySe
         try {
             Date fromDateDate = dateFormat.parse(fromDate);
             Date toDateDate = dateFormat.parse(toDate);
-            if(officeRoomOccupationRepository.getOfficeRoomOccupationByOfficeRoom(officeRoom.getId()).stream().anyMatch(officeRoomOccupation -> (officeRoomOccupation.getTo().after(fromDateDate) || officeRoomOccupation.getTo().equals(fromDateDate) && officeRoomOccupation.getTo().before(toDateDate) || officeRoomOccupation.getTo().equals(toDateDate))
-                    || (officeRoomOccupation.getFrom().before(fromDateDate) || officeRoomOccupation.getFrom().equals(fromDateDate) && officeRoomOccupation.getTo().after(toDateDate) || officeRoomOccupation.getTo().equals(toDateDate)))) {
+            if (officeRoomOccupationRepository.getOfficeRoomOccupationsInPeriod(officeRoom.getId(), fromDateDate, toDateDate).size() != 0) {
                 throw new RuntimeException(officeRoom.getName()  + " is occupied from " + fromDate + " to " + toDate);
             }
         } catch (ParseException ex) {
@@ -51,7 +50,27 @@ public class HouseRoomAvailabilityServiceImpl implements HouseRoomAvailabilitySe
         } catch(ParseException ex) {
             throw new RuntimeException(ex);
         }
-
-
     }
+
+    @Override
+    public void removeHouseRoomAvailabilities(GroupTrip groupTrip) {
+        groupTrip.getUserTrips().stream().map(Trip::getHouserooms)
+                .flatMap(Collection::stream).forEach(officeRoom -> {
+            try {
+                List<OfficeRoomOccupation> occupations = officeRoomOccupationRepository.getOfficeRoomOccupationsInPeriod(
+                        officeRoom.getId(),
+                        dateFormat.parse(groupTrip.getDateFrom()),
+                        dateFormat.parse(groupTrip.getDateTo())
+                );
+                if (occupations.size() != 1) {
+                    throw new RuntimeException("Multiple occupation on the same date");
+                }
+                officeRoomOccupationRepository.delete(occupations.get(0));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
 }
