@@ -212,4 +212,21 @@ public class TripServiceImpl implements TripService {
             return tripRepository.save(trip);
         } else return null;
     }
+
+    @Override
+    @Transactional
+    public GroupTrip forceUpdate(long id, GroupTrip groupTrip) {
+        Optional<GroupTrip> existingOptional = groupTripRepository.findById(groupTrip.getId());
+        if (!existingOptional.isPresent()) {
+            throw new TripNotFoundException();
+        }
+        GroupTrip existing = existingOptional.get();
+        existing.getUserTrips().forEach(trip -> {
+            userOccupationService.markAvailability(trip.getUser().getId(), existing.getDateFrom(), existing.getDateTo(), true);
+        });
+        houseRoomAvailabilityService.removeHouseRoomAvailabilities(existing);
+        groupTripValidator.validateGroupTrip(groupTrip);
+        groupTripRepository.delete(existing);
+        return addGroupTrip(groupTrip);
+    }
 }

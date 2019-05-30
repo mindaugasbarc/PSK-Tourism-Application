@@ -1,16 +1,16 @@
 package com.tourism.psk.service.impl;
 
-import com.tourism.psk.model.OfficeRoom;
-import com.tourism.psk.model.OfficeRoomOccupation;
-import com.tourism.psk.model.User;
+import com.tourism.psk.model.*;
 import com.tourism.psk.repository.OfficeRoomOccupationRepository;
 import com.tourism.psk.service.HouseRoomAvailabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -70,7 +70,27 @@ public class HouseRoomAvailabilityServiceImpl implements HouseRoomAvailabilitySe
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-
-
     }
+
+    @Override
+    public void removeHouseRoomAvailabilities(GroupTrip groupTrip) {
+        groupTrip.getUserTrips().stream().map(Trip::getHouserooms)
+                .flatMap(Collection::stream).forEach(officeRoom -> {
+            try {
+                List<OfficeRoomOccupation> occupations = officeRoomOccupationRepository.getOfficeRoomOccupationsInPeriod(
+                        officeRoom.getId(),
+                        dateFormat.parse(groupTrip.getDateFrom()),
+                        dateFormat.parse(groupTrip.getDateTo())
+                );
+                if (occupations.size() != 1) {
+                    throw new RuntimeException("Multiple occupation on the same date");
+                }
+                officeRoomOccupationRepository.delete(occupations.get(0));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
 }
