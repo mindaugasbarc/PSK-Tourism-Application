@@ -41,6 +41,14 @@ public class GroupTripController {
         return tripService.addGroupTrip(groupTrip);
     }
 
+    @RequestMapping(value = "/group-trip", method = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void updateGroupTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken,
+                                @RequestBody GroupTrip groupTrip) {
+        sessionService.authenticate(authToken);
+        tripService.updateGroupTrip(groupTrip);
+    }
+
     @RequestMapping(value = "/group-trip", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<GroupTrip> findGroupTrips(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
@@ -59,14 +67,6 @@ public class GroupTripController {
     public GroupTrip findGroupTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken, @PathVariable("id") long groupTripId) {
         sessionService.authenticate(authToken);
         return tripService.findGroupTrip(groupTripId);
-    }
-
-    @RequestMapping(value = "/group-trip", method = RequestMethod.PUT,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateGroupTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken,
-                                @RequestBody GroupTrip groupTrip) {
-        sessionService.authenticate(authToken);
-        tripService.addGroupTrip(groupTrip);
     }
 
     @RequestMapping(value = "/group-trip/{id}/comment", method = RequestMethod.POST)

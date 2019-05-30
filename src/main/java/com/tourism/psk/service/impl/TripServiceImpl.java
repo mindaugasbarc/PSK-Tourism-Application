@@ -8,9 +8,11 @@ import com.tourism.psk.repository.*;
 import com.tourism.psk.service.HouseRoomAvailabilityService;
 import com.tourism.psk.service.TripService;
 import com.tourism.psk.service.UserOccupationService;
+import com.tourism.psk.validator.GroupTripValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -28,6 +30,7 @@ public class TripServiceImpl implements TripService {
     private final CommentRepository commentRepository;
     private final OfficeRoomRepository officeRoomRepository;
     private final TripRepository tripRepository;
+    private final GroupTripValidator groupTripValidator;
 
     @Autowired
     public TripServiceImpl(TripRepository tripResponseRepository,
@@ -38,7 +41,7 @@ public class TripServiceImpl implements TripService {
                            HouseRoomAvailabilityService houseRoomAvailabilityService,
                            CommentRepository commentRepository,
                            OfficeRoomRepository officeRoomRepository,
-                           TripRepository tripRepository) {
+                           TripRepository tripRepository, GroupTripValidator groupTripValidator) {
         this.tripResponseRepository = tripResponseRepository;
         this.groupTripRepository = groupTripRepository;
         this.officeRepository = officeRepository;
@@ -48,6 +51,7 @@ public class TripServiceImpl implements TripService {
         this.commentRepository = commentRepository;
         this.officeRoomRepository = officeRoomRepository;
         this.tripRepository = tripRepository;
+        this.groupTripValidator = groupTripValidator;
     }
 
     @Override
@@ -93,6 +97,18 @@ public class TripServiceImpl implements TripService {
                         houseRoomAvailabilityService.addHouseRoomAvailabilitiesIfValid(trip.getHouserooms(), trip.getUser(), groupTrip.getDateFrom(), groupTrip.getDateTo()));
 
         return result;
+    }
+
+    @Override
+    @Transactional
+    public GroupTrip updateGroupTrip(GroupTrip groupTrip) {
+        GroupTrip oldGroupTrip = groupTripRepository.findById(groupTrip.getId()).orElseThrow(TripNotFoundException::new);
+        oldGroupTrip.getUserTrips().forEach(trip -> houseRoomAvailabilityService.removeHouseRoomAvailabilities(trip.getHouserooms(), trip.getUser(), oldGroupTrip.getDateFrom(), oldGroupTrip.getDateTo()));
+        oldGroupTrip.getUserTrips().stream().map(Trip::getUser).forEach(user ->
+                userOccupationService.markAvailability(user.getId(), oldGroupTrip.getDateFrom(), oldGroupTrip.getDateTo(), true));
+        groupTripValidator.validateGroupTrip(groupTrip);
+        addGroupTrip(groupTrip);
+        return groupTrip;
     }
 
     @Override

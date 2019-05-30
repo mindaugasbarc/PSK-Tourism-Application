@@ -14,6 +14,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 public class HouseRoomAvailabilityServiceImpl implements HouseRoomAvailabilityService {
 
@@ -31,9 +33,9 @@ public class HouseRoomAvailabilityServiceImpl implements HouseRoomAvailabilitySe
         try {
             Date fromDateDate = dateFormat.parse(fromDate);
             Date toDateDate = dateFormat.parse(toDate);
-            if(officeRoomOccupationRepository.getOfficeRoomOccupationByOfficeRoom(officeRoom.getId()).stream().anyMatch(officeRoomOccupation -> (officeRoomOccupation.getTo().after(fromDateDate) || officeRoomOccupation.getTo().equals(fromDateDate) && officeRoomOccupation.getTo().before(toDateDate) || officeRoomOccupation.getTo().equals(toDateDate))
-                    || (officeRoomOccupation.getFrom().before(fromDateDate) || officeRoomOccupation.getFrom().equals(fromDateDate) && officeRoomOccupation.getTo().after(toDateDate) || officeRoomOccupation.getTo().equals(toDateDate)))) {
-                throw new RuntimeException(officeRoom.getName()  + " is occupied from " + fromDate + " to " + toDate);
+
+            if (!officeRoomOccupationRepository.getOfficeRoomOccupationsInPeriod(officeRoom.getId(), fromDateDate, toDateDate).isEmpty()) {
+                throw new RuntimeException(officeRoom.getName() + " is occupied from " + fromDate + " to " + toDate);
             }
         } catch (ParseException ex) {
             throw new RuntimeException(ex);
@@ -48,7 +50,24 @@ public class HouseRoomAvailabilityServiceImpl implements HouseRoomAvailabilitySe
                 OfficeRoomOccupation officeRoomOccupation = new OfficeRoomOccupation(dateFormat.parse(fromDate), dateFormat.parse(toDate), user, officeRoom);
                 officeRoomOccupationRepository.save(officeRoomOccupation);
             }
-        } catch(ParseException ex) {
+        } catch (ParseException ex) {
+            throw new RuntimeException(ex);
+        }
+
+
+    }
+
+    @Override
+    public void removeHouseRoomAvailabilities(List<OfficeRoom> officeRooms, User user, String fromDate, String toDate) {
+        try {
+            Date fromDateDate = dateFormat.parse(fromDate);
+            Date toDateDate = dateFormat.parse(toDate);
+            officeRoomOccupationRepository.deleteAll(officeRooms.stream()
+                    .map(officeRoom -> officeRoomOccupationRepository.getOfficeRoomOccupationsInPeriod(officeRoom.getId(), fromDateDate, toDateDate))
+                    .flatMap(List::stream)
+                    .collect(toList()));
+
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
 

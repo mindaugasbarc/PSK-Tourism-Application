@@ -9,4 +9,5 @@ public interface HouseRoomAvailabilityService {
 
     void validateHouseRoomAvailability(OfficeRoom officeRoom, String fromDate, String toDate);
     void addHouseRoomAvailabilitiesIfValid(List<OfficeRoom> officeRooms, User user, String fromDate, String toDate);
+    void removeHouseRoomAvailabilities(List<OfficeRoom> officeRooms, User user, String fromDate, String toDate);
 }
