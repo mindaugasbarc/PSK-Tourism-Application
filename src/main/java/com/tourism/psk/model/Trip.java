@@ -1,6 +1,7 @@
 package com.tourism.psk.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -20,6 +21,12 @@ public class Trip {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @NotNull
+    private Boolean confirmed;
+
+    @NotNull
+    private Boolean requestedCancel;
+
     public long getId() {
         return id;
     }
@@ -32,10 +39,12 @@ public class Trip {
         this.houserooms = houserooms;
     }
 
-    public Trip(List<Document> documents, List<OfficeRoom> houserooms, User user) {
+    public Trip(List<Document> documents, List<OfficeRoom> houserooms, User user, Boolean confirmed, Boolean requestedCancel) {
         this.documents = documents;
         this.houserooms = houserooms;
         this.user = user;
+        this.confirmed = confirmed;
+        this.requestedCancel = requestedCancel;
     }
 
     public void setId(long id) {
@@ -54,8 +63,6 @@ public class Trip {
         return houserooms;
     }
 
-
-
     public void setHouserooms(List<OfficeRoom> houserooms) {
         this.houserooms = houserooms;
     }
@@ -66,5 +73,21 @@ public class Trip {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Boolean getConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(Boolean confirmed) {
+        this.confirmed = confirmed;
+    }
+
+    public Boolean getRequestedCancel() {
+        return requestedCancel;
+    }
+
+    public void setRequestedCancel(Boolean requestedCancel) {
+        this.requestedCancel = requestedCancel;
     }
 }

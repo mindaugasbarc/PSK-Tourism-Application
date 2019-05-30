@@ -28,4 +28,8 @@ public interface TripService {
     void updateTripDocument(User user, long tripId, long documentId, Document updatedDocument);
 
     Comment addComment(long groupTripId, Comment comment);
+
+    Trip confirmTrip(User user, Long tripId);
+
+    Trip changeTripStatus(User user, Long tripId, boolean cancel);
 }

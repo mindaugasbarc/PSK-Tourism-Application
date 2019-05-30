@@ -27,6 +27,7 @@ public class TripServiceImpl implements TripService {
     private final HouseRoomAvailabilityService houseRoomAvailabilityService;
     private final CommentRepository commentRepository;
     private final OfficeRoomRepository officeRoomRepository;
+    private final TripRepository tripRepository;
 
     @Autowired
     public TripServiceImpl(TripRepository tripResponseRepository,
@@ -36,7 +37,8 @@ public class TripServiceImpl implements TripService {
                            UserOccupationService userOccupationService,
                            HouseRoomAvailabilityService houseRoomAvailabilityService,
                            CommentRepository commentRepository,
-                           OfficeRoomRepository officeRoomRepository) {
+                           OfficeRoomRepository officeRoomRepository,
+                           TripRepository tripRepository) {
         this.tripResponseRepository = tripResponseRepository;
         this.groupTripRepository = groupTripRepository;
         this.officeRepository = officeRepository;
@@ -45,6 +47,7 @@ public class TripServiceImpl implements TripService {
         this.houseRoomAvailabilityService = houseRoomAvailabilityService;
         this.commentRepository = commentRepository;
         this.officeRoomRepository = officeRoomRepository;
+        this.tripRepository = tripRepository;
     }
 
     @Override
@@ -173,5 +176,24 @@ public class TripServiceImpl implements TripService {
         return trip.getDocuments().stream()
                 .filter(document -> document.getId() == documentId).findFirst()
                 .orElseThrow(DocumentNotFoundException::new);
+    }
+
+    @Override
+    public Trip confirmTrip(User user, Long tripId) {
+        Trip trip = tripRepository.getOne(tripId);
+        if (trip.getUser().getId() == user.getId()) {
+            trip.setConfirmed(true);
+            return tripRepository.save(trip);
+        } else return null;
+    }
+
+    @Override
+    public Trip changeTripStatus(User user, Long tripId, boolean cancel) {
+        Trip trip = tripRepository.getOne(tripId);
+        if (trip.getUser().getId() == user.getId()) {
+            trip.setRequestedCancel(cancel);
+            if (cancel) trip.setConfirmed(false);
+            return tripRepository.save(trip);
+        } else return null;
     }
 }

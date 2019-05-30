@@ -4,6 +4,7 @@ import com.tourism.psk.constants.Globals;
 import com.tourism.psk.model.Comment;
 import com.tourism.psk.model.GroupTrip;
 import com.tourism.psk.model.Session;
+import com.tourism.psk.model.Trip;
 import com.tourism.psk.model.request.GroupTripRequest;
 import com.tourism.psk.service.SessionService;
 import com.tourism.psk.service.TripService;
@@ -74,5 +75,29 @@ public class GroupTripController {
                                     @RequestBody Comment comment) {
         sessionService.authenticate(authToken);
         return tripService.addComment(id, comment);
+    }
+
+    @RequestMapping(value = "/trip/{id}:confirm", method = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Trip confirmTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken,
+                            @PathVariable(value = "id") Long tripId) {
+        Session session = sessionService.authenticate(authToken);
+        return tripService.confirmTrip(session.getUser(), tripId);
+    }
+
+    @RequestMapping(value = "/trip/{id}:cancel", method = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Trip cancelTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken,
+                            @PathVariable(value = "id") Long tripId) {
+        Session session = sessionService.authenticate(authToken);
+        return tripService.changeTripStatus(session.getUser(), tripId, true);
+    }
+
+    @RequestMapping(value = "/trip/{id}:restore", method = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Trip restoreTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken,
+                           @PathVariable(value = "id") Long tripId) {
+        Session session = sessionService.authenticate(authToken);
+        return tripService.changeTripStatus(session.getUser(), tripId, false);
     }
 }
