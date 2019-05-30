@@ -59,25 +59,18 @@ public class PskApplication implements CommandLineRunner {
 		userLogin.setUser(user);
 		userRepository.save(user);
 
-		List<OfficeRoom> office1rooms = new ArrayList<>();
-		office1rooms.add(new OfficeRoom("Apartment room 1-1"));
-		office1rooms.add(new OfficeRoom("Apartment room 1-2"));
-		Office office1 = new Office("Vilnius Office", "Didlaukio g. 69, Vilnius", office1rooms);
-		officeRepository.save(office1);
+		Office office1 = officeRepository.save(new Office("Vilnius Office", "Didlaukio g. 69, Vilnius", new ArrayList<>()));
+		office1.addHouseRoom(new OfficeRoom("Apartment room 1-1"));
+		office1.addHouseRoom(new OfficeRoom("Apartment room 1-2"));
 
-		List<OfficeRoom> office2rooms = new ArrayList<>();
-		office2rooms.add(new OfficeRoom("Fancy apartment room"));
-		Office office2 = new Office("Paris Office", "Champ de Mars, 5 Avenue Anatole, Paris", office2rooms);
-		officeRepository.save(office2);
+		Office office2 = officeRepository.save(new Office("Paris Office", "Champ de Mars, 5 Avenue Anatole, Paris", new ArrayList<>()));
+		office2.addHouseRoom(new OfficeRoom("Fancy apartment room"));
 
-		List<OfficeRoom> office3rooms = new ArrayList<>();
-		office3rooms.add(new OfficeRoom("Office apartment room 1-1"));
-		office3rooms.add(new OfficeRoom("Office apartment room 1-2"));
-		office3rooms.add(new OfficeRoom("Fancy apartment room 2-1"));
-		Office office3 = new Office("Copenhagen Office", "Charlotte Ammundsens Pl. 3, København", office3rooms);
-		officeRepository.save(office3);
+		Office office3 = officeRepository.save(new Office("Copenhagen Office", "Charlotte Ammundsens Pl. 3, København", new ArrayList<>()));
+		office3.addHouseRoom(new OfficeRoom("Office apartment room 1-1"));
+		office3.addHouseRoom(new OfficeRoom("Office apartment room 1-2"));
+		office3.addHouseRoom(new OfficeRoom("Fancy apartment room 2-1"));
 
-		Office office4 = new Office("Kaunas Office", "Karaliaus Mindaugo pr. 50, Kaunas", new ArrayList<>());
-		officeRepository.save(office4);
+		Office office4 = officeRepository.save(new Office("Kaunas Office", "Karaliaus Mindaugo pr. 50, Kaunas", new ArrayList<>()));
 	}
 }
