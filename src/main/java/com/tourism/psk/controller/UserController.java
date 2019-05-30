@@ -80,4 +80,9 @@ public class UserController {
         sessionService.authenticate(authToken);
         userOccupationService.markAvailability(id, timePeriod, status);
     }
+
+    @RequestMapping(value = "/user/{userId}", method = RequestMethod.DELETE)
+    public void deleteUser(@PathVariable long userId, @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        userService.delete(userId,sessionService.authenticate(authToken).getUser());
+    }
 }

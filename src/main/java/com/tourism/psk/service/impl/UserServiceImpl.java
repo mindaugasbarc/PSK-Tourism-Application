@@ -97,6 +97,18 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id);
     }
 
+    @Override
+    public void delete(long userId, User initiatedBY) {
+        User user = userRepository.findById(userId);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+        if (initiatedBY.getRole() != UserRole.ADMIN) {
+            throw new ActionNotAuthorizedException("Initiating user must be an admin");
+        }
+        userRepository.delete(user);
+    }
+
     private void validateUserRegistrationData(UserRegistrationRequest userDetails) {
         if (userDetails.getUsername().length() < minUsernameLength) {
             throw new IllegalArgumentException("Username must be at least " + minUsernameLength + " characters");

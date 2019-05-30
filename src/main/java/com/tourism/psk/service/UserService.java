@@ -13,4 +13,5 @@ public interface UserService {
     User login(UserLogin userLogin);
     User register(UserRegistrationRequest userDetails);
     User update(User user, long id);
+    void delete(long userId, User initiatedBy);
 }
