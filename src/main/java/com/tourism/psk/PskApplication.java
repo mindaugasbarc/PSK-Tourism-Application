@@ -52,12 +52,22 @@ public class PskApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		User user = new User("Admin", "admin@example.com", UserRole.DEFAULT);
+		User user1 = new User("Admin", "admin@example.com", UserRole.ADVISOR);
 		// admin : password
-		UserLogin userLogin = new UserLogin("admin", "5f4dcc3b5aa765d61d8327deb882cf99");
-		user.setUserLogin(userLogin);
-		userLogin.setUser(user);
-		userRepository.save(user);
+		user1.setUserLogin(new UserLogin("admin", "5f4dcc3b5aa765d61d8327deb882cf99"));
+		user1.getUserLogin().setUser(user1);
+		userRepository.save(user1);
+
+		User user2 = new User("Tautvydas Stukėnas", "tautvydas@example.com", UserRole.ADVISOR);
+		user2.setUserLogin(new UserLogin("tautvydas", "977a3356360938af3ea81535dfd64889"));
+		user2.getUserLogin().setUser(user2);
+		userRepository.save(user2);
+
+		User user3 = new User("Guest", "guest@example.com", UserRole.DEFAULT);
+		// guest : 111111
+		user3.setUserLogin(new UserLogin("guest", "96e79218965eb72c92a549dd5a330112"));
+		user3.getUserLogin().setUser(user3);
+		userRepository.save(user3);
 
 		Office office1 = officeRepository.save(new Office("Vilnius Office", "Didlaukio g. 69, Vilnius", new ArrayList<>()));
 		office1.addHouseRoom(new OfficeRoom("Apartment room 1-1"));
