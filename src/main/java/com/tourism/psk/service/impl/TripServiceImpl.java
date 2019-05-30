@@ -2,6 +2,7 @@ package com.tourism.psk.service.impl;
 
 import com.tourism.psk.constants.UserRole;
 import com.tourism.psk.exception.DocumentNotFoundException;
+import com.tourism.psk.exception.EntityModifiedException;
 import com.tourism.psk.exception.TripNotFoundException;
 import com.tourism.psk.model.*;
 import com.tourism.psk.repository.*;
@@ -10,6 +11,7 @@ import com.tourism.psk.service.TripService;
 import com.tourism.psk.service.UserOccupationService;
 import com.tourism.psk.validator.GroupTripValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -102,13 +104,19 @@ public class TripServiceImpl implements TripService {
     @Override
     @Transactional
     public GroupTrip updateGroupTrip(GroupTrip groupTrip) {
-        GroupTrip oldGroupTrip = groupTripRepository.findById(groupTrip.getId()).orElseThrow(TripNotFoundException::new);
-        oldGroupTrip.getUserTrips().forEach(trip -> houseRoomAvailabilityService.removeHouseRoomAvailabilities(trip.getHouserooms(), trip.getUser(), oldGroupTrip.getDateFrom(), oldGroupTrip.getDateTo()));
-        oldGroupTrip.getUserTrips().stream().map(Trip::getUser).forEach(user ->
-                userOccupationService.markAvailability(user.getId(), oldGroupTrip.getDateFrom(), oldGroupTrip.getDateTo(), true));
-        groupTripValidator.validateGroupTrip(groupTrip);
-        addGroupTrip(groupTrip);
-        return groupTrip;
+        try {
+            GroupTrip oldGroupTrip = groupTripRepository.findById(groupTrip.getId()).orElseThrow(TripNotFoundException::new);
+            oldGroupTrip.getUserTrips().forEach(trip -> houseRoomAvailabilityService.removeHouseRoomAvailabilities(trip.getHouserooms(), trip.getUser(), oldGroupTrip.getDateFrom(), oldGroupTrip.getDateTo()));
+            oldGroupTrip.getUserTrips().stream().map(Trip::getUser).forEach(user ->
+                    userOccupationService.markAvailability(user.getId(), oldGroupTrip.getDateFrom(), oldGroupTrip.getDateTo(), true));
+            groupTripValidator.validateGroupTrip(groupTrip);
+            addGroupTrip(groupTrip);
+            return groupTrip;
+        }
+        catch (ObjectOptimisticLockingFailureException exc) {
+            System.out.println(exc.getClass().getName());
+            throw new EntityModifiedException();
+        }
     }
 
     @Override

@@ -13,6 +13,7 @@ import java.util.Set;
 public class GroupTrip {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private long id;
 
     @Enumerated(EnumType.STRING)
@@ -37,6 +38,10 @@ public class GroupTrip {
 
     @NotNull
     private String dateFrom;
+
+    @Column(name = "OPT_LOCK_VERSION")
+    @Version
+    private int version;
 
 
     @NotNull
@@ -148,6 +153,14 @@ public class GroupTrip {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     @Override
