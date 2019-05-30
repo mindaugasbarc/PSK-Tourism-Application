@@ -72,14 +72,17 @@ public class PskApplication implements CommandLineRunner {
 		Office office1 = officeRepository.save(new Office("Vilnius Office", "Didlaukio g. 69, Vilnius", new ArrayList<>()));
 		office1.addHouseRoom(new OfficeRoom("Apartment room 1-1"));
 		office1.addHouseRoom(new OfficeRoom("Apartment room 1-2"));
+		officeRepository.save(office1);
 
 		Office office2 = officeRepository.save(new Office("Paris Office", "Champ de Mars, 5 Avenue Anatole, Paris", new ArrayList<>()));
 		office2.addHouseRoom(new OfficeRoom("Fancy apartment room"));
+		officeRepository.save(office2);
 
 		Office office3 = officeRepository.save(new Office("Copenhagen Office", "Charlotte Ammundsens Pl. 3, København", new ArrayList<>()));
 		office3.addHouseRoom(new OfficeRoom("Office apartment room 1-1"));
 		office3.addHouseRoom(new OfficeRoom("Office apartment room 1-2"));
 		office3.addHouseRoom(new OfficeRoom("Fancy apartment room 2-1"));
+		officeRepository.save(office3);
 
 		Office office4 = officeRepository.save(new Office("Kaunas Office", "Karaliaus Mindaugo pr. 50, Kaunas", new ArrayList<>()));
 	}
