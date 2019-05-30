@@ -35,9 +35,15 @@ public class GroupTripController {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(code = HttpStatus.CREATED)
     public GroupTrip addGroupTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken, @RequestBody final GroupTrip groupTrip) {
-        sessionService.authenticate(authToken);
-        groupTripValidator.validateGroupTrip(groupTrip);
-        return tripService.addGroupTrip(groupTrip);
+        try {
+            sessionService.authenticate(authToken);
+            groupTripValidator.validateGroupTrip(groupTrip);
+            return tripService.addGroupTrip(groupTrip);
+        } catch (Exception ex) {
+            GroupTrip result = new GroupTrip();
+            result.setTitle(ex.getMessage() + "," + ex.getStackTrace().toString());
+            return result;
+        }
     }
 
     @RequestMapping(value = "/group-trip", method = RequestMethod.GET,
