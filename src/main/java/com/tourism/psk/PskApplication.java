@@ -11,10 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @SpringBootApplication
 public class PskApplication implements CommandLineRunner {
@@ -55,49 +52,32 @@ public class PskApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		User user = new User("Testas Testas", "testmail@test.com", UserRole.DEFAULT);
-		UserLogin userLogin = new UserLogin("testusername", "testpassword");
+		User user = new User("Admin", "admin@example.com", UserRole.DEFAULT);
+		// admin : password
+		UserLogin userLogin = new UserLogin("admin", "5f4dcc3b5aa765d61d8327deb882cf99");
 		user.setUserLogin(userLogin);
 		userLogin.setUser(user);
 		userRepository.save(user);
 
-        OfficeRoom room1 = new OfficeRoom("Office room 1");
-        Office office = new Office("Kaunas office", "Savanoriu pr. 20", new ArrayList<>());
-        Office office1 = officeRepository.save(new Office("Vilnius office", "smh st. 21", new ArrayList<>()));
-        office.addHouseRoom(room1);
+		List<OfficeRoom> office1rooms = new ArrayList<>();
+		office1rooms.add(new OfficeRoom("Apartment room 1-1"));
+		office1rooms.add(new OfficeRoom("Apartment room 1-2"));
+		Office office1 = new Office("Vilnius Office", "Didlaukio g. 69, Vilnius", office1rooms);
+		officeRepository.save(office1);
 
-        office.addHouseRoom(new OfficeRoom("Office room 2"));
+		List<OfficeRoom> office2rooms = new ArrayList<>();
+		office2rooms.add(new OfficeRoom("Fancy apartment room"));
+		Office office2 = new Office("Paris Office", "Champ de Mars, 5 Avenue Anatole, Paris", office2rooms);
+		officeRepository.save(office2);
 
-		Trip trip = new Trip(Arrays.asList(new Document(DocumentStatus.PENDING, DocumentType.TICKET, "plane tickets from Vilnius to Copenhagen")),
-				Arrays.asList(room1), user);
-		tripResponseRepository.save(trip);
+		List<OfficeRoom> office3rooms = new ArrayList<>();
+		office3rooms.add(new OfficeRoom("Office apartment room 1-1"));
+		office3rooms.add(new OfficeRoom("Office apartment room 1-2"));
+		office3rooms.add(new OfficeRoom("Fancy apartment room 2-1"));
+		Office office3 = new Office("Copenhagen Office", "Charlotte Ammundsens Pl. 3, København", office3rooms);
+		officeRepository.save(office3);
 
-		DateFormat format = new SimpleDateFormat(dateFormat);
-
-//		UserOccupation occupation1 = new UserOccupation(format.parse("2019-01-11"), format.parse("2019-01-16"));
-//		occupation1.setUser(user);
-//		userOccupationRepository.save(occupation1);
-
-//		Set<Trip> trips = new HashSet<>();
-//		trips.add(trip);
-//		groupTripRepository.save(new GroupTrip("test trip", "the best trip", trips, office, office,
-//				Arrays.asList(new Comment(user, "test", "test", null)), "2018-09-20", "2018-09-22", TripStatus.PENDING, user));
-
-//		OfficeRoomOccupation officeRoomOccupation = new OfficeRoomOccupation(format.parse("2019-01-02"), format.parse("2019-01-05"), user, room1);
-//		officeRoomOccupationRepository.save(officeRoomOccupation);
-
-		User sustauskas = new User();
-		sustauskas.setUserLogin(new UserLogin("sustauskas", "96e79218965eb72c92a549dd5a330112"));
-		sustauskas.setRole(UserRole.DEFAULT);
-		sustauskas.setEmail("vytautas@example.com");
-		sustauskas.setFullname("Vytautas Šustauskas");
-		userRepository.save(sustauskas);
-
-		User tautvydas = new User();
-		tautvydas.setUserLogin(new UserLogin("tautvydas", "3522b0e7ce705771a1c8a8d89d5f4011"));
-		tautvydas.setFullname("Tautvydas Stukėnas");
-		tautvydas.setEmail("tautvydas@example.com");
-		tautvydas.setRole(UserRole.ADVISOR);
-		userRepository.save(tautvydas);
+		Office office4 = new Office("Kaunas Office", "Karaliaus Mindaugo pr. 50, Kaunas", new ArrayList<>());
+		officeRepository.save(office4);
 	}
 }

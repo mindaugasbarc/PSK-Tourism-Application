@@ -1,5 +1,6 @@
 package com.tourism.psk.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -12,10 +13,13 @@ public class Office {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private String name;
+
     private String address;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "office")
-    @JsonManagedReference
+    @JsonIgnore
     private List<OfficeRoom> houseRooms;
 
     public Office() {

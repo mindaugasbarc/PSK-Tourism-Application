@@ -28,6 +28,7 @@ public class TripServiceImpl implements TripService {
     private final UserOccupationService userOccupationService;
     private final HouseRoomAvailabilityService houseRoomAvailabilityService;
     private final CommentRepository commentRepository;
+    private final OfficeRoomRepository officeRoomRepository;
 
     @Autowired
     public TripServiceImpl(TripRepository tripResponseRepository,
@@ -35,7 +36,9 @@ public class TripServiceImpl implements TripService {
                            OfficeRepository officeRepository,
                            UserRepository userRepository,
                            UserOccupationService userOccupationService,
-                           HouseRoomAvailabilityService houseRoomAvailabilityService, CommentRepository commentRepository) {
+                           HouseRoomAvailabilityService houseRoomAvailabilityService,
+                           CommentRepository commentRepository,
+                           OfficeRoomRepository officeRoomRepository) {
         this.tripResponseRepository = tripResponseRepository;
         this.groupTripRepository = groupTripRepository;
         this.officeRepository = officeRepository;
@@ -43,6 +46,7 @@ public class TripServiceImpl implements TripService {
         this.userOccupationService = userOccupationService;
         this.houseRoomAvailabilityService = houseRoomAvailabilityService;
         this.commentRepository = commentRepository;
+        this.officeRoomRepository = officeRoomRepository;
     }
 
     @Override
@@ -62,7 +66,16 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public GroupTrip addGroupTrip(GroupTrip groupTrip) {
+
+        groupTrip.getUserTrips().forEach(trip -> {
+            trip.setUser(userRepository.findById(trip.getUser().getId()));
+            trip.getHouseRooms().forEach(houseroom -> houseroom = officeRoomRepository.getOne(houseroom.getId()));
+        });
+
+        groupTrip.setAdvisor(userRepository.findById(groupTrip.getAdvisor().getId()));
+
         GroupTrip result = groupTripRepository.save(groupTrip);
+
         final String start = groupTrip.getDateFrom();
         final String end = groupTrip.getDateTo();
         groupTrip.getUserTrips().stream().map(Trip::getUser).forEach(user -> {
@@ -73,10 +86,6 @@ public class TripServiceImpl implements TripService {
                 .forEach(trip ->
                         houseRoomAvailabilityService.addHouseRoomAvailabilitiesIfValid(trip.getHouseRooms(), trip.getUser(), groupTrip.getDateFrom(), groupTrip.getDateTo()));
 
-
-        groupTrip.getUserTrips().forEach(trip -> {
-            trip.setUser(userRepository.findById(trip.getUser().getId()));
-        });
         return result;
     }
 
