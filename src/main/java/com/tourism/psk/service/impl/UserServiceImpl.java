@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -48,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAll().stream().filter(User::isActive).collect(Collectors.toList());
     }
 
     @Override
@@ -65,7 +66,11 @@ public class UserServiceImpl implements UserService {
         if (userId == null) {
             throw new LoginException();
         }
-        return userRepository.findById((long) userId);
+        User user = userRepository.findById((long) userId);
+        if (!user.isActive()) {
+            throw new ActionNotAuthorizedException("The user account has been terminated");
+        }
+        return user;
     }
 
     @Override
@@ -106,7 +111,9 @@ public class UserServiceImpl implements UserService {
         if (initiatedBY.getRole() != UserRole.ADMIN) {
             throw new ActionNotAuthorizedException("Initiating user must be an admin");
         }
-        userRepository.delete(user);
+        user.setActive(false);
+        user.setFullname(user.getFullname() + " inactive");
+        userRepository.save(user);
     }
 
     private void validateUserRegistrationData(UserRegistrationRequest userDetails) {

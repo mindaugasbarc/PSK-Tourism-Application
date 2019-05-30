@@ -82,6 +82,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/{userId}", method = RequestMethod.DELETE)
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable long userId, @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
         userService.delete(userId,sessionService.authenticate(authToken).getUser());
     }

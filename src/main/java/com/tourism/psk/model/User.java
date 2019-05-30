@@ -28,6 +28,9 @@ public class User {
     @JsonIgnore
     private UserLogin userLogin;
 
+    @JsonIgnore
+    private boolean active = true;
+
     public User() {
     }
 
@@ -83,6 +86,14 @@ public class User {
 
     public void setUserLogin(UserLogin userLogin) {
         this.userLogin = userLogin;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @Override
