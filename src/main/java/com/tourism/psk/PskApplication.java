@@ -52,13 +52,13 @@ public class PskApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-		User user1 = new User("Admin", "admin@example.com", UserRole.ADVISOR);
+		User user1 = new User("Admin", "admin@example.com", UserRole.ADMIN);
 		// admin : password
 		user1.setUserLogin(new UserLogin("admin", "5f4dcc3b5aa765d61d8327deb882cf99"));
 		user1.getUserLogin().setUser(user1);
 		userRepository.save(user1);
 
-		User user2 = new User("Tautvydas Stukėnas", "tautvydas@example.com", UserRole.ADVISOR);
+		User user2 = new User("Tautvydas Stukėnas", "tautvydas@example.com", UserRole.ADMIN);
 		user2.setUserLogin(new UserLogin("tautvydas", "977a3356360938af3ea81535dfd64889"));
 		user2.getUserLogin().setUser(user2);
 		userRepository.save(user2);
