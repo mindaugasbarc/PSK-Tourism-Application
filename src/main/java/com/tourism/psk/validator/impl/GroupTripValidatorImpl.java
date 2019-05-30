@@ -26,8 +26,6 @@ public class GroupTripValidatorImpl implements GroupTripValidator {
     @Override
     public void validateGroupTrip(final GroupTrip groupTrip) {
 
-
-        userAvailabilityService.validateUserAvailability(groupTrip.getAdvisor(), groupTrip.getDateFrom(), groupTrip.getDateTo());
         Set<Trip> trips = groupTrip.getUserTrips();
         trips.stream()
                 .map(Trip::getUser)
