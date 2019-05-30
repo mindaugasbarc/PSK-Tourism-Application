@@ -32,7 +32,7 @@ public class GroupTripValidatorImpl implements GroupTripValidator {
                 .forEach(user -> userAvailabilityService
                         .validateUserAvailability(user, groupTrip.getDateFrom(), groupTrip.getDateTo()));
 
-        groupTrip.getUserTrips().stream().map(Trip::getHouseRooms).flatMap(List::stream)
+        groupTrip.getUserTrips().stream().map(Trip::getHouserooms).flatMap(List::stream)
                 .forEach(houseRoom -> houseRoomAvailabilityService.validateHouseRoomAvailability(houseRoom, groupTrip.getDateFrom(), groupTrip.getDateTo()));
 
 

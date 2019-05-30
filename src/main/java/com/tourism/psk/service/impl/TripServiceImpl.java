@@ -1,11 +1,8 @@
 package com.tourism.psk.service.impl;
 
-import com.tourism.psk.constants.TripStatus;
 import com.tourism.psk.exception.DocumentNotFoundException;
-import com.tourism.psk.exception.OfficeNotFoundException;
 import com.tourism.psk.exception.TripNotFoundException;
 import com.tourism.psk.model.*;
-import com.tourism.psk.model.request.GroupTripRequest;
 import com.tourism.psk.repository.*;
 import com.tourism.psk.service.HouseRoomAvailabilityService;
 import com.tourism.psk.service.TripService;
@@ -69,8 +66,8 @@ public class TripServiceImpl implements TripService {
 
         groupTrip.getUserTrips().forEach(trip -> {
             trip.setUser(userRepository.findById(trip.getUser().getId()));
-            if (trip.getHouseRooms() != null && trip.getHouseRooms().size() > 0) {
-                trip.getHouseRooms().forEach(houseroom -> houseroom = officeRoomRepository.getOne(houseroom.getId()));
+            if (trip.getHouserooms() != null && trip.getHouserooms().size() > 0) {
+                trip.getHouserooms().forEach(houseroom -> houseroom = officeRoomRepository.getOne(houseroom.getId()));
             }
         });
 
@@ -89,7 +86,7 @@ public class TripServiceImpl implements TripService {
 
         groupTrip.getUserTrips()
                 .forEach(trip ->
-                        houseRoomAvailabilityService.addHouseRoomAvailabilitiesIfValid(trip.getHouseRooms(), trip.getUser(), groupTrip.getDateFrom(), groupTrip.getDateTo()));
+                        houseRoomAvailabilityService.addHouseRoomAvailabilitiesIfValid(trip.getHouserooms(), trip.getUser(), groupTrip.getDateFrom(), groupTrip.getDateTo()));
 
         return result;
     }
