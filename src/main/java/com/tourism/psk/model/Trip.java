@@ -14,7 +14,7 @@ public class Trip {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Document> documents;
 
-    @OneToMany
+    @ManyToMany
     private List<OfficeRoom> houserooms;
 
     @ManyToOne
