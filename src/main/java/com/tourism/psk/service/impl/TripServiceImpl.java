@@ -69,8 +69,13 @@ public class TripServiceImpl implements TripService {
 
         groupTrip.getUserTrips().forEach(trip -> {
             trip.setUser(userRepository.findById(trip.getUser().getId()));
-            trip.getHouseRooms().forEach(houseroom -> houseroom = officeRoomRepository.getOne(houseroom.getId()));
+            if (trip.getHouseRooms() != null && trip.getHouseRooms().size() > 0) {
+                trip.getHouseRooms().forEach(houseroom -> houseroom = officeRoomRepository.getOne(houseroom.getId()));
+            }
         });
+
+        groupTrip.setOfficeFrom(officeRepository.getOne(groupTrip.getOfficeFrom().getId()));
+        groupTrip.setOfficeTo(officeRepository.getOne(groupTrip.getOfficeTo().getId()));
 
         groupTrip.setAdvisor(userRepository.findById(groupTrip.getAdvisor().getId()));
 
@@ -87,18 +92,6 @@ public class TripServiceImpl implements TripService {
                         houseRoomAvailabilityService.addHouseRoomAvailabilitiesIfValid(trip.getHouseRooms(), trip.getUser(), groupTrip.getDateFrom(), groupTrip.getDateTo()));
 
         return result;
-    }
-
-    @Override
-    public void addGroupTripThroughRequest(GroupTripRequest groupTripRequest) {
-        Office officeFrom = officeRepository.findByName(groupTripRequest.getOfficeFromName())
-                .orElseThrow(OfficeNotFoundException::new);
-        Office officeTo = officeRepository.findByName(groupTripRequest.getOfficeToName())
-                .orElseThrow(OfficeNotFoundException::new);
-        GroupTrip groupTrip = new GroupTrip(groupTripRequest.getName(), groupTripRequest.getDescription(),
-                new HashSet<>(), officeFrom, officeTo, new ArrayList<>(), groupTripRequest.getDateFrom(),
-                groupTripRequest.getDateTo(), TripStatus.PENDING, userRepository.findById(groupTripRequest.getUserId()));
-        groupTripRepository.save(groupTrip);
     }
 
     @Override

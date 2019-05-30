@@ -15,8 +15,6 @@ public interface TripService {
 
     GroupTrip addGroupTrip(GroupTrip groupTrip);
 
-    void addGroupTripThroughRequest(GroupTripRequest groupTripRequest);
-
     List<GroupTrip> findGroupTrips();
 
     List<GroupTrip> findGroupTripsForUser(User user);

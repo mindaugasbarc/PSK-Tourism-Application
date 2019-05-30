@@ -9,8 +9,10 @@ public class Trip {
     @Id
     @GeneratedValue
     private long id;
+
     @OneToMany(cascade = CascadeType.ALL)
     private List<Document> documents;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OfficeRoom> houseRooms;
 

@@ -40,14 +40,6 @@ public class GroupTripController {
         return tripService.addGroupTrip(groupTrip);
     }
 
-    @RequestMapping(value = "/addGroupTrip", method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addGroupTripRequest(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken,
-                                    @RequestBody final GroupTripRequest groupTripRequest) {
-        sessionService.authenticate(authToken);
-        tripService.addGroupTripThroughRequest(groupTripRequest);
-    }
-
     @RequestMapping(value = "/group-trip", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public List<GroupTrip> findGroupTrips(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {

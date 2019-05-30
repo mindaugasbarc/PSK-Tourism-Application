@@ -51,20 +51,6 @@ public class GroupTrip {
     @OneToMany(mappedBy = "groupTrip")
     private List<Comment> comments;
 
-    public GroupTrip(String name, String description, Set<Trip> trips, Office officeFrom,
-                     Office officeTo, List<Comment> comments, String dateFrom, String dateTo, TripStatus status, User advisor) {
-        this.name = name;
-        this.description = description;
-        this.userTrips = trips;
-        this.officeFrom = officeFrom;
-        this.officeTo = officeTo;
-        this.comments = comments;
-        this.dateFrom = dateFrom;
-        this.dateTo = dateTo;
-        this.status = status;
-        this.advisor = advisor;
-    }
-
     public GroupTrip() {
     }
 
