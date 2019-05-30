@@ -1,5 +1,6 @@
 package com.tourism.psk.service.impl;
 
+import com.tourism.psk.constants.UserRole;
 import com.tourism.psk.exception.DocumentNotFoundException;
 import com.tourism.psk.exception.TripNotFoundException;
 import com.tourism.psk.model.*;
@@ -99,8 +100,15 @@ public class TripServiceImpl implements TripService {
     @Override
     public List<GroupTrip> findGroupTripsForUser(User user) {
         return groupTripRepository.findAll().stream().filter(groupTrip -> groupTrip.getUserTrips().stream().map(Trip::getUser)
-                .anyMatch(user1 -> user1.equals(user)) || groupTrip.getAdvisor().equals(user))
+                .anyMatch(user1 -> user1.equals(user)))
                 .collect(toList());
+    }
+
+    @Override
+    public List<GroupTrip> findOrganisedGroupTripsForUser(User user) {
+        return user.getRole() == UserRole.DEFAULT
+                ? new ArrayList<>()
+                : groupTripRepository.findAll().stream().filter(groupTrip -> groupTrip.getAdvisor().equals(user)).collect(toList());
     }
 
     @Override

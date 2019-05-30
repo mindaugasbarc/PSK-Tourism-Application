@@ -19,6 +19,8 @@ public interface TripService {
 
     List<GroupTrip> findGroupTripsForUser(User user);
 
+    List<GroupTrip> findOrganisedGroupTripsForUser(User user);
+
     GroupTrip findGroupTrip(long id);
 
     Document findTripDocument(User user, long tripId, long documentId);

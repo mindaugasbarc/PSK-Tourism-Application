@@ -47,6 +47,13 @@ public class GroupTripController {
         return tripService.findGroupTripsForUser(session.getUser());
     }
 
+    @RequestMapping(value = "/group-trip/organised", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public List<GroupTrip> findOrganisedGroupTrips(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        Session session = sessionService.authenticate(authToken);
+        return tripService.findOrganisedGroupTripsForUser(session.getUser());
+    }
+
     @RequestMapping(value = "/group-trip/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public GroupTrip findGroupTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken, @PathVariable("id") long groupTripId) {
         sessionService.authenticate(authToken);
