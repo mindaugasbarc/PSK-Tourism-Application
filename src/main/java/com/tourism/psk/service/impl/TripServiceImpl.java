@@ -114,7 +114,6 @@ public class TripServiceImpl implements TripService {
             return groupTrip;
         }
         catch (ObjectOptimisticLockingFailureException exc) {
-            System.out.println(exc.getClass().getName());
             throw new EntityModifiedException();
         }
     }
