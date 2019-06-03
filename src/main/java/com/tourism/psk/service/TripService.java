@@ -37,7 +37,7 @@ public interface TripService {
 
     GroupTrip forceUpdate(long id, GroupTrip groupTrip);
 
-    void approveGroupTrip(long id, User user);
+    GroupTrip approveGroupTrip(long id, User user);
 
     GroupTrip joinTrips(long tripOneId, long tripTwoId, User user);
 }

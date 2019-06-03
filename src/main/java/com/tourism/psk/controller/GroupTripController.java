@@ -109,10 +109,10 @@ public class GroupTripController {
     }
 
     @RequestMapping(value = "/group-trip/{id}:approve", method = RequestMethod.PUT)
-    public void approveGroupTrip(@PathVariable("id") long id,
+    public GroupTrip approveGroupTrip(@PathVariable("id") long id,
                                  @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
         Session session = sessionService.authenticate(authToken);
-        tripService.approveGroupTrip(id, session.getUser());
+        return tripService.approveGroupTrip(id, session.getUser());
     }
 
     @RequestMapping(value = "/group-trip/{tripOneId}/join/{tripTwoId}", method = RequestMethod.PUT)

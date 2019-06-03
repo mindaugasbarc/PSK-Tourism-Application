@@ -237,7 +237,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public void approveGroupTrip(long id, User user) {
+    public GroupTrip approveGroupTrip(long id, User user) {
         Optional<GroupTrip> groupTripOptional = groupTripRepository.findById(id);
         if (!groupTripOptional.isPresent()) {
             throw new TripNotFoundException();
@@ -252,7 +252,7 @@ public class TripServiceImpl implements TripService {
             throw new ActionNotAuthorizedException("Trips can only be approved by advisor or admin");
         }
         groupTrip.setStatus(TripStatus.ACCEPTED);
-        groupTripRepository.save(groupTrip);
+        return groupTripRepository.save(groupTrip);
     }
 
     @Override
