@@ -254,4 +254,34 @@ public class TripServiceImpl implements TripService {
         groupTrip.setStatus(TripStatus.ACCEPTED);
         groupTripRepository.save(groupTrip);
     }
+
+    @Override
+    @Transactional
+    public GroupTrip joinTrips(long tripOneId, long tripTwoId, User user) {
+        Optional<GroupTrip> tripOneOptional = groupTripRepository.findById(tripOneId);
+        Optional<GroupTrip> tripTwoOptional = groupTripRepository.findById(tripTwoId);
+        if (!tripOneOptional.isPresent() || !tripTwoOptional.isPresent()) {
+            throw new TripNotFoundException();
+        }
+        GroupTrip original = tripOneOptional.get();
+        GroupTrip joining = tripOneOptional.get();
+        checkCompatibility(original, joining);
+        Set<Trip> joiningUserTrips = joining.getUserTrips();
+        original.getUserTrips().addAll(joiningUserTrips);
+        joining.setUserTrips(new HashSet<>());
+        groupTripRepository.save(joining);
+        groupTripRepository.delete(joining);
+        return groupTripRepository.save(original);
+    }
+
+    private void checkCompatibility(GroupTrip tripOne, GroupTrip tripTwo) {
+        if (!tripOne.getDateFrom().equals(tripTwo.getDateFrom()) ||
+                !tripOne.getDateTo().equals(tripTwo.getDateTo())){
+            throw new TripsNotCompatibleException("Trips must be at the same time");
+        }
+        if (tripOne.getOfficeFrom().getId() != tripTwo.getOfficeFrom().getId() ||
+                tripOne.getOfficeTo().getId() != tripTwo.getOfficeTo().getId()) {
+            throw new TripsNotCompatibleException("Trips must be between the same offices");
+        }
+    }
 }
