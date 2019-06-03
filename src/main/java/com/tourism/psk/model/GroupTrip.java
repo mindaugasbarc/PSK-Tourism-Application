@@ -56,6 +56,9 @@ public class GroupTrip {
     @OneToMany(mappedBy = "groupTrip")
     private List<Comment> comments;
 
+    private Boolean carRentRequired;
+    private Boolean transportRequired;
+
     public GroupTrip() {
     }
 
@@ -161,6 +164,22 @@ public class GroupTrip {
 
     public void setVersion(int version) {
         this.version = version;
+    }
+
+    public Boolean getCarRentRequired() {
+        return carRentRequired;
+    }
+
+    public void setCarRentRequired(Boolean carRentRequired) {
+        this.carRentRequired = carRentRequired;
+    }
+
+    public Boolean getTransportRequired() {
+        return transportRequired;
+    }
+
+    public void setTransportRequired(Boolean transportRequired) {
+        this.transportRequired = transportRequired;
     }
 
     @Override

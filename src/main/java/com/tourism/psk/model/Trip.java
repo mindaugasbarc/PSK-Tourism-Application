@@ -27,6 +27,9 @@ public class Trip {
     @NotNull
     private Boolean requestedCancel;
 
+    private Boolean transportBooked;
+    private Boolean carRentBooked;
+
     public long getId() {
         return id;
     }
@@ -89,5 +92,21 @@ public class Trip {
 
     public void setRequestedCancel(Boolean requestedCancel) {
         this.requestedCancel = requestedCancel;
+    }
+
+    public Boolean getTransportBooked() {
+        return transportBooked;
+    }
+
+    public void setTransportBooked(Boolean transportBooked) {
+        this.transportBooked = transportBooked;
+    }
+
+    public Boolean getCarRentBooked() {
+        return carRentBooked;
+    }
+
+    public void setCarRentBooked(Boolean carRentBooked) {
+        this.carRentBooked = carRentBooked;
     }
 }
