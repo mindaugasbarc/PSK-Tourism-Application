@@ -257,6 +257,9 @@ public class TripServiceImpl implements TripService {
     @Override
     @Transactional
     public GroupTrip joinTrips(long tripOneId, long tripTwoId, User user) {
+        if (user.getRole() == UserRole.DEFAULT) {
+            throw new ActionNotAuthorizedException("Trips can only be joined by advisors or administrators");
+        }
         Optional<GroupTrip> tripOneOptional = groupTripRepository.findById(tripOneId);
         Optional<GroupTrip> tripTwoOptional = groupTripRepository.findById(tripTwoId);
         if (!tripOneOptional.isPresent() || !tripTwoOptional.isPresent()) {
