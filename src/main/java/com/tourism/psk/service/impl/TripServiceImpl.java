@@ -251,7 +251,7 @@ public class TripServiceImpl implements TripService {
         if (user.getRole() == UserRole.DEFAULT) {
             throw new ActionNotAuthorizedException("Trips can only be approved by advisor or admin");
         }
-        groupTrip.setStatus(TripStatus.ACCEPTED);
+        groupTrip.setStatus(TripStatus.APPROVED);
         return groupTripRepository.save(groupTrip);
     }
 

@@ -36,7 +36,7 @@ public class GroupTripValidatorImpl implements GroupTripValidator {
         groupTrip.getUserTrips().stream().map(Trip::getHouserooms).flatMap(List::stream)
                 .forEach(houseRoom -> houseRoomAvailabilityService.validateHouseRoomAvailability(houseRoom, groupTrip.getDateFrom(), groupTrip.getDateTo()));
 
-        if (groupTrip.getStatus().equals(TripStatus.ACCEPTED) &&
+        if (groupTrip.getStatus().equals(TripStatus.APPROVED) &&
                 groupTrip.getUserTrips().stream().anyMatch(trip -> trip.getConfirmed().equals(false))) {
             throw new RuntimeException("no all user trips are confirmed so group trip cannot be updated to accepted state");
         }
