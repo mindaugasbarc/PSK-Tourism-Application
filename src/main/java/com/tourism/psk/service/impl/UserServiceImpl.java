@@ -114,6 +114,9 @@ public class UserServiceImpl implements UserService {
         if (initiatedBY.getRole() != UserRole.ADMIN) {
             throw new ActionNotAuthorizedException("Initiating user must be an admin");
         }
+        if (initiatedBY.getId() == userId) {
+            throw new ActionNotAuthorizedException("Self-removal not allowed");
+        }
         user.setActive(false);
         user.setFullname(user.getFullname() + " inactive");
         userRepository.save(user);
