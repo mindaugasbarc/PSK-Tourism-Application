@@ -51,7 +51,7 @@ public class PskApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-//
+
 //		User user1 = new User("Admin", "admin@example.com", UserRole.ADMIN);
 //		// admin : password
 //		user1.setUserLogin(new UserLogin("admin", "5f4dcc3b5aa765d61d8327deb882cf99"));

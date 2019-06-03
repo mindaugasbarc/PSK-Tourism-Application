@@ -5,7 +5,6 @@ import com.tourism.psk.model.Comment;
 import com.tourism.psk.model.GroupTrip;
 import com.tourism.psk.model.Session;
 import com.tourism.psk.model.Trip;
-import com.tourism.psk.model.request.GroupTripRequest;
 import com.tourism.psk.service.SessionService;
 import com.tourism.psk.service.TripService;
 import com.tourism.psk.validator.GroupTripValidator;
@@ -43,10 +42,10 @@ public class GroupTripController {
 
     @RequestMapping(value = "/group-trip", method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updateGroupTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken,
+    public GroupTrip updateGroupTrip(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken,
                                 @RequestBody GroupTrip groupTrip) {
         sessionService.authenticate(authToken);
-        tripService.updateGroupTrip(groupTrip);
+        return tripService.updateGroupTrip(groupTrip);
     }
 
     @RequestMapping(value = "/group-trip", method = RequestMethod.GET,

@@ -109,8 +109,7 @@ public class TripServiceImpl implements TripService {
             oldGroupTrip.getUserTrips().stream().map(Trip::getUser).forEach(user ->
                     userOccupationService.markAvailability(user.getId(), oldGroupTrip.getDateFrom(), oldGroupTrip.getDateTo(), true));
             groupTripValidator.validateGroupTrip(groupTrip);
-            addGroupTrip(groupTrip);
-            return groupTrip;
+            return addGroupTrip(groupTrip);
         }
         catch (ObjectOptimisticLockingFailureException exc) {
             throw new EntityModifiedException();
