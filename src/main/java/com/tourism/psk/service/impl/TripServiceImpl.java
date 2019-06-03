@@ -1,9 +1,8 @@
 package com.tourism.psk.service.impl;
 
+import com.tourism.psk.constants.TripStatus;
 import com.tourism.psk.constants.UserRole;
-import com.tourism.psk.exception.DocumentNotFoundException;
-import com.tourism.psk.exception.EntityModifiedException;
-import com.tourism.psk.exception.TripNotFoundException;
+import com.tourism.psk.exception.*;
 import com.tourism.psk.model.*;
 import com.tourism.psk.repository.*;
 import com.tourism.psk.service.HouseRoomAvailabilityService;
@@ -236,5 +235,24 @@ public class TripServiceImpl implements TripService {
         groupTripValidator.validateGroupTrip(groupTrip);
         groupTripRepository.delete(existing);
         return addGroupTrip(groupTrip);
+    }
+
+    @Override
+    public void approveGroupTrip(long id, User user) {
+        Optional<GroupTrip> groupTripOptional = groupTripRepository.findById(id);
+        if (!groupTripOptional.isPresent()) {
+            throw new TripNotFoundException();
+        }
+        GroupTrip groupTrip = groupTripOptional.get();
+        groupTrip.getUserTrips().forEach(trip -> {
+            if (!trip.getConfirmed()) {
+                throw new ConfirmationRequiredException();
+            }
+        });
+        if (user.getRole() == UserRole.DEFAULT) {
+            throw new ActionNotAuthorizedException("Trips can only be approved by advisor or admin");
+        }
+        groupTrip.setStatus(TripStatus.ACCEPTED);
+        groupTripRepository.save(groupTrip);
     }
 }

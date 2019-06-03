@@ -107,4 +107,11 @@ public class GroupTripController {
         sessionService.authenticate(authToken);
         return tripService.forceUpdate(id, groupTrip);
     }
+
+    @RequestMapping(value = "/group-trip/{id}:approve", method = RequestMethod.PUT)
+    public void approveGroupTrip(@PathVariable("id") long id,
+                                 @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        Session session = sessionService.authenticate(authToken);
+        tripService.approveGroupTrip(id, session.getUser());
+    }
 }
