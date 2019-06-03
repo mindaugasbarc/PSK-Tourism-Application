@@ -27,8 +27,8 @@ public class Trip {
     @NotNull
     private Boolean requestedCancel;
 
-    private Boolean transportBooked;
-    private Boolean carRentBooked;
+    private Boolean transportBooked = false;
+    private Boolean carRentBooked = false;
 
     public long getId() {
         return id;

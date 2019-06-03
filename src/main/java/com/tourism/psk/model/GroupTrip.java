@@ -56,8 +56,8 @@ public class GroupTrip {
     @OneToMany(mappedBy = "groupTrip")
     private List<Comment> comments;
 
-    private Boolean carRentRequired;
-    private Boolean transportRequired;
+    private Boolean carRentRequired = false;
+    private Boolean transportRequired = false;
 
     public GroupTrip() {
     }
