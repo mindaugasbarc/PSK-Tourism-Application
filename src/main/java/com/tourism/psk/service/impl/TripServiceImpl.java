@@ -264,12 +264,11 @@ public class TripServiceImpl implements TripService {
             throw new TripNotFoundException();
         }
         GroupTrip original = tripOneOptional.get();
-        GroupTrip joining = tripOneOptional.get();
+        GroupTrip joining = tripTwoOptional.get();
         checkCompatibility(original, joining);
         Set<Trip> joiningUserTrips = joining.getUserTrips();
         original.getUserTrips().addAll(joiningUserTrips);
         joining.setUserTrips(new HashSet<>());
-        groupTripRepository.save(joining);
         groupTripRepository.delete(joining);
         return groupTripRepository.save(original);
     }
