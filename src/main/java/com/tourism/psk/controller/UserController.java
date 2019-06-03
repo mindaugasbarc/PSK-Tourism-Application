@@ -1,6 +1,7 @@
 package com.tourism.psk.controller;
 
 import com.tourism.psk.constants.Globals;
+import com.tourism.psk.model.Session;
 import com.tourism.psk.model.User;
 import com.tourism.psk.model.UserLogin;
 import com.tourism.psk.model.UserOccupation;
@@ -32,8 +33,10 @@ public class UserController {
 
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     @ResponseStatus(code = HttpStatus.CREATED)
-    public User registerUser(@RequestBody UserRegistrationRequest userDetails) {
-        return userService.register(userDetails);
+    public User registerUser(@RequestBody UserRegistrationRequest userDetails,
+                             @RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        Session session = sessionService.authenticate(authToken);
+        return userService.register(userDetails, session.getUser());
     }
 
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)

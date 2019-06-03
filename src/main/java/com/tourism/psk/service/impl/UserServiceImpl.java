@@ -74,7 +74,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User register(UserRegistrationRequest userDetails) {
+    public User register(UserRegistrationRequest userDetails, User initiator) {
+        if (initiator.getRole() != UserRole.ADMIN) {
+            throw new ActionNotAuthorizedException("New users can only be created by administrators");
+        }
         validateUserRegistrationData(userDetails);
         UserLogin userLogin = new UserLogin(userDetails.getUsername(), userDetails.getPassword());
         User user = new User(

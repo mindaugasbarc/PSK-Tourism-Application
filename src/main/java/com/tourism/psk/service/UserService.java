@@ -11,7 +11,7 @@ public interface UserService {
     List<User> getAllUsers();
     boolean userExists(String username, String email);
     User login(UserLogin userLogin);
-    User register(UserRegistrationRequest userDetails);
+    User register(UserRegistrationRequest userDetails, User initiator);
     User update(User user, long id);
     void delete(long userId, User initiatedBy);
 }
