@@ -58,6 +58,7 @@ public class GroupTrip {
 
     private Boolean carRentRequired = false;
     private Boolean transportRequired = false;
+    private Boolean accommodationRequired = false;
 
     public GroupTrip() {
     }
@@ -180,6 +181,14 @@ public class GroupTrip {
 
     public void setTransportRequired(Boolean transportRequired) {
         this.transportRequired = transportRequired;
+    }
+
+    public Boolean getAccommodationRequired() {
+        return accommodationRequired;
+    }
+
+    public void setAccommodationRequired(Boolean accommodationRequired) {
+        this.accommodationRequired = accommodationRequired;
     }
 
     @Override

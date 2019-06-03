@@ -29,6 +29,7 @@ public class Trip {
 
     private Boolean transportBooked = false;
     private Boolean carRentBooked = false;
+    private Boolean accommodationBooked = false;
 
     public long getId() {
         return id;
@@ -108,5 +109,13 @@ public class Trip {
 
     public void setCarRentBooked(Boolean carRentBooked) {
         this.carRentBooked = carRentBooked;
+    }
+
+    public Boolean getAccommodationBooked() {
+        return accommodationBooked;
+    }
+
+    public void setAccommodationBooked(Boolean accommodationBooked) {
+        this.accommodationBooked = accommodationBooked;
     }
 }
