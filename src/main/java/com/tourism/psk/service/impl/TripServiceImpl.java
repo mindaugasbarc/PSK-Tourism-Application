@@ -117,7 +117,10 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public List<GroupTrip> findGroupTrips() {
+    public List<GroupTrip> findGroupTrips(User user) {
+        if (user.getRole() == UserRole.DEFAULT) {
+            throw new ActionNotAuthorizedException("Only available to advisors and administrators");
+        }
         return groupTripRepository.findAll();
     }
 

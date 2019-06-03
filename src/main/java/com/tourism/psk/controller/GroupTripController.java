@@ -121,4 +121,10 @@ public class GroupTripController {
         Session session = sessionService.authenticate(authToken);
         return  tripService.joinTrips(tripOneId, tripTwoId, session.getUser());
     }
+
+    @RequestMapping(value = "/group-trip/all", method = RequestMethod.GET)
+    public List<GroupTrip> getAllGroupTrips(@RequestHeader(Globals.ACCESS_TOKEN_HEADER_NAME) String authToken) {
+        Session session = sessionService.authenticate(authToken);
+        return tripService.findGroupTrips(session.getUser());
+    }
 }
