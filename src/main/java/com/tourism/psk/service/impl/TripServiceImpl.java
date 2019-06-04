@@ -71,6 +71,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
+    @Transactional
     public GroupTrip addGroupTrip(GroupTrip groupTrip) {
 
         groupTrip.getUserTrips().forEach(trip -> {
